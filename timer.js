@@ -102,7 +102,6 @@ function GameTimer(d) {
         if (currentSegment < splitsObject[this.currentSplit][2]) {
             timerText.style.color = "Gold";
             splitsObject[this.currentSplit][2] = currentSegment;
-            console.log(splitsObject[this.currentSplit][2]);
         } else if (currentSegment < splitsObject[this.currentSplit][1]) { // Compares against pb
             timerText.style.color = "lime";
         } else {
@@ -236,11 +235,9 @@ function GameTimer(d) {
     };
 
     this.saveSplits = function () {
-        var storePB = JSON.stringify(splitsObject);
-        var savedPB = localStorage["PersonalBest"];
-        localStorage["PersonalBest"] = storePB;
-        console.log(storePB);
-        console.log(JSON.parse(storePB));
+        var storePB = JSON.stringify(splitsObject),
+            savedPB = localStorage.PersonalBest;
+        localStorage.PersonalBest = storePB;
     };
 
     this.loadSplits = function () {
@@ -253,18 +250,22 @@ function GameTimer(d) {
 
 
     this.timebase = {
-    realtime: 60,
-    splittime: 60, /* Why did I do this? */
+        realtime: 60,
+        splittime: 60 /* Why did I do this? */
     };
     this.timer = { start: 0, now: 0, realtime: 0 };
     this.elements = {
-    realtime: d['elements']['realtime'],
+        realtime: d.elements.realtime
     };
-    this.interval = d['interval'];
-    if (!d['ms']) this.ms = [3, 3];
-    else if (d['ms'] instanceof Array) this.ms = d['ms'];
-    else this.ms = [d['ms'], d['ms']];
-    this.currently = 'stop';
+    this.interval = d.interval;
+    if (!d.ms) {
+        this.ms = [3, 3];
+    } else if (d.ms instanceof Array) {
+        this.ms = d.ms;
+    } else {
+        this.ms = [d.ms, d.ms];
+        this.currently = 'stop';
+    }
 }
 
 var t; /* ? */
@@ -276,14 +277,18 @@ t = new GameTimer({
 
 window.onkeyup = function keyPress(e) {
     var k = e.which || e.keyCode;
-    if (k == 83) t.start(); // s
-    else if ((k == 80) || (k == 32)) t.pause(); // p or space
-    else if (k == 76) t.split(); // l
-    else if (k == 82) t.reset(); // r
-    else if (k == 67) { t.reset(); t.split(); } // c
+    if (k === 83) {
+        t.start(); // s
+    } else if ((k === 80) || (k === 32)) {
+        t.pause(); // p or space
+    } else if (k === 76) {
+        t.split(); // l
+    } else if (k === 82) {
+        t.reset(); // r
+    } else if (k === 67) { t.reset(); t.split(); } // c
 };
 
 window.onload = function() {
-    t.genSplits()
-    document.getElementById("prevsplit").innerHTML = "Ready"
-}
+    t.genSplits();
+    document.getElementById("prevsplit").innerHTML = "Ready";
+};
