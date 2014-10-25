@@ -2,6 +2,7 @@ body {
 	font-family: Arial, Tahoma, Verdana, sans-serif;
 	background-color: black;
 	color: white;
+	/*width: 210px;*/
 }
 
 #controls {
@@ -36,7 +37,14 @@ input[value=Split] {
 }
 
 input[value=Pause] {
-	background-color: orange;
+	background-color: #0062FF;
+}
+
+input[value=Save] {
+	background-color: green;
+}
+input[value=Load] {
+	background-color: blue;
 }
 
 input:active {
@@ -129,6 +137,7 @@ td:nth-child(3n+1) {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+
 }
 
 td:nth-child(2n+2) {
@@ -149,8 +158,7 @@ h1 {
 	background: -webkit-linear-gradient(top,  rgba(20,114,254,1) 0%,rgba(21,157,211,1) 0%,rgba(7,97,223,1) 40%,rgba(2,65,160,1) 100%); /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top,  rgba(20,114,254,1) 0%,rgba(21,157,211,1) 0%,rgba(7,97,223,1) 40%,rgba(2,65,160,1) 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(top,  rgba(20,114,254,1) 0%,rgba(21,157,211,1) 0%,rgba(7,97,223,1) 40%,rgba(2,65,160,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(20,114,254,1) 0%,rgba(21,157,211,1) 0%,rgba(7,97,223,1) 40%,rgba(2,65,160,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1472fe', endColorstr='#0241a0',GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(to bottom,  rgba(20,114,254,1) 0%,rgba(21,157,211,1) 0%,rgba(7,97,223,1) 40%,rgba(2,65,160,1) 100%); /* W3C */	
 }
 
 caption {
@@ -189,9 +197,9 @@ caption {
 }
 
 .timer-running {
-	background: -webkit-linear-gradient(#00FF68, #00A541) !important; /* Dang, doesn't help me for firefox :( */
-	-webkit-background-clip: text !important;
-	-webkit-text-fill-color: transparent !important;
+	background: -webkit-linear-gradient(#00FF68, #00A541); /* Dang, doesn't help me for firefox :( */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .timer-paused {

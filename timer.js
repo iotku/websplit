@@ -130,6 +130,7 @@ function GameTimer(d) {
                     splitsObject[step][1] = splitsObject[step][3];
                     step = step + 1;
                 }
+                this.saveSplits();
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
                 if (this.getTotalTime() === 0) { // Works all the time 60% of the time.... BAD 
@@ -151,7 +152,6 @@ function GameTimer(d) {
             totalTime = splitsObject[step + 1][1] + totalTime;
             step = step + 1;
         }
-        console.log('TotalSegments ' + totalTime);
         return totalTime;
     };
 
@@ -264,13 +264,14 @@ function GameTimer(d) {
     };
 
     this.saveSplits = function () {
-        var storePB = JSON.stringify(splitsObject),
-            savedPB = localStorage.PersonalBest;
-        localStorage.PersonalBest = storePB;
+        localStorage.PersonalBest = JSON.stringify(splitsObject);
+        console.log("saved splits");
     };
 
     this.loadSplits = function () {
-
+        splitsObject =JSON.parse(localStorage.PersonalBest);
+        console.log("Loaded splis");
+        this.genSplits();
     };
     // Set up stuff
     var self = this;
