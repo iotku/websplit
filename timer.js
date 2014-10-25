@@ -38,6 +38,7 @@ function GameTimer(d) {
         this.setTimeout();
         this.currently = 'play';
         document.getElementById("timer_realtime").style.color = "#3ACC60";
+        document.getElementById("timer_realtime").className = "timer-running";
         document.getElementById("row1").className += " active-split";
         document.getElementById("prevsplit").innerHTML = "...";
         return this.timer.start;
@@ -64,11 +65,13 @@ function GameTimer(d) {
             this.currently = 'pause';
             this.update(true, true);
             timerText.style.color = "#0062FF";
+            timerText.className = "timer-paused";
         } else {
             this.currently = 'play';
             this.timer.start = this.now() - this.timer.realtime;
             this.update();
             timerText.style.color = "#3ACC60";
+            timerText.className = "timer-running";
         }
     };
 
@@ -229,6 +232,7 @@ function GameTimer(d) {
             addtime = splitsObject[step][1] + addtime;
             document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
             document.getElementById("difference" + step).style.color = "white";
+            document.getElementById("timer_realtime").className = "timer-stopped";
             document.getElementById("difference" + step).style.fontWeight = "Normal";
             step = step + 1;
         }
