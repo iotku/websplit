@@ -17,7 +17,7 @@ function GameTimer(d) {
     /* [0]Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
     splitsObject = {
-        "1": ["BoB", 98000, 96000, 0],
+        "1": ["BoB", 98000, 15000, 0],
         "2": ["WF", 100000, 98000, 0],
         "3": ["CCM", 250000, 230000, 0],
         "4": ["DW", 60000, 55000, 0],
@@ -37,7 +37,7 @@ function GameTimer(d) {
         this.clearTimeout();
         this.setTimeout();
         this.currently = 'play';
-        document.getElementById("timer_realtime").style.color = "lime";
+        document.getElementById("timer_realtime").style.color = "#3ACC60";
         document.getElementById("row1").className += " active-split";
         document.getElementById("prevsplit").innerHTML = "...";
         return this.timer.start;
@@ -68,7 +68,7 @@ function GameTimer(d) {
             this.currently = 'play';
             this.timer.start = this.now() - this.timer.realtime;
             this.update();
-            timerText.style.color = "lime";
+            timerText.style.color = "#3ACC60";
         }
     };
 
@@ -101,6 +101,8 @@ function GameTimer(d) {
         // console.log('CurrentSeg: ' + currentSegment + '::' + 'pbsplit: ' + splitsObject[this.currentSplit][1])
         if (currentSegment < splitsObject[this.currentSplit][2]) {
             timerText.style.color = "Gold";
+            splitsObject[this.currentSplit][2] = currentSegment;
+            console.log(splitsObject[this.currentSplit][2]);
         } else if (currentSegment < splitsObject[this.currentSplit][1]) { // Compares against pb
             timerText.style.color = "lime";
         } else {
@@ -219,9 +221,9 @@ function GameTimer(d) {
         var step = 1,
             addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // make sure table is empty
-        for (var prop in splitsObject) { // What a mess.
+        while (step <= this.totalSplits) { // What a mess.
             splitsObject[step][3] = 0; /* Reset current segments */
-            document.getElementById("dattable").innerHTML += '<tr id="row' + step + '">' + '<td id="splitname' + step + '"></td>' + '<td id="split' + step + '"></td>' + '<td id="difference' + step + '"></td>' + '</tr>'
+            document.getElementById("dattable").innerHTML += '<tr id="row' + step + '">' + '<td id="splitname' + step + '"></td>' + '<td id="split' + step + '"></td>' + '<td id="difference' + step + '"></td>' + '</tr>';
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
             document.getElementById("split" + step).innerHTML = " ";
             document.getElementById("row" + step).className = "";
