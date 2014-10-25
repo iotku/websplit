@@ -154,7 +154,7 @@ function GameTimer(d) {
     this.reset = function () {
         if (t.currently === 'stop'){
             t.start();
-            return True;
+            return true;
         }
         if (t.currently === 'play') {
             t.pause();
