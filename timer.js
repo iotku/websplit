@@ -124,6 +124,11 @@ function GameTimer(d) {
             document.getElementById("row" + this.currentSplit).className = " ";
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
+                var step = 1;
+                while (step <= this.totalSplits) {
+                    splitsObject[step][1] = splitsObject[step][3];
+                    step = step + 1;
+                }
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
             }
