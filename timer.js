@@ -122,6 +122,7 @@ function GameTimer(d) {
         } else {
             this.pause();
             document.getElementById("row" + this.currentSplit).className = " ";
+
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
                 var step = 1;
@@ -131,6 +132,14 @@ function GameTimer(d) {
                 }
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
+                if (this.getTotalTime() === 0) { // Works all the time 60% of the time.... BAD 
+                prevText.innerHTML = '<i>First Record</i>';
+                var step = 1;
+                while (step <= this.totalSplits) {
+                    splitsObject[step][1] = splitsObject[step][3];
+                    step = step + 1;
+                }
+            }
             }
         }
     };
@@ -142,7 +151,7 @@ function GameTimer(d) {
             totalTime = splitsObject[step + 1][1] + totalTime;
             step = step + 1;
         }
-        // console.log('TotalSegments ' + totalTime);
+        console.log('TotalSegments ' + totalTime);
         return totalTime;
     };
 

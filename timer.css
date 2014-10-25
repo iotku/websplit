@@ -183,19 +183,19 @@ caption {
 }
 
 .timer-stopped {
-  background: -webkit-linear-gradient(#eee, #333); /* Dang, doesn't help me for firefox :( */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+	background: -webkit-linear-gradient(#eee, #333); /* Dang, doesn't help me for firefox :( */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .timer-running {
-  background: -webkit-linear-gradient(#00FF68, #00A541) !important; /* Dang, doesn't help me for firefox :( */
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
+	background: -webkit-linear-gradient(#00FF68, #00A541) !important; /* Dang, doesn't help me for firefox :( */
+	-webkit-background-clip: text !important;
+	-webkit-text-fill-color: transparent !important;
 }
 
 .timer-paused {
-  background: -webkit-linear-gradient(#0062FF, #0088FF); /* Dang, doesn't help me for firefox :( */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+	background: -webkit-linear-gradient(#0062FF, #0088FF); /* Dang, doesn't help me for firefox :( */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
