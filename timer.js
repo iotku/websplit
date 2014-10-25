@@ -99,7 +99,9 @@ function GameTimer(d) {
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bold";
 
         // console.log('CurrentSeg: ' + currentSegment + '::' + 'pbsplit: ' + splitsObject[this.currentSplit][1])
-        if (currentSegment < splitsObject[this.currentSplit][1]) { // Compares against pb
+        if (currentSegment < splitsObject[this.currentSplit][2]) {
+            timerText.style.color = "Gold";
+        } else if (currentSegment < splitsObject[this.currentSplit][1]) { // Compares against pb
             timerText.style.color = "lime";
         } else {
             timerText.style.color = "Red";
