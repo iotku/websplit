@@ -1,0 +1,9 @@
+todo:
+    * Reset bold on reset
+    * Color active split background
+    * split editor?
+    * save splits locally
+Mostly Done:
+    * Autogen splits from array
+    * time properly
+        - Add segment times together to make splits

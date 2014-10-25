@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RTA Timer</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+	<link rel="stylesheet" type="text/css" href="timer.css" />
+	<script type="text/javascript" src="timer.js"></script>
+		<script type="text/javascript" src="test.js"></script>
+</head>
+<body>
+
+	<div id="container">
+		<div id="splits">
+		<table>
+		<tbody id="dattable">
+		</tbody>
+		</table>
+	</div>
+		<div id="timers">
+			<span id="timer_realtime">0.0</span>
+		</div>
+		<div class="statusbar">
+			<div id="prevtext"></div>
+			<div id="prevsplit">Not Loaded.</div>
+		</div>
+	</div>
+		<div id="controls">
+			<input id="startbutton" type="button" value="Start" onclick="t.start()"/>
+			<input type="button" value="Pause" onclick="t.pause()"/> <br>
+			<input type="button" value="Split"   onclick="t.split()"/>
+		</div>
+
+<!-- 	<div id="about">
+		<h1>More Info</h1>
+		<div id="full">
+			<p>Original Created by Ian "bmn" Bennett, 5 Jul 2010. Requires Javascript.</p>
+			<p>Modified by iotku, send all complaints to github.com/iotku</p>
+		</div>
+	</div>
+ -->
+</body>
+</html>
