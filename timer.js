@@ -10,8 +10,8 @@
 
 
 function GameTimer(d) {
-    /*jslint browser:true */
     "use strict"; // Someday I'll have good code
+    /*jslint browser:true */
     // External Functions
     this.currentSplit = 1; /* Initialize at 1st split */
     /* [0]Name, [1]PBsplit, [2]Best Split, [3]Current Split */
@@ -46,7 +46,6 @@ function GameTimer(d) {
 
     this.update = function (no_timeout, clear_timeout) {
         var t = this.timer;
-            // tb = this.timebase; // Not used anywhere?
         t.now = this.now();
         t.realtime = t.now - t.start;
         this.updateElements();
@@ -104,7 +103,7 @@ function GameTimer(d) {
         // console.log('CurrentSeg: ' + currentSegment + '::' + 'pbsplit: ' + splitsObject[this.currentSplit][1])
         if (currentSegment < splitsObject[this.currentSplit][2]) {
             timerText.style.color = "Gold";
-            prevSplit.style.color = "Gold"
+            prevSplit.style.color = "Gold";
             splitsObject[this.currentSplit][2] = currentSegment;
         } else if (currentSegment < splitsObject[this.currentSplit][1]) { // Compares against pb
             timerText.style.color = "lime";
@@ -120,7 +119,6 @@ function GameTimer(d) {
             this.currentSplit = this.currentSplit + 1;
             document.getElementById('row' + (this.currentSplit)).className += " active-split";
             document.getElementById('row' + (this.currentSplit - 1)).className = " ";
-
         } else {
             this.pause();
             document.getElementById("row" + this.currentSplit).className = " ";
@@ -150,17 +148,24 @@ function GameTimer(d) {
             segmentTime = splitsObject[step + 1][3] + segmentTime;
             step = step + 1;
         }
-        // console.log('SegmentTime ' + segmentTime);
         return segmentTime;
     };
 
     this.reset = function () {
+        if (t.currently === 'stop'){
+            t.start();
+            return True;
+        }
         if (t.currently === 'play') {
             t.pause();
         }
         this.currentSplit = 1;
         t.split(); /* What does this even do? */
         this.genSplits(); /* reset splits */
+
+        document.getElementById("timer_realtime").style.color = "White";
+        document.getElementById("prevsplit").innerHTML = "Ready";
+        document.getElementById("prevtext").innerHTML = "";
     };
 
     this.realTime = function (t) {
@@ -224,14 +229,16 @@ function GameTimer(d) {
         document.getElementById("dattable").innerHTML = ""; // make sure table is empty
         while (step <= this.totalSplits) { // What a mess.
             splitsObject[step][3] = 0; /* Reset current segments */
+            addtime = splitsObject[step][1] + addtime;
+
             document.getElementById("dattable").innerHTML += '<tr id="row' + step + '">' + '<td id="splitname' + step + '"></td>' + '<td id="split' + step + '"></td>' + '<td id="difference' + step + '"></td>' + '</tr>';
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
             document.getElementById("split" + step).innerHTML = " ";
             document.getElementById("row" + step).className = "";
-            addtime = splitsObject[step][1] + addtime;
             document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
             document.getElementById("difference" + step).style.color = "white";
             document.getElementById("difference" + step).style.fontWeight = "Normal";
+
             step = step + 1;
         }
         document.getElementById("prevsplit").style.color = "White";
@@ -239,6 +246,7 @@ function GameTimer(d) {
         document.getElementById("timer_realtime").className = "timer-stopped";
         document.getElementById("prevsplit").innerHTML = "Ready";
         document.getElementById("prevtext").innerHTML = "";
+        this.currently = 'stop';
     };
 
     this.saveSplits = function () {
@@ -253,8 +261,6 @@ function GameTimer(d) {
     // Set up stuff
     var self = this;
     var d = d || {};
-    /* Split Tracking */
-
 
     this.timebase = {
         realtime: 60,
