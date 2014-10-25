@@ -104,11 +104,14 @@ function GameTimer(d) {
         // console.log('CurrentSeg: ' + currentSegment + '::' + 'pbsplit: ' + splitsObject[this.currentSplit][1])
         if (currentSegment < splitsObject[this.currentSplit][2]) {
             timerText.style.color = "Gold";
+            prevSplit.style.color = "Gold"
             splitsObject[this.currentSplit][2] = currentSegment;
         } else if (currentSegment < splitsObject[this.currentSplit][1]) { // Compares against pb
             timerText.style.color = "lime";
+            prevSplit.style.color = "lime";
         } else {
             timerText.style.color = "Red";
+            prevsplit.style.color = "Red";
         }
 
         // Setup for next split
@@ -122,9 +125,9 @@ function GameTimer(d) {
             this.pause();
             document.getElementById("row" + this.currentSplit).className = " ";
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
-                prevText.innerHTML = '<b>New Record</b>: ';
+                prevText.innerHTML = '<b>New Record</b>';
             } else {
-                prevText.innerHTML = 'No Record: ';
+                prevText.innerHTML = '<b>No Record</b>';
             }
         }
     };
@@ -158,10 +161,6 @@ function GameTimer(d) {
         this.currentSplit = 1;
         t.split(); /* What does this even do? */
         this.genSplits(); /* reset splits */
-
-        document.getElementById("timer_realtime").style.color = "White";
-        document.getElementById("prevsplit").innerHTML = "Ready";
-        document.getElementById("prevtext").innerHTML = "";
     };
 
     this.realTime = function (t) {
@@ -232,10 +231,14 @@ function GameTimer(d) {
             addtime = splitsObject[step][1] + addtime;
             document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
             document.getElementById("difference" + step).style.color = "white";
-            document.getElementById("timer_realtime").className = "timer-stopped";
             document.getElementById("difference" + step).style.fontWeight = "Normal";
             step = step + 1;
         }
+        document.getElementById("prevsplit").style.color = "White";
+        document.getElementById("timer_realtime").style.color = "White";
+        document.getElementById("timer_realtime").className = "timer-stopped";
+        document.getElementById("prevsplit").innerHTML = "Ready";
+        document.getElementById("prevtext").innerHTML = "";
     };
 
     this.saveSplits = function () {
