@@ -269,21 +269,18 @@ function GameTimer(d) {
             step = step + 1;
         }
         localStorage.PersonalBest = JSON.stringify(splitsObject);
-        console.log(JSON.stringify(splitsObject))
-        console.log("saved splits");
     };
 
     this.loadSplits = function () {
         splitsObject = JSON.parse(localStorage.PersonalBest);
-        console.log("Loaded splis");
         this.currentSplit = 1;
         this.genSplits();
         this.timer = { start: 0, now: 0, realtime: 0 };
         this.updateElements(); /* Resets the timer. keep */
     };
     // Set up stuff
-    var self = this;
-    var d = d || {};
+    var self = this,
+        d = d || {};
 
     this.timebase = {
         realtime: 60,
@@ -311,7 +308,7 @@ t = new GameTimer({
     ms: [2, 1]
 });
 
-window.onkeyup = function keyPress(e) {
+window.onkeydown = function keyPress(e) {
     var k = e.which || e.keyCode;
     if (k === 83) {
         t.start(); // s
@@ -321,10 +318,10 @@ window.onkeyup = function keyPress(e) {
         t.split(); // l
     } else if (k === 82) {
         t.reset(); // r
-    } else if (k === 67) { t.reset(); t.split(); } // c
+    }
 };
 
-window.onload = function() {
+window.onload = function () {
     t.genSplits();
     document.getElementById("prevsplit").innerHTML = "Ready";
 };
