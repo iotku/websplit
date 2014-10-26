@@ -16,12 +16,17 @@ function GameTimer(d) {
     /* [0]Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
     splitsObject = {
-        "1": ["BoB", null, 15000, 0],
-        "2": ["WF", 100000, 98000, 0],
-        "3": ["CCM", 250000, 230000, 0],
-        "4": ["DW", 60000, 55000, 0],
-        "5": ["LLL", 30000, 30000, 0],
-        "6": ["Yolo", 1321231, 123132, 0]
+        "1": ["BoB", null, null, 0],
+        "2": ["WF", null, null, 0],
+        "3": ["CCM", null, null, 0],
+        "4": ["BitDW", null, null, 0],
+        "5": ["LLL", null, null, 0],
+        "6": ["SSL", null, null, 0],
+        "7": ["HMC", null, null, 0],
+        "8": ["DDD", null, null, 0],
+        "9": ["BitFS", null, null, 0],
+        "10": ["BLJs", null, null, 0],
+        "11": ["Done.", null, null, 0]
     };
     this.totalSplits = Object.keys(splitsObject).length; /* calculate from splitsObject */ /* Doesn't work in IE<9 lol... */
     /* /Split Tracking */
