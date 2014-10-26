@@ -143,6 +143,7 @@ function GameTimer(d) {
                     while (step <= this.totalSplits) {
                         splitsObject[step][1] = splitsObject[step][3];
                         step = step + 1;
+                        localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
                     }
                 }
             }
