@@ -170,7 +170,7 @@ function GameTimer(d) {
     };
 
     this.reset = function () {
-        if (t.currently === 'stop'){
+        if (t.currently === 'stop') {
             t.start();
             return true;
         }
@@ -243,7 +243,7 @@ function GameTimer(d) {
 
     this.genSplits = function () {
         if (localStorage.PersonalBest != "") {
-            splitsObject = JSON.parse(localStorage.PersonalBest);    
+            splitsObject = JSON.parse(localStorage.PersonalBest); 
         }
         var step = 1,
             addtime = 0;
@@ -289,7 +289,8 @@ function GameTimer(d) {
 
     this.deleteSplits = function () {
         localStorage.PersonalBest = "";
-    }
+    };
+
     // Set up stuff
     var self = this,
         d = d || {};
