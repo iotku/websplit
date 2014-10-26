@@ -16,7 +16,7 @@ function GameTimer(d) {
     /* [0]Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
     splitsObject = {
-        "1": ["BoB", 98000, 15000, 0],
+        "1": ["BoB", null, 15000, 0],
         "2": ["WF", 100000, 98000, 0],
         "3": ["CCM", 250000, 230000, 0],
         "4": ["DW", 60000, 55000, 0],
@@ -237,6 +237,9 @@ function GameTimer(d) {
     };
 
     this.genSplits = function () {
+        if (localStorage.PersonalBest != "") {
+            splitsObject = JSON.parse(localStorage.PersonalBest);    
+        }
         var step = 1,
             addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // make sure table is empty
@@ -278,6 +281,10 @@ function GameTimer(d) {
         this.timer = { start: 0, now: 0, realtime: 0 };
         this.updateElements(); /* Resets the timer. keep */
     };
+
+    this.deleteSplits = function () {
+        localStorage.PersonalBest = "";
+    }
     // Set up stuff
     var self = this,
         d = d || {};
