@@ -264,14 +264,23 @@ function GameTimer(d) {
     };
 
     this.saveSplits = function () {
+        var step = 1;
+        while (step <= this.totalSplits) {
+            splitsObject[step][1] = splitsObject[step][3];
+            step = step + 1;
+        }
         localStorage.PersonalBest = JSON.stringify(splitsObject);
+        console.log(JSON.stringify(splitsObject))
         console.log("saved splits");
     };
 
     this.loadSplits = function () {
-        splitsObject =JSON.parse(localStorage.PersonalBest);
+        splitsObject = JSON.parse(localStorage.PersonalBest);
         console.log("Loaded splis");
+        this.currentSplit = 1;
         this.genSplits();
+        this.timer = { start: 0, now: 0, realtime: 0 };
+        this.updateElements(); /* Resets the timer. keep */
     };
     // Set up stuff
     var self = this;
