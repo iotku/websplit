@@ -6,12 +6,11 @@
 //
 // Shoutouts to him, I probably couldn't have built this from scratch
 // - iotku
-
-
+/*global define */
+/*jslint browser:true */
 
 function GameTimer(d) {
     "use strict"; // Someday I'll have good code
-    /*jslint browser:true */
     // External Functions
     this.currentSplit = 1; /* Initialize at 1st split */
     /* [0]Name, [1]PBsplit, [2]Best Split, [3]Current Split */
@@ -98,7 +97,7 @@ function GameTimer(d) {
         timerText.innerHTML = this.realTime(splittime - this.getTotalTime());
         prevSplit.innerHTML = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
 
-        document.getElementById("difference" + this.currentSplit).style.fontWeight = "bold";
+        document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
 
         // console.log('CurrentSeg: ' + currentSegment + '::' + 'pbsplit: ' + splitsObject[this.currentSplit][1])
         if (currentSegment < splitsObject[this.currentSplit][2]) {
@@ -110,7 +109,7 @@ function GameTimer(d) {
             prevSplit.style.color = "lime";
         } else {
             timerText.style.color = "Red";
-            prevsplit.style.color = "Red";
+            prevSplit.style.color = "Red";
         }
 
         // Setup for next split
@@ -134,13 +133,13 @@ function GameTimer(d) {
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
                 if (this.getTotalTime() === 0) { // Works all the time 60% of the time.... BAD 
-                prevText.innerHTML = '<i>First Record</i>';
-                var step = 1;
-                while (step <= this.totalSplits) {
-                    splitsObject[step][1] = splitsObject[step][3];
-                    step = step + 1;
+                    prevText.innerHTML = '<i>First Record</i>';
+                    var step = 1;
+                    while (step <= this.totalSplits) {
+                        splitsObject[step][1] = splitsObject[step][3];
+                        step = step + 1;
+                    }
                 }
-            }
             }
         }
     };
