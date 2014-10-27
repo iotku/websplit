@@ -1,6 +1,8 @@
 todo:
+    * Make pause start timer correctly.
     * Different shades for how far behind, separate for current time / prev segments
     * Double-tap split prevention
+    * Reduce this.updateSplit to a manageable size by splitting into extra functions
     * split editor?
 Mostly Done
     * save splits locally

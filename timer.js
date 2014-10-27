@@ -104,7 +104,6 @@ function GameTimer(d) {
 
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
 
-        // console.log('CurrentSeg: ' + currentSegment + '::' + 'pbsplit: ' + splitsObject[this.currentSplit][1])
         if (currentSegment < splitsObject[this.currentSplit][2]) {
             timerText.style.color = "Gold";
             prevSplit.style.color = "Gold";
@@ -142,9 +141,10 @@ function GameTimer(d) {
                     var step = 1;
                     while (step <= this.totalSplits) {
                         splitsObject[step][1] = splitsObject[step][3];
+                        splitsObject[step][2] = splitsObject[step][3];
                         step = step + 1;
-                        localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
                     }
+                    localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
                 }
             }
         }
@@ -243,9 +243,10 @@ function GameTimer(d) {
     };
 
     this.genSplits = function () {
-        if (localStorage.PersonalBest != "") {
-            splitsObject = JSON.parse(localStorage.PersonalBest); 
-        }
+        // This breaks in firefox if localStorage.PersonalBest hasn't been set to "" or anything else
+        // if (localStorage.PersonalBest != "") {
+        //     splitsObject = JSON.parse(localStorage.PersonalBest); 
+        // }
         var step = 1,
             addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // make sure table is empty
@@ -335,7 +336,26 @@ window.onkeydown = function keyPress(e) {
     }
 };
 
+document.oncontextmenu = RightMouseDown; 
+document.onmousedown = mouseDown; 
+
+function mouseDown(e) {
+    if (e.which==3) {//righClick
+        var blazeit69 = document.getElementById("controls");
+        if (blazeit69.style.visibility != "visible") {
+            blazeit69.style.visibility = "visible";
+        } else {
+            blazeit69.style.visibility = "hidden";
+        };
+    } 
+}
+
+function RightMouseDown() { 
+    return false; 
+}
+
 window.onload = function () {
     t.genSplits();
     document.getElementById("prevsplit").innerHTML = "Ready";
 };
+
