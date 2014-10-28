@@ -64,6 +64,15 @@ function GameTimer(d) {
 
     this.pause = function () {
         var timerText = document.getElementById("timer_realtime"); // Ugh.
+        if (this.currently === 'stop') {
+            this.start();
+            return false;
+        }
+
+        if (this.currently === 'done') {
+            return false; //Do nothing.
+        }
+
         if (this.currently === 'play') {
             this.currently = 'pause';
             this.update(true, true);
@@ -124,6 +133,7 @@ function GameTimer(d) {
             document.getElementById('row' + (this.currentSplit - 1)).className = " ";
         } else {
             this.pause();
+            this.currently = 'done';
             document.getElementById("row" + this.currentSplit).className = " ";
 
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
@@ -236,9 +246,9 @@ function GameTimer(d) {
 
     this.genSplits = function () {
         // This breaks in firefox if localStorage.PersonalBest hasn't been set to "" or anything else
-        // if (localStorage.PersonalBest != "") {
-        //     splitsObject = JSON.parse(localStorage.PersonalBest); 
-        // }
+        if (localStorage.PersonalBest) {
+            splitsObject = JSON.parse(localStorage.PersonalBest);
+        };
         var addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // make sure table is empty
         for (var step = 1; step <= this.totalSplits; step++) { // What a mess.
@@ -278,7 +288,15 @@ function GameTimer(d) {
     };
 
     this.deleteSplits = function () {
-        localStorage.PersonalBest = "";
+        localStorage.removeItem("PersonalBest"); // Does this work?
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitsObject[step][1] = null;
+            splitsObject[step][2] = null;
+        }
+        this.currentSplit = 1;
+        this.genSplits();
+        this.timer = { start: 0, now: 0, realtime: 0 };
+        this.updateElements(); /* Resets the timer. keep */
     };
 
     // Set up stuff
