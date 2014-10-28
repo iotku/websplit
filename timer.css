@@ -2,13 +2,10 @@ body {
 	font-family: Arial, Tahoma, Verdana, sans-serif;
 	background-color: black;
 	color: white;
-
-	/*width: 210px;*/
 }
 
 #controls {
-	/*float: left;*/
-	/*text-align: center;*/
+	visibility: hidden;
 }
 
 input[type=button] {
@@ -27,34 +24,17 @@ input[type=button] {
 	-webkit-border-radius: 5px;
 }
 
-input[value=Start] {
-	background-color: green;
+input[value=Start],input[value=Save] {background-color: green;}
+
+input[value=Split],input[value=Unload] {background-color: red; width: 200px;}
+
+input[value=Pause],input[value=Load] {background-color: #0062FF;}
+
+
+input:active {background-color: #DDDDFF; color: #000033;
 }
 
-input[value=Split],input[value=Unload] {
-	background-color: red;
-
-	width: 200px;
-}
-
-input[value=Pause],input[value=Load] {
-	background-color: #0062FF;
-}
-
-input[value=Save] {
-	background-color: green;
-}
-
-input:active {
-	background-color: #DDDDFF;
-	color: #000033;
-}
-
-
-#splits {
-	width: 200px;
-	font-size: 18px;
-}
+#splits {width: 200px; font-size: 18px;}
 
 #splits table {
 	table-layout: fixed;
@@ -62,20 +42,19 @@ input:active {
 	border-spacing: 0px;
 }
 
-#splits caption {
-	border-bottom: 1px black solid;
-}
+#splits caption {border-bottom: 1px black solid;}
 
 #splits td {
 	border-bottom: 1px solid #1D1D1D;
-	padding-top: 3px;
-	padding-bottom: 3px;
+	padding-top: 1.5px;
+	padding-bottom: 1.5px;
 }
-#container {
 
+#container {
   width: 200px;
   background-color: #111;
 }
+
 #timers {
 	border-top: 2px solid #555;
 	background-color: #0F0F0F;
@@ -92,17 +71,22 @@ input:active {
 	font-weight: bold;
 }
 
-#about {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	font-size: 11px;
-	background-color: #FFEECC;
-	padding: 0 10px;
-	border-top-left-radius: 8px;
-	-moz-border-topleft-radius: 8px;
-	-khtml-border-top-left-radius: 8px;
-	-webkit-border-top-left-radius: 8px;
+.timer-stopped {
+	background: -webkit-linear-gradient(#eee, #333); /* Dang, doesn't help me for firefox :( */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.timer-running {
+	background: -webkit-linear-gradient(#00FF68, #00A541); /* Dang, doesn't help me for firefox :( */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.timer-paused {
+	background: -webkit-linear-gradient(#0062FF, #0088FF); /* Dang, doesn't help me for firefox :( */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 #full {
@@ -110,6 +94,7 @@ input:active {
 	width: 620px;
 	text-align: justify;
 }
+
 #about:hover #full {
 	display: block;
 }
@@ -123,6 +108,7 @@ input:active {
 tr:nth-child(2n+1) {
 	background-color: #0F0F0F;
 }
+
 tr:nth-child(2n+2) {
 	background-color: #171717;
 }
@@ -139,6 +125,7 @@ td:nth-child(3n+1) {
 td:nth-child(2n+2) {
 	text-align: center;
 }
+
 h1 {
 	font-size: 12px;
 	text-decoration: underline;
@@ -187,20 +174,16 @@ caption {
 	padding-left: 5px;
 }
 
-.timer-stopped {
-	background: -webkit-linear-gradient(#eee, #333); /* Dang, doesn't help me for firefox :( */
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
 
-.timer-running {
-	background: -webkit-linear-gradient(#00FF68, #00A541); /* Dang, doesn't help me for firefox :( */
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.timer-paused {
-	background: -webkit-linear-gradient(#0062FF, #0088FF); /* Dang, doesn't help me for firefox :( */
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
+#about {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	font-size: 11px;
+	background-color: #FFEECC;
+	padding: 0 10px;
+	border-top-left-radius: 8px;
+	-moz-border-topleft-radius: 8px;
+	-khtml-border-top-left-radius: 8px;
+	-webkit-border-top-left-radius: 8px;
 }

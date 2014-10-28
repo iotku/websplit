@@ -128,21 +128,17 @@ function GameTimer(d) {
 
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
-                var step = 1;
-                while (step <= this.totalSplits) {
+                for (var step = 1; step <= this.totalSplits; step++) {
                     splitsObject[step][1] = splitsObject[step][3];
-                    step = step + 1;
                 }
                 this.saveSplits();
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
                 if (this.getTotalTime() === 0) { // Works all the time 60% of the time.... BAD 
                     prevText.innerHTML = '<i>First Record</i>';
-                    var step = 1;
-                    while (step <= this.totalSplits) {
+                    for (var step = 1; step <= this.totalSplits; step++) {
                         splitsObject[step][1] = splitsObject[step][3];
                         splitsObject[step][2] = splitsObject[step][3];
-                        step = step + 1;
                     }
                     localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
                 }
@@ -151,21 +147,17 @@ function GameTimer(d) {
     };
 
     this.getTotalTime = function () {
-        var totalTime = 0,
-            step = 0;
-        while (step !== this.currentSplit) {
+        var totalTime = 0;
+        for (var step = 0; step !== this.currentSplit; step++) {
             totalTime = splitsObject[step + 1][1] + totalTime;
-            step = step + 1;
         }
         return totalTime;
     };
 
     this.getSegmentTime = function () {
-        var segmentTime = 0,
-            step = 0;
-        while (step !== this.currentSplit) {
+        var segmentTime = 0;
+        for (var step = 0; step !== this.currentSplit; step++) {
             segmentTime = splitsObject[step + 1][3] + segmentTime;
-            step = step + 1;
         }
         return segmentTime;
     };
@@ -247,13 +239,11 @@ function GameTimer(d) {
         // if (localStorage.PersonalBest != "") {
         //     splitsObject = JSON.parse(localStorage.PersonalBest); 
         // }
-        var step = 1,
-            addtime = 0;
+        var addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // make sure table is empty
-        while (step <= this.totalSplits) { // What a mess.
+        for (var step = 1; step <= this.totalSplits; step++) { // What a mess.
             splitsObject[step][3] = 0; /* Reset current segments */
             addtime = splitsObject[step][1] + addtime;
-
             document.getElementById("dattable").innerHTML += '<tr id="row' + step + '">' + '<td id="splitname' + step + '"></td>' + '<td id="split' + step + '"></td>' + '<td id="difference' + step + '"></td>' + '</tr>';
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
             document.getElementById("split" + step).innerHTML = " ";
@@ -261,8 +251,6 @@ function GameTimer(d) {
             document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
             document.getElementById("difference" + step).style.color = "white";
             document.getElementById("difference" + step).style.fontWeight = "Normal";
-
-            step = step + 1;
         }
         document.getElementById("prevsplit").style.color = "White";
         document.getElementById("timer_realtime").style.color = "White";
