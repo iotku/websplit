@@ -245,7 +245,6 @@ function GameTimer(d) {
     };
 
     this.genSplits = function () {
-        // This breaks in firefox if localStorage.PersonalBest hasn't been set to "" or anything else
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
