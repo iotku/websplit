@@ -1,8 +1,9 @@
 // The majority of the code (not related to splitting functions or anything else
-// that looks like spaghetti code) was written by Ian "bmn" Bennett, 
-// taken shamlessly from http://www.w00ty.com/sda/timer/
+// that looks like spaghetti code) was originally written by Ian "bmn" Bennett,
+// from http://www.w00ty.com/sda/timer/
 //
-// Shoutouts to him, I probably couldn't have built this from scratch
+// 
+// Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
 // Jslint is a huge pain to deal with, and I'm ignoring some stuff,
