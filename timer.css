@@ -5,7 +5,7 @@ body {
 }
 
 #controls {
-	visibility: hidden;
+	/*visibility: hidden;*/
 }
 
 input[type=button] {
@@ -34,9 +34,9 @@ input[value=Pause],input[value=Load] {background-color: #0062FF;}
 input:active {background-color: #DDDDFF; color: #000033;
 }
 
-#splits {width: 200px; font-size: 18px;}
+#splits,#splits-editor {width: 200px; font-size: 18px;}
 
-#splits table {
+#splits table,#splits-editor table {
 	table-layout: fixed;
 	width: 100%;
 	border-spacing: 0px;
@@ -44,7 +44,7 @@ input:active {background-color: #DDDDFF; color: #000033;
 
 #splits caption {border-bottom: 1px black solid;}
 
-#splits td {
+#splits td,#splits-editor td {
 	border-bottom: 1px solid #1D1D1D;
 	padding-top: 1.5px;
 	padding-bottom: 1.5px;
