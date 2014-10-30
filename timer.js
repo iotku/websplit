@@ -127,16 +127,15 @@ function GameTimer(d) {
                     splitsObject[step][1] = splitsObject[step][3];
                 }
                 this.saveSplits();
+            } else if (this.getTotalTime() === 0) {
+                prevText.innerHTML = '<i>First Record</i>';
+                for (var step = 1; step <= this.totalSplits; step++) {
+                    splitsObject[step][1] = splitsObject[step][3];
+                    splitsObject[step][2] = splitsObject[step][3];
+                }
+                localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
-                if (this.getTotalTime() === 0) { // Works all the time 60% of the time.... BAD 
-                    prevText.innerHTML = '<i>First Record</i>';
-                    for (var step = 1; step <= this.totalSplits; step++) {
-                        splitsObject[step][1] = splitsObject[step][3];
-                        splitsObject[step][2] = splitsObject[step][3];
-                    }
-                    localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
-                }
             }
         }
     };
@@ -259,18 +258,18 @@ function GameTimer(d) {
             bestSegment = splitsObject[this.currentSplit][2];
 
         if (pbSegment > bestSegment || bestSegment === 0) { // If better than best segment
-            prevSplit.style.color = "Gold";
-            timerText.style.color = "Gold";
+            prevSplit.style.color = "gold";
+            timerText.style.color = "gold";
             return false; // cheap exit to bad logic below in next if statement
         } else if (currentSegment < pbSegment) {
             prevSplit.style.color = "lime";
         } else {
-            prevSplit.style.color = "Red";
+            prevSplit.style.color = "red";
         }
         if (this.getTotalTime() > this.getSegmentTime()) {
-            timerText.style.color = "Green";
+            timerText.style.color = "lime";
         } else {
-            timerText.style.color = "Red";
+            timerText.style.color = "red";
         };
     };
 
