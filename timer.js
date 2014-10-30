@@ -222,6 +222,7 @@ function GameTimer(d) {
     };
 
     this.saveSplits = function () {
+        if (this.currently === 'play') { return false; };
         var step = 1;
         while (step <= this.totalSplits) {
             splitsObject[step][1] = splitsObject[step][3];
@@ -231,6 +232,7 @@ function GameTimer(d) {
     };
 
     this.loadSplits = function () {
+        if (this.currently === 'play') { return false; };
         splitsObject = JSON.parse(localStorage.PersonalBest);
         this.currentSplit = 1;
         this.genSplits();
@@ -238,16 +240,15 @@ function GameTimer(d) {
     };
 
     this.deleteSplits = function () {
-        if (this.currently !== 'play') { // Don't run if timer is running, breaks things.
-            localStorage.removeItem("PersonalBest"); // Does this work?
-            for (var step = 1; step <= this.totalSplits; step++) {
-                splitsObject[step][1] = 0;
-                splitsObject[step][2] = 0;
-            }
-            this.currentSplit = 1;
-            this.genSplits();
-            this.timerReset();
-        };
+        if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
+        localStorage.removeItem("PersonalBest"); // Does this work?
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitsObject[step][1] = 0;
+            splitsObject[step][2] = 0;
+        }
+        this.currentSplit = 1;
+        this.genSplits();
+        this.timerReset();
     };
 
     this.timerReset = function () { //useful after stopping timer, makes sure things reset completely
