@@ -1,9 +1,11 @@
 websplit
 ========
 
-LiveSplit inspired (style) web based timer with splits.
+LiveSplit inspired (style) web browser based timer with splits.
 
 [Live Demo](http://iotku.pw/websplit)
+
+Currently being tested with Chrome and Firefox. Should also work in IE9+ and most other modern browsers.
 
 About
 =====
