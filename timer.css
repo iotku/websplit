@@ -72,18 +72,21 @@ input:active {background-color: #DDDDFF; color: #000033;
 }
 
 .timer-stopped {
+	color: white;
 	background: -webkit-linear-gradient(#eee, #333); /* Dang, doesn't help me for firefox :( */
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 
 .timer-running {
+	color: #3ACC60;
 	background: -webkit-linear-gradient(#00FF68, #00A541); /* Dang, doesn't help me for firefox :( */
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 
 .timer-paused {
+	color: #0062FF;
 	background: -webkit-linear-gradient(#0062FF, #0088FF); /* Dang, doesn't help me for firefox :( */
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;

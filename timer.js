@@ -90,8 +90,7 @@ function GameTimer(d) {
         } else if (this.timer.start === 0) {
             return this.start(0); /* 5 by default, startup delay in seconds */
         } else { /* Everything breaks if I remove this xD */
-            this.timer = { start: 0, now: 0, realtime: 0 };
-            this.updateElements(); /* Resets the timer. keep */
+            this.timerReset();
         }
     };
 
@@ -199,28 +198,6 @@ function GameTimer(d) {
         this.setStyle(this.currently)
     };
 
-    this.setStyle = function (currently) { //maybe could just call this.currently directly?
-        var timer = document.getElementById("timer_realtime")
-        if (currently === 'stop') {
-            for (var step = 1; step <= this.totalSplits; step++) {
-                var difference = document.getElementById("difference"+step),
-                    row = document.getElementById("row"+step)
-                difference.style.color = "white";
-                difference.style.fontWeight = "Normal";
-                // row.className = "";
-                timer.style.color = "White";
-                timer.className = "timer-stopped";
-                document.getElementById("prevsplit").style.color = "White";
-            }
-        } else if (currently === 'play') {
-            timer.style.color = "#3ACC60";
-            timer.className = "timer-running";
-        } else if (currently === 'pause') {
-            timer.style.color = "#0062FF";
-            timer.className = "timer-paused";
-        };
-    };
-
     this.saveSplits = function () {
         if (this.currently === 'play') { return false; };
         var step = 1;
@@ -253,7 +230,26 @@ function GameTimer(d) {
 
     this.timerReset = function () { //useful after stopping timer, makes sure things reset completely
             this.timer = { start: 0, now: 0, realtime: 0 };
-            this.updateElements(); /* Resets the timer. keep */
+            this.updateElements(); /* Updates the now 0 timer values. */
+    };
+
+    // Styling Functions
+    this.setStyle = function (currently) { //maybe could just call this.currently directly?
+        var timer = document.getElementById("timer_realtime")
+        if (currently === 'stop') {
+            for (var step = 1; step <= this.totalSplits; step++) {
+                var difference = document.getElementById("difference"+step),
+                    row = document.getElementById("row"+step)
+                difference.style.color = "white";
+                difference.style.fontWeight = "Normal";
+            }
+            timer.className = "timer-stopped";
+            document.getElementById("prevsplit").style.color = "White";
+        } else if (currently === 'play') {
+            timer.className = "timer-running";
+        } else if (currently === 'pause') {
+            timer.className = "timer-paused";
+        };
     };
 
     this.setSegmentColor = function (currentSegment) {
@@ -261,6 +257,7 @@ function GameTimer(d) {
             prevSplit = document.getElementById("prevsplit"),
             pbSegment = splitsObject[this.currentSplit][1],
             bestSegment = splitsObject[this.currentSplit][2];
+
         if (pbSegment > bestSegment || bestSegment === 0) { // If better than best segment
             prevSplit.style.color = "Gold";
             timerText.style.color = "Gold";
@@ -277,6 +274,7 @@ function GameTimer(d) {
         };
     };
 
+    // Timing stuff
     this.realTime = function (t) {
         var h = Math.floor(t / 3600000),
             m = Math.abs(Math.floor((t / 60000) % 60)),
