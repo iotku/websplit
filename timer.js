@@ -106,18 +106,10 @@ function GameTimer(d) {
         prevSplit.innerHTML = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
 
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
-
+        this.setSegmentColor(currentSegment);
         if (currentSegment < splitsObject[this.currentSplit][2]) { // If better than best segment
-            timerText.style.color = "Gold";
-            prevSplit.style.color = "Gold";
             splitsObject[this.currentSplit][2] = currentSegment;
-        } else if (currentSegment < splitsObject[this.currentSplit][1]) { // If better than pb segment
-            timerText.style.color = "lime";
-            prevSplit.style.color = "lime";
-        } else {
-            timerText.style.color = "Red";
-            prevSplit.style.color = "Red";
-        }
+        }; 
 
         // Setup for next split
         if (this.totalSplits !== this.currentSplit) {
@@ -261,6 +253,27 @@ function GameTimer(d) {
     this.timerReset = function () { //useful after stopping timer, makes sure things reset completely
             this.timer = { start: 0, now: 0, realtime: 0 };
             this.updateElements(); /* Resets the timer. keep */
+    };
+
+    this.setSegmentColor = function (currentSegment) {
+        var timerText = document.getElementById("split" + this.currentSplit),
+            prevSplit = document.getElementById("prevsplit");
+
+        if (currentSegment < splitsObject[this.currentSplit][2]) { // If better than best segment
+            prevSplit.style.color = "Gold";
+            timerText.style.color = "Gold";
+            return false; // cheap exit to bad logic below in next if statement
+        } else if (currentSegment < splitsObject[this.currentSplit][1]) { // If better than pb segment
+            prevSplit.style.color = "lime";
+        } else {
+            prevSplit.style.color = "Red";
+        }
+        console.log('1:' + this.getTotalTime() + '2:' + this.getSegmentTime() + '3:' + currentSegment + '4:' + splitsObject[this.currentSplit][2])
+        if (this.getTotalTime() > this.getSegmentTime()) {
+            timerText.style.color = "Green";
+        } else {
+            timerText.style.color = "Red";
+        };
     };
 
     this.realTime = function (t) {
