@@ -268,7 +268,6 @@ function GameTimer(d) {
         } else {
             prevSplit.style.color = "Red";
         }
-        console.log('1:' + this.getTotalTime() + '2:' + this.getSegmentTime() + '3:' + currentSegment + '4:' + splitsObject[this.currentSplit][2])
         if (this.getTotalTime() > this.getSegmentTime()) {
             timerText.style.color = "Green";
         } else {
