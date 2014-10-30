@@ -99,6 +99,7 @@ function GameTimer(d) {
             currentSegment = splittime - this.getSegmentTime(),
             prevSplit = document.getElementById("prevsplit"),
             prevText = document.getElementById("prevtext");
+        if (currentSegment < 300) { return false; } // Double Tap Prevention
         splitsObject[this.currentSplit][3] = currentSegment;
 
         timerText.innerHTML = this.realTime(splittime - this.getTotalTime());
