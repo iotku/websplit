@@ -1,6 +1,0 @@
-todo:
-    * Different shades for how far behind, separate for current time / prev segments
-    * Double-tap split prevention
-    * split editor
-Mostly Done
-    * save splits locally (only one at a time currently)
