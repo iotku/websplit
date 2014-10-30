@@ -18,17 +18,17 @@ function GameTimer(d) {
     /* [0]Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
     splitsObject = { // Probably should use something other than null here
-        "1": ["BoB", null, null, 0],
-        "2": ["WF", null, null, 0],
-        "3": ["CCM", null, null, 0],
-        "4": ["BitDW", null, null, 0],
-        "5": ["LLL", null, null, 0],
-        "6": ["SSL", null, null, 0],
-        "7": ["HMC", null, null, 0],
-        "8": ["DDD", null, null, 0],
-        "9": ["BitFS", null, null, 0],
-        "10": ["BLJs", null, null, 0],
-        "11": ["Done.", null, null, 0]
+        "1": ["BoB", 0, 0, 0],
+        "2": ["WF", 0, 0, 0],
+        "3": ["CCM", 0, 0, 0],
+        "4": ["BitDW", 0, 0, 0],
+        "5": ["LLL", 0, 0, 0],
+        "6": ["SSL", 0, 0, 0],
+        "7": ["HMC", 0, 0, 0],
+        "8": ["DDD", 0, 0, 0],
+        "9": ["BitFS", 0, 0, 0],
+        "10": ["BLJs", 0, 0, 0],
+        "11": ["Done.", 0, 0, 0]
     };
     this.totalSplits = Object.keys(splitsObject).length; /* calculate from splitsObject */ /* Doesn't work in IE<9 lol... */
     this.start = function (start) {
@@ -241,8 +241,8 @@ function GameTimer(d) {
         if (this.currently !== 'play') { // Don't run if timer is running, breaks things.
             localStorage.removeItem("PersonalBest"); // Does this work?
             for (var step = 1; step <= this.totalSplits; step++) {
-                splitsObject[step][1] = null;
-                splitsObject[step][2] = null;
+                splitsObject[step][1] = 0;
+                splitsObject[step][2] = 0;
             }
             this.currentSplit = 1;
             this.genSplits();
@@ -257,13 +257,14 @@ function GameTimer(d) {
 
     this.setSegmentColor = function (currentSegment) {
         var timerText = document.getElementById("split" + this.currentSplit),
-            prevSplit = document.getElementById("prevsplit");
-
-        if (currentSegment < splitsObject[this.currentSplit][2]) { // If better than best segment
+            prevSplit = document.getElementById("prevsplit"),
+            pbSegment = splitsObject[this.currentSplit][1],
+            bestSegment = splitsObject[this.currentSplit][2];
+        if (pbSegment > bestSegment || bestSegment === 0) { // If better than best segment
             prevSplit.style.color = "Gold";
             timerText.style.color = "Gold";
             return false; // cheap exit to bad logic below in next if statement
-        } else if (currentSegment < splitsObject[this.currentSplit][1]) { // If better than pb segment
+        } else if (currentSegment < pbSegment) {
             prevSplit.style.color = "lime";
         } else {
             prevSplit.style.color = "Red";
