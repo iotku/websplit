@@ -188,13 +188,12 @@ function GameTimer(d) {
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
             /* Empty string as placeholder for split times */
             document.getElementById("split" + step).innerHTML = " ";
-            // document.getElementById("row" + step).className = "";
             document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
         }
         document.getElementById("prevsplit").innerHTML = "Ready";
         document.getElementById("prevtext").innerHTML = "";
         this.currently = 'stop';
-        this.setStyle(this.currently)
+        this.setStyle(this.currently);
     };
 
     this.saveSplits = function () {
