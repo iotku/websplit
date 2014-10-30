@@ -106,7 +106,10 @@ function GameTimer(d) {
 
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
-        if (currentSegment < splitsObject[this.currentSplit][2]) { // If better than best segment
+        var bestSegment = splitsObject[this.currentSplit][2];
+        console.log('current: ' + currentSegment + ':: best: ' + bestSegment)
+        if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
+            console.log("Uh Hello? Anybody home?")
             splitsObject[this.currentSplit][2] = currentSegment;
         }; 
 
@@ -256,7 +259,7 @@ function GameTimer(d) {
             pbSegment = splitsObject[this.currentSplit][1],
             bestSegment = splitsObject[this.currentSplit][2];
 
-        if (pbSegment > bestSegment || bestSegment === 0) { // If better than best segment
+        if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
             prevSplit.style.color = "gold";
             timerText.style.color = "gold";
             return false; // cheap exit to bad logic below in next if statement
