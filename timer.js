@@ -72,6 +72,7 @@ function GameTimer(d) {
             this.currently = 'pause';
             this.update(true, true);
             this.setStyle(this.currently);
+        // } else if (this.currently === 'pause') {
         } else {
             this.currently = 'play';
             this.timer.start = this.now() - this.timer.realtime;
@@ -79,9 +80,31 @@ function GameTimer(d) {
             this.setStyle(this.currently);
         };
     };
+    
+    this.reset = function () {
+        if (t.currently === 'stop') {
+            t.start();
+            return false; // do nothing else
+        };
+
+        if (t.currently === 'play') {
+            t.pause();
+        };
+        
+        this.currently = 'reset';
+        this.currentSplit = 1;
+        t.split(); /* What does this even do? */
+        this.genSplits(); /* reset splits */
+        document.getElementById("prevsplit").innerHTML = "Ready";
+        document.getElementById("prevtext").innerHTML = "";
+    };
 
     this.split = function () {
-        if (this.currently === 'play') {
+        if (this.currently === 'pause') {
+            // Unpause on split, if paused
+            this.pause();
+            return false;
+        } else if (this.currently === 'play') {
             this.update(true, true);
             this.setTimeout(0);
             this.updateSplit(this.timer.realtime);
@@ -97,20 +120,28 @@ function GameTimer(d) {
     this.updateSplit = function (splittime) {
         var timerText = document.getElementById("split" + this.currentSplit),
             currentSegment = splittime - this.getSegmentTime(),
+            bestSegment = splitsObject[this.currentSplit][2],
             prevSplit = document.getElementById("prevsplit"),
             prevText = document.getElementById("prevtext");
-        if (currentSegment < 300) { return false; } // Double Tap Prevention
+
+        // Double Tap Prevention
+        if (currentSegment < 300) { return false; };
+
+        // Add Current Segment to splitsObject
         splitsObject[this.currentSplit][3] = currentSegment;
 
+        // Calculate Total Time Elapsed
         timerText.innerHTML = this.realTime(splittime - this.getTotalTime());
+
+        // Calculate difference between currentSegment and PBsegment
         prevSplit.innerHTML = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
 
+        // Set finished split time *bold* / Set color for segment and prevsplit
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
-        var bestSegment = splitsObject[this.currentSplit][2];
-        console.log('current: ' + currentSegment + ':: best: ' + bestSegment)
+
+        // Save if Gold split (Should be same logic as setSegmentColor())
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
-            console.log("Uh Hello? Anybody home?")
             splitsObject[this.currentSplit][2] = currentSegment;
         }; 
 
@@ -160,21 +191,6 @@ function GameTimer(d) {
         return segmentTime;
     };
 
-    this.reset = function () {
-        if (t.currently === 'stop') {
-            t.start();
-            return false; // do nothing else
-        }
-        if (t.currently === 'play') {
-            t.pause();
-        }
-        this.currentSplit = 1;
-        t.split(); /* What does this even do? */
-        this.genSplits(); /* reset splits */
-        document.getElementById("prevsplit").innerHTML = "Ready";
-        document.getElementById("prevtext").innerHTML = "";
-    };
-
     this.genSplits = function () {
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
@@ -201,7 +217,7 @@ function GameTimer(d) {
     };
 
     this.saveSplits = function () {
-        if (this.currently === 'play') { return false; };
+        if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
         var step = 1;
         while (step <= this.totalSplits) {
             splitsObject[step][1] = splitsObject[step][3];
@@ -211,7 +227,7 @@ function GameTimer(d) {
     };
 
     this.loadSplits = function () {
-        if (this.currently === 'play') { return false; };
+        if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
         splitsObject = JSON.parse(localStorage.PersonalBest);
         this.currentSplit = 1;
         this.genSplits();
