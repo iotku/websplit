@@ -279,16 +279,21 @@ function GameTimer(d) {
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
             prevSplit.style.color = "gold";
             timerText.style.color = "gold";
+            if (this.getTotalTime() < this.getSegmentTime()) {
+                timerText.innerHTML = '+' + timerText.innerHTML;
+            }
             return false; // cheap exit to bad logic below in next if statement
         } else if (currentSegment < pbSegment) {
             prevSplit.style.color = "lime";
         } else {
             prevSplit.style.color = "red";
+            prevSplit.innerHTML = '+' + prevSplit.innerHTML; // This is cheap, but works.
         }
         if (this.getTotalTime() > this.getSegmentTime()) {
             timerText.style.color = "lime";
         } else {
             timerText.style.color = "red";
+            timerText.innerHTML = '+' + timerText.innerHTML;
         };
     };
 
