@@ -6,18 +6,13 @@
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
-// Jslint is a huge pain to deal with, and I'm ignoring some stuff,
-// but at least it helped keep things /somewhat/ readable maybe.
-/*global define */
-/*jslint browser:true */
-
 function GameTimer(d) {
     "use strict"; // Someday I'll have good code
     // External Functions
     this.currentSplit = 1; /* Initialize at 1st split */
-    /* [0]Name, [1]PBsplit, [2]Best Split, [3]Current Split */
+    /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
-    splitsObject = { // Probably should use something other than null here
+    splitsObject = {
         "1": ["BoB", 0, 0, 0],
         "2": ["WF", 0, 0, 0],
         "3": ["CCM", 0, 0, 0],
@@ -30,7 +25,7 @@ function GameTimer(d) {
         "10": ["BLJs", 0, 0, 0],
         "11": ["Done.", 0, 0, 0]
     };
-    this.totalSplits = Object.keys(splitsObject).length; /* calculate from splitsObject */ /* Doesn't work in IE<9 lol... */
+    this.totalSplits = Object.keys(splitsObject).length; /* How many splits do we have? */
     this.start = function (start) {
         start = start || 0;
         this.timer = {
@@ -72,7 +67,6 @@ function GameTimer(d) {
             this.currently = 'pause';
             this.update(true, true);
             this.setStyle(this.currently);
-        // } else if (this.currently === 'pause') {
         } else {
             this.currently = 'play';
             this.timer.start = this.now() - this.timer.realtime;
@@ -101,8 +95,7 @@ function GameTimer(d) {
 
     this.split = function () {
         if (this.currently === 'pause') {
-            // Unpause on split, if paused
-            this.pause();
+            this.pause(); // Unpause on split, if paused
             return false;
         } else if (this.currently === 'play') {
             this.update(true, true);
@@ -112,7 +105,7 @@ function GameTimer(d) {
             this.reset();
         } else if (this.timer.start === 0) {
             return this.start(0); /* 5 by default, startup delay in seconds */
-        } else { /* Everything breaks if I remove this xD */
+        } else {
             this.timerReset();
         }
     };
@@ -158,17 +151,10 @@ function GameTimer(d) {
 
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
-                for (var step = 1; step <= this.totalSplits; step++) {
-                    splitsObject[step][1] = splitsObject[step][3];
-                }
                 this.saveSplits();
             } else if (this.getTotalTime() === 0) {
                 prevText.innerHTML = '<i>First Record</i>';
-                for (var step = 1; step <= this.totalSplits; step++) {
-                    splitsObject[step][1] = splitsObject[step][3];
-                    splitsObject[step][2] = splitsObject[step][3];
-                }
-                localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
+                this.saveInitialSplits();
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
             }
@@ -196,18 +182,22 @@ function GameTimer(d) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
         var addtime = 0;
-        document.getElementById("dattable").innerHTML = ""; // make sure table is empty
-        for (var step = 1; step <= this.totalSplits; step++) { // What a mess.
+        document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
+        for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][3] = 0; /* Reset current segments */
             addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
             // variables should be used properly here. (Hard to look at / confusing)
 
             /* BROKEN on IE<=9, innerHTML is read only there for many table elements. :: Generate table based on splitsObject */
             document.getElementById("dattable").innerHTML += '<tr id="row' + step + '">' + '<td id="splitname' + step + '"></td>' + '<td id="split' + step + '"></td>' + '<td id="difference' + step + '"></td>' + '</tr>';
-            /* Insert split names */
+
+            // Insert split names 
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
-            /* Empty string as placeholder for split times */
+
+            // Empty string as placeholder for split times
             document.getElementById("split" + step).innerHTML = " ";
+
+            // Add total time upto current split
             document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
         }
         document.getElementById("prevsplit").innerHTML = "Ready";
@@ -218,12 +208,18 @@ function GameTimer(d) {
 
     this.saveSplits = function () {
         if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
-        var step = 1;
-        while (step <= this.totalSplits) {
+        for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
-            step = step + 1;
         }
         localStorage.PersonalBest = JSON.stringify(splitsObject);
+    };
+
+    this.saveInitialSplits = function () {
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitsObject[step][1] = splitsObject[step][3];
+            splitsObject[step][2] = splitsObject[step][3]; // Tansfer all to best split aswell, to remove initization values
+        }
+        localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
     };
 
     this.loadSplits = function () {
@@ -236,7 +232,7 @@ function GameTimer(d) {
 
     this.deleteSplits = function () {
         if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
-        localStorage.removeItem("PersonalBest"); // Does this work?
+        localStorage.removeItem("PersonalBest");
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = 0;
             splitsObject[step][2] = 0;
@@ -252,16 +248,16 @@ function GameTimer(d) {
     };
 
     // Styling Functions
-    this.cssChange = function (selector, property, value) {
-    for (var i=0; i<document.styleSheets.length;i++) {//Loop through all styles
-        try { document.styleSheets[i].insertRule(selector+ ' {'+property+':'+value+'}', document.styleSheets[i].cssRules.length);
-        } catch(err) {try { document.styleSheets[i].addRule(selector, property+':'+value);} catch(err) {}}//IE
-    }
+    this.cssChange = function (selector, property, value) { // http://stackoverflow.com/a/11081100
+        for (var i=0; i<document.styleSheets.length;i++) { // Loop through all styles
+            try { document.styleSheets[i].insertRule(selector+ ' {'+property+':'+value+'}', document.styleSheets[i].cssRules.length);
+            } catch(err) {try { document.styleSheets[i].addRule(selector, property+':'+value);} catch(err) {}} // IE
+        }
     }
 
-    this.setStyle = function (currently) { //maybe could just call this.currently directly?
+    this.setStyle = function (currentState) {
         var timer = document.getElementById("timer_realtime")
-        if (currently === 'stop') {
+        if (currentState === 'stop') {
             for (var step = 1; step <= this.totalSplits; step++) {
                 var difference = document.getElementById("difference"+step),
                     row = document.getElementById("row"+step)
@@ -271,10 +267,10 @@ function GameTimer(d) {
             document.getElementById("prevsplit").style.color = "White";
             this.cssChange('#timers .stop1', 'stop-color', 'white');
             this.cssChange('#timers .stop2', 'stop-color', 'gray');
-        } else if (currently === 'play') {
+        } else if (currentState === 'play') {
             this.cssChange('#timers .stop1', 'stop-color', '#00FF68');
             this.cssChange('#timers .stop2', 'stop-color', '#00A541');
-        } else if (currently === 'pause') {
+        } else if (currentState === 'pause') {
             this.cssChange('#timers .stop1', 'stop-color', '#0062FF');
             this.cssChange('#timers .stop2', 'stop-color', '#0088FF');
         };
@@ -286,18 +282,18 @@ function GameTimer(d) {
             pbSegment = splitsObject[this.currentSplit][1],
             bestSegment = splitsObject[this.currentSplit][2];
 
-        if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
+        if (currentSegment < bestSegment || bestSegment === 0) {
             prevSplit.style.color = "gold";
             timerText.style.color = "gold";
             if (this.getTotalTime() < this.getSegmentTime()) {
                 timerText.innerHTML = '+' + timerText.innerHTML;
             }
-            return false; // cheap exit to bad logic below in next if statement
+            return false; // Exit without checking anything else, gold is gold everywhere!
         } else if (currentSegment < pbSegment) {
             prevSplit.style.color = "lime";
         } else {
             prevSplit.style.color = "red";
-            prevSplit.innerHTML = '+' + prevSplit.innerHTML; // This is cheap, but works.
+            prevSplit.innerHTML = '+' + prevSplit.innerHTML;
         }
         if (this.getTotalTime() > this.getSegmentTime()) {
             timerText.style.color = "lime";
@@ -392,6 +388,7 @@ t = new GameTimer({
     ms: [2, 1]
 });
 
+// Hotkeys. onkeydown is more responsive than onkeyup
 window.onkeydown = function keyPress(e) {
     var k = e.which || e.keyCode;
     if ((k === 80) || (k === 32)) {
@@ -402,25 +399,6 @@ window.onkeydown = function keyPress(e) {
         t.reset(); // r
     };
 };
-
-/* Right Click menu hijack, maybe useful if I had an actual menu */
-// document.oncontextmenu = RightMouseDown; 
-// document.onmousedown = mouseDown; 
-
-// function mouseDown(e) {
-//     if (e.which==3) {//righClick
-//         var blazeit69 = document.getElementById("controls");
-//         if (blazeit69.style.visibility != "visible") {
-//             blazeit69.style.visibility = "visible";
-//         } else {
-//             blazeit69.style.visibility = "hidden";
-//         };
-//     } 
-// }
-
-// function RightMouseDown() { 
-//     return false; 
-// }
 
 window.onload = function () {
     t.genSplits();
