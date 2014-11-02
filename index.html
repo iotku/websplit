@@ -17,7 +17,15 @@
 		</table>
 	</div>
 		<div id="timers">
-			<span id="timer_realtime" class="timer-stopped">0.0</span>
+		<svg height="64">
+			<defs>  
+				<linearGradient id="white-gradient" x1="0%" x2="0%" y1="0%" y2="100%">  
+				    <stop class="stop1" offset="0%"/>  
+				    <stop class="stop2" offset="100%"/>  
+				</linearGradient>  
+			</defs>  			
+
+			<text style="fill: url(#white-gradient); font-size: 48px;" id="timer_realtime" class="timer-stopped" text-anchor="end" x="200px" y="1.2em">0.0</text>
 		</div>
 		<div class="statusbar">
 			<div id="prevtext"></div>

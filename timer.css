@@ -60,36 +60,26 @@ input:active {background-color: #DDDDFF; color: #000033;
 	background-color: #0F0F0F;
 	padding-top: 5px;
 	text-align: right;
-	font-size: 36px;
 	color: white;
-}
-
-#timers span {
 	font-size: 48px;
 	padding-right: 5px;
 	font-family: "Century Gothic", monospace;
 	font-weight: bold;
 }
 
+#timers .stop1 { stop-color: white; }
+#timers .stop2 { stop-color: gray; }
+
 .timer-stopped {
 	color: white;
-	background: -webkit-linear-gradient(#eee, #333); /* Dang, doesn't help me for firefox :( */
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
 }
 
 .timer-running {
 	color: #3ACC60;
-	background: -webkit-linear-gradient(#00FF68, #00A541); /* Dang, doesn't help me for firefox :( */
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
 }
 
 .timer-paused {
 	color: #0062FF;
-	background: -webkit-linear-gradient(#0062FF, #0088FF); /* Dang, doesn't help me for firefox :( */
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
 }
 
 #full {

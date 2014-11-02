@@ -252,6 +252,13 @@ function GameTimer(d) {
     };
 
     // Styling Functions
+    this.cssChange = function (selector, property, value) {
+    for (var i=0; i<document.styleSheets.length;i++) {//Loop through all styles
+        try { document.styleSheets[i].insertRule(selector+ ' {'+property+':'+value+'}', document.styleSheets[i].cssRules.length);
+        } catch(err) {try { document.styleSheets[i].addRule(selector, property+':'+value);} catch(err) {}}//IE
+    }
+    }
+
     this.setStyle = function (currently) { //maybe could just call this.currently directly?
         var timer = document.getElementById("timer_realtime")
         if (currently === 'stop') {
@@ -261,12 +268,15 @@ function GameTimer(d) {
                 difference.style.color = "white";
                 difference.style.fontWeight = "Normal";
             }
-            timer.className = "timer-stopped";
             document.getElementById("prevsplit").style.color = "White";
+            this.cssChange('#timers .stop1', 'stop-color', 'white');
+            this.cssChange('#timers .stop2', 'stop-color', 'gray');
         } else if (currently === 'play') {
-            timer.className = "timer-running";
+            this.cssChange('#timers .stop1', 'stop-color', '#00FF68');
+            this.cssChange('#timers .stop2', 'stop-color', '#00A541');
         } else if (currently === 'pause') {
-            timer.className = "timer-paused";
+            this.cssChange('#timers .stop1', 'stop-color', '#0062FF');
+            this.cssChange('#timers .stop2', 'stop-color', '#0088FF');
         };
     };
 
