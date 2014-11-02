@@ -328,7 +328,7 @@ function GameTimer(d) {
     // Internal functions
     this.updateElements = function () {
         if (this.elements) {
-            document.getElementById(this.elements.realtime).innerHTML = this.realTime(this.timer.realtime);
+            document.getElementById(this.elements.realtime).textContent = this.realTime(this.timer.realtime);
             document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.timer.realtime);
         }
     };
