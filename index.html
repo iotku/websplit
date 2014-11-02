@@ -7,7 +7,6 @@
 	<script type="text/javascript" src="timer.js"></script>
 </head>
 <body>
-
 	<div id="container">
 		<div id="splits">
 		<table>
@@ -17,15 +16,15 @@
 		</table>
 	</div>
 		<div id="timers">
-		<svg height="64">
-			<defs>  
-				<linearGradient id="white-gradient" x1="0%" x2="0%" y1="0%" y2="100%">  
-				    <stop class="stop1" offset="0%"/>  
-				    <stop class="stop2" offset="100%"/>  
-				</linearGradient>  
-			</defs>  			
-
-			<text style="fill: url(#white-gradient); font-size: 48px;" id="timer_realtime" class="timer-stopped" text-anchor="end" x="200px" y="1.2em">0.0</text>
+			<svg height="64">
+				<defs>  
+					<linearGradient id="text-gradient" x1="0%" x2="0%" y1="0%" y2="100%">  
+					    <stop class="stop1" offset="0%"/>  
+					    <stop class="stop2" offset="100%"/>  
+					</linearGradient>  
+				</defs>  			
+				<text style="fill: url(#text-gradient); font-size: 48px;" id="timer_realtime" text-anchor="end" x="195px" y="1.2em">0.0</text>
+			</svg>
 		</div>
 		<div class="statusbar">
 			<div id="prevtext"></div>
@@ -40,13 +39,5 @@
 		<input type="button" value="Load"   onclick="t.loadSplits()"/><br>
 		<input type="button" value="Unload" onclick="t.deleteSplits()"/>
 	</div>
-<!-- 	<div id="about">
-		<h1>More Info</h1>
-		<div id="full">
-			<p>Original Created by Ian "bmn" Bennett, 5 Jul 2010. Requires Javascript.</p>
-			<p>Modified by iotku, send all complaints to github.com/iotku</p>
-		</div>
-	</div>
- -->
 </body>
 </html>

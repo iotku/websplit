@@ -58,39 +58,16 @@ input:active {background-color: #DDDDFF; color: #000033;
 #timers {
 	border-top: 2px solid #555;
 	background-color: #0F0F0F;
-	padding-top: 5px;
-	text-align: right;
+	padding-bottom: 8px;
 	color: white;
-	font-size: 48px;
 	padding-right: 5px;
 	font-family: "Century Gothic", monospace;
 	font-weight: bold;
 }
 
+/* Gradient Colors for #timer_realtime */
 #timers .stop1 { stop-color: white; }
 #timers .stop2 { stop-color: gray; }
-
-.timer-stopped {
-	color: white;
-}
-
-.timer-running {
-	color: #3ACC60;
-}
-
-.timer-paused {
-	color: #0062FF;
-}
-
-#full {
-	display: none;
-	width: 620px;
-	text-align: justify;
-}
-
-#about:hover #full {
-	display: block;
-}
 
 #prevsplit,td:nth-child(3n+3) {
 	text-align: right;
@@ -117,14 +94,6 @@ td:nth-child(3n+1) {
 
 td:nth-child(2n+2) {
 	text-align: center;
-}
-
-h1 {
-	font-size: 12px;
-	text-decoration: underline;
-	text-align: right;
-	padding-right: 10px;
-	padding-left: 10px;
 }
 
 .active-split {
@@ -165,18 +134,4 @@ caption {
 #prevtext {
 	float:left;
 	padding-left: 5px;
-}
-
-
-#about {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	font-size: 11px;
-	background-color: #FFEECC;
-	padding: 0 10px;
-	border-top-left-radius: 8px;
-	-moz-border-topleft-radius: 8px;
-	-khtml-border-top-left-radius: 8px;
-	-webkit-border-top-left-radius: 8px;
 }

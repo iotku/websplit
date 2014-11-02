@@ -202,7 +202,7 @@ function GameTimer(d) {
             addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
             // variables should be used properly here. (Hard to look at / confusing)
 
-            /* Generate table based on splitsObject */
+            /* BROKEN on IE<=9, innerHTML is read only there for many table elements. :: Generate table based on splitsObject */
             document.getElementById("dattable").innerHTML += '<tr id="row' + step + '">' + '<td id="splitname' + step + '"></td>' + '<td id="split' + step + '"></td>' + '<td id="difference' + step + '"></td>' + '</tr>';
             /* Insert split names */
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
