@@ -189,7 +189,7 @@ function GameTimer(d) {
             // variables should be used properly here. (Hard to look at / confusing)
 
             /* BROKEN on IE<=9, innerHTML is read only there for many table elements. :: Generate table based on splitsObject */
-            document.getElementById("dattable").innerHTML += '<tr id="row' + step + '">' + '<td id="splitname' + step + '"></td>' + '<td id="split' + step + '"></td>' + '<td id="difference' + step + '"></td>' + '</tr>';
+            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<div id="splitname' + step + '"></div>' + '<div id="split' + step + '"></div>' + '<div id="difference' + step + '"></div>' + '</span>';
 
             // Insert split names 
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];

@@ -9,12 +9,10 @@
 <body>
 	<div id="container">
 		<div id="splits">
-		<table>
-		<caption id="splits-title">16 Star</caption>
-		<tbody id="dattable">
-		</tbody>
-		</table>
-	</div>
+			<div id="splits-title">16 Star</div>
+			<div id="dattable">
+			</div>
+		</div>
 		<div id="timers">
 			<svg height="64">
 				<defs>  
@@ -30,14 +28,14 @@
 			<div id="prevtext"></div>
 			<div id="prevsplit">Not Loaded.</div>
 		</div>
-	</div>
-	<div id="controls">
-		<input id="startbutton" type="button" value="Start" onclick="t.start()"/>
-		<input type="button" value="Pause"  onclick="t.pause()"/> <br>
-		<input type="button" value="Split"  onclick="t.split()"/><br>
-		<input type="button" value="Save"   onclick="t.saveSplits()"/>
-		<input type="button" value="Load"   onclick="t.loadSplits()"/><br>
-		<input type="button" value="Unload" onclick="t.deleteSplits()"/>
+		<div id="controls">
+			<input id="startbutton" type="button" value="Start" onclick="t.start()"/>
+			<input type="button" value="Pause"  onclick="t.pause()"/> <br>
+			<input type="button" value="Split"  onclick="t.split()"/><br>
+			<input type="button" value="Save"   onclick="t.saveSplits()"/>
+			<input type="button" value="Load"   onclick="t.loadSplits()"/><br>
+			<input type="button" value="Unload" onclick="t.deleteSplits()"/>
+		</div>
 	</div>
 </body>
 </html>
