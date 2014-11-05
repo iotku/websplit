@@ -314,11 +314,25 @@ function GameTimer(d) {
             ms -= 1;
             s -= 1;
             m -= 1;
+            h += 1; // Adding += might be a HUGE mistake here, but it seems to solve an issue with seemingly random -1 values...... 
         }
-        if (h < 1 && m < 1) {
-            return ((t < 0) ? '-' + s : this.pad(s, 1)) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
+
+        var humanTime;
+        if (h == 0 && m == 0) {
+            humanTime = this.pad(s, 1) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
+        } else if (h == 0 && m < 10) {
+            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 1) + ':' + this.pad(s, 2);// + ((msd) ? '.' + this.pad(ms, msd) : '')
+        } else {
+            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2);// + ((msd) ? '.' + this.pad(ms, msd) : '')
         }
-        return ((h > 0) ? h + ':' : '') + ((t < 0) ? '-' + m : this.pad(m, 1)) + ':' + this.pad(s, 2);// + ((msd) ? '.' + this.pad(ms, msd) : '')
+
+        if (t >= 0) { // I hate everything about this if statement.
+            return humanTime;
+        } else if ( t <= 0 && h == 0){
+            return '-' + humanTime;
+        } else if (h != 0) { // Hour adds the negative sign itself apparently.....
+            return humanTime;
+        }; // If this fails I'm pretty screwed.
     };
 
     // Internal functions
