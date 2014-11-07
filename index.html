@@ -3,16 +3,31 @@
 <head>
 	<title>RTA Timer</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
-	<link rel="stylesheet" type="text/css" href="timer.css" />
-	<script type="text/javascript" src="timer.js"></script>
+	<!-- Mobile Support kinda, prevents zooming -->
+	<meta name="viewport"
+      content="height = 400, width = 250,
+          initial-scale = float_value ,
+          minimum-scale = float_value ,
+          maximum-scale = float_value ,
+          user-scalable = no
+          " />
+	<link rel="stylesheet" type="text/css" href="css/timer.css" />
+	<!--[if gte IE 9]>
+	  <style type="text/css">
+	    .gradient {
+	       filter: none;
+	    }
+	  </style>
+	<![endif]-->
+	<script type="text/javascript" src="js/timer.js"></script>
+	<script type="application/javascript" src="js/fastclick-min.js"></script>
+	<script type="application/javascript">
+		window.addEventListener('load', function() {
+			var attachFastClick = Origami.fastclick;
+			attachFastClick(document.body);
+		}, false);
+	</script>
 </head>
-<!--[if gte IE 9]>
-  <style type="text/css">
-    .gradient {
-       filter: none;
-    }
-  </style>
-<![endif]-->
 <body>
 	<div id="container">
 		<div id="splits">
@@ -36,13 +51,14 @@
 			<div id="prevsplit">Not Loaded.</div>
 		</div>
 		<div id="controls">
-			<input id="startbutton" type="button" value="Start" onclick="t.start()"/>
-			<input type="button" value="Pause"  onclick="t.pause()"/> <br>
-			<input type="button" value="Split"  onclick="t.split()"/><br>
+			<input type="button" value="Start / Split"  onclick="t.split()"/><br>
+			<input type="button" value="Reset"  onclick="t.reset()"/>
+			<input type="button" value="Pause"  onclick="t.pause()"/><br>
 			<input type="button" value="Save"   onclick="t.saveSplits()"/>
 			<input type="button" value="Load"   onclick="t.loadSplits()"/><br>
 			<input type="button" value="Unload" onclick="t.deleteSplits()"/>
 		</div>
 	</div>
+
 </body>
 </html>

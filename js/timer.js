@@ -2,7 +2,7 @@
 // that looks like spaghetti code) was originally written by Ian "bmn" Bennett,
 // from http://www.w00ty.com/sda/timer/
 //
-// 
+//
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
@@ -74,7 +74,7 @@ function GameTimer(d) {
             this.setStyle(this.currently);
         };
     };
-    
+
     this.reset = function () {
         if (t.currently === 'stop') {
             t.start();
@@ -84,7 +84,7 @@ function GameTimer(d) {
         if (t.currently === 'play') {
             t.pause();
         };
-        
+
         this.currently = 'reset';
         this.currentSplit = 1;
         t.split(); /* What does this even do? */
@@ -136,7 +136,7 @@ function GameTimer(d) {
         // Save if Gold split (Should be same logic as setSegmentColor())
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
             splitsObject[this.currentSplit][2] = currentSegment;
-        }; 
+        };
 
         // Setup for next split
         if (this.totalSplits !== this.currentSplit) {
@@ -191,7 +191,7 @@ function GameTimer(d) {
             /* Generate table (Now formatted DIVs) based on splitsObject */
             document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<div id="splitname' + step + '"></div>' + '<div id="split' + step + '"></div>' + '<div id="difference' + step + '"></div>' + '</span>';
 
-            // Insert split names 
+            // Insert split names
             document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
 
             // Empty string as placeholder for split times
