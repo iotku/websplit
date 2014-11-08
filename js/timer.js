@@ -101,12 +101,13 @@ function GameTimer(d) {
             this.update(true, true);
             this.setTimeout(0);
             this.updateSplit(this.timer.realtime);
-        } else if (this.currentSplit === this.totalSplits) {
+        } else if (this.currentSplit === this.totalSplits && this.totalSplits != 1) {
             this.reset();
         } else if (this.timer.start === 0) {
-            return this.start(0); /* 5 by default, startup delay in seconds */
+            return this.start(0); // Startup delay in seconds
         } else {
             this.timerReset();
+            this.genSplits();
         }
     };
 
@@ -188,7 +189,7 @@ function GameTimer(d) {
             addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
             // variables should be used properly here. (Hard to look at / confusing)
 
-            /* Generate table (Now formatted DIVs) based on splitsObject */
+            // Generate table (Now formatted DIVs) based on splitsObject
             document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<div id="splitname' + step + '"></div>' + '<div id="split' + step + '"></div>' + '<div id="difference' + step + '"></div>' + '</span>';
 
             // Insert split names
@@ -259,8 +260,8 @@ function GameTimer(d) {
         var timer = document.getElementById("timer_realtime")
         if (currentState === 'stop') {
             for (var step = 1; step <= this.totalSplits; step++) {
-                var difference = document.getElementById("difference"+step),
-                    row = document.getElementById("row"+step)
+                var difference = document.getElementById("difference" + step),
+                    row = document.getElementById("row" + step);
                 difference.style.color = "white";
                 difference.style.fontWeight = "Normal";
             }

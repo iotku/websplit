@@ -54,7 +54,6 @@ input:disabled {
 
 #splits-title {
 	text-align: center;
-	border-bottom: 1px black solid;
 }
 
 #splits div,#splits-editor td {
@@ -152,7 +151,6 @@ input:disabled {
 	background: -ms-linear-gradient(top,  #2a2a2a 0%,#131313 100%);
 	background: linear-gradient(to bottom,  #2a2a2a 0%,#131313 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2a2a2a', endColorstr='#131313',GradientType=0 );
-
 }
 
 .statusbar {
@@ -164,7 +162,8 @@ input:disabled {
 	background: -ms-linear-gradient(top,  #1c1c1c 0%,#0d0d0d 100%);
 	background: linear-gradient(to bottom,  #1c1c1c 0%,#0d0d0d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1c1c1c', endColorstr='#0d0d0d',GradientType=0 );
-	padding-top: 2px
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 #prevtext {
