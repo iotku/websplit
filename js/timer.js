@@ -322,9 +322,9 @@ function GameTimer(d) {
         if (h == 0 && m == 0) {
             humanTime = this.pad(s, 1) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
         } else if (h == 0 && m < 10) {
-            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 1) + ':' + this.pad(s, 2);// + ((msd) ? '.' + this.pad(ms, msd) : '')
+            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 1) + ':' + this.pad(s, 2); // + ((msd) ? '.' + this.pad(ms, msd) : '');
         } else {
-            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2);// + ((msd) ? '.' + this.pad(ms, msd) : '')
+            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2); // + ((msd) ? '.' + this.pad(ms, msd) : '');
         }
 
         if (t >= 0) { // I hate everything about this if statement.
