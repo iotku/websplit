@@ -81,16 +81,7 @@ this.genSplits = function () {
         // variables should be used properly here. (Hard to look at / confusing)
 
         // Generate table (Now formatted DIVs) based on splitsObject
-        document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '">' + '</input>' + '<input disabled id="split' + step + '" type="text" value="' + this.realTime(addtime) + '"></input>' + '<input id="difference' + step + '" type="text" value="' + this.realTime(splitsObject[step][1]) + '"></input>' + '</span><br>';
-
-        // Insert split names
-        document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
-
-        // Empty string as placeholder for split times
-        document.getElementById("split" + step).innerHTML = " ";
-
-        // Add total time upto current split
-        document.getElementById("difference" + step).innerHTML = this.realTime(addtime);
+        document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" value="' + splitsObject[step][0] + '">' + '</input>' + '<input disabled id="split' + step + '" value="' + this.realTime(addtime) + '"></input>' + '<input id="difference' + step + '" value="' + this.realTime(splitsObject[step][1]) + '"></input>' + '</span><br>';
     }
 };
 
