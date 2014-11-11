@@ -102,6 +102,8 @@ this.genSplits = function () {
 };
 
 this.saveNewSplits = function () {
+    if (window.opener.t.currently == 'play' || window.opener.t.currently == 'pause') {return false};
+    
     for (var step = 1; step <= this.totalSplits; step++) {
         splitNames = document.getElementById("splitname" + step).value;
         enteredTime = document.getElementById("difference" + step).value;
@@ -112,6 +114,7 @@ this.saveNewSplits = function () {
     };
     localStorage.PersonalBest = JSON.stringify(splitsObject);
     this.genSplits();
+    window.opener.t.genSplits();
 }
 
 window.onload = function () {
@@ -119,5 +122,9 @@ window.onload = function () {
 };
 
 window.onunload = function () {
-    opener.t.genSplits();
+    if (window.opener.t.currently == 'play' || window.opener.t.currently == 'pause') {
+        return false;
+    } else {
+        window.opener.t.genSplits();
+    };
 }
