@@ -92,21 +92,20 @@ this.genSplits = function () {
     };
     var addtime = 0;
     document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
-    document.getElementById("dattable").innerHTML = '<input disabled value="Names"></input><input disabled value="Time"></input><input disabled value="Best Segment"></input><input disabled value="Segment"></input><br>';
+    document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Time" /><input disabled value="Best Segment" /><input disabled value="Segment" /><br>';
     for (var step = 1; step <= this.totalSplits; step++) {
         splitsObject[step][3] = 0; /* Reset current segments */
         addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
         // Generate table (Now formatted DIVs) based on splitsObject
-        document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" value="' + splitsObject[step][0] + '" onclick="updateSplitTimes()">' + '</input>' + '<input disabled id="split' + step + '" value="' + this.realTime(addtime) + '"></input>' + '<input id="bestsegment' + step + '" value="' + this.realTime(splitsObject[step][2]) + '"></input>' + '<input id="difference' + step + '" value="' + this.realTime(splitsObject[step][1]) + '"></input>' + '</span><br>';
+        document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" value="' + splitsObject[step][0] + '" onclick="updateSplitTimes()" />' + '<input disabled id="split' + step + '" value="' + this.realTime(addtime) + '" />' + '<input id="bestsegment' + step + '" value="' + this.realTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" value="' + this.realTime(splitsObject[step][1]) + '">' + '</span><br>';
     }
 };
 
-saveNewSplits = function () {
+this.saveNewSplits = function () {
     for (var step = 1; step <= this.totalSplits; step++) {
         splitNames = document.getElementById("splitname" + step).value;
         enteredTime = document.getElementById("difference" + step).value;
         bestsegTime = document.getElementById("bestsegment" + step).value;
-        console.log(this.parseTime(enteredTime))
         splitsObject[step][0] = splitNames;
         splitsObject[step][1] = this.parseTime(enteredTime);
         splitsObject[step][2] = this.parseTime(bestsegTime);
@@ -118,3 +117,7 @@ saveNewSplits = function () {
 window.onload = function () {
     this.genSplits();
 };
+
+window.onunload = function () {
+    opener.t.genSplits();
+}

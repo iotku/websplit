@@ -419,3 +419,10 @@ window.onload = function () {
     t.genSplits();
 };
 
+this.openEditor = function () {
+    if (t.currently == 'play' || t.currently == 'pause') {
+        return false;
+    } else {
+        window.open("editor.html",'name','height=300,width=720');
+    }
+}
