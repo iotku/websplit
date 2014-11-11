@@ -92,7 +92,7 @@ this.genSplits = function () {
     };
     var addtime = 0;
     document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
-    document.getElementById("dattable").innerHTML = '<input disabled value="Names"></input><input disabled value="Time"></input><input disabled value="Best Segment"></input><input disabled value="Segment"></input><hr>';
+    document.getElementById("dattable").innerHTML = '<input disabled value="Names"></input><input disabled value="Time"></input><input disabled value="Best Segment"></input><input disabled value="Segment"></input><br>';
     for (var step = 1; step <= this.totalSplits; step++) {
         splitsObject[step][3] = 0; /* Reset current segments */
         addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times

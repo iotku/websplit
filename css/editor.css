@@ -10,9 +10,6 @@ body {
 .lables {
     display: table-cell;
 }
-input {
-    display: table-cell;
-}
 
 h1 {
     /*display: inline-block;*/
