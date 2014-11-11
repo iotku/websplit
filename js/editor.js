@@ -6,7 +6,6 @@ this.timeConvert = function (hours, minutes, seconds, milliseconds) {
     s = Math.abs(Math.floor((seconds * 1000)));
     ms = milliseconds;
     time = (h + min + s + ms);
-    this.realTime(time);
     return time;
 };
 
@@ -69,21 +68,40 @@ splitsObject = {
 };
 this.totalSplits = Object.keys(splitsObject).length; /* How many splits do we have? */
 
+var currentSplit = 0;
 this.genSplits = function () {
     if (localStorage.PersonalBest) {
         splitsObject = JSON.parse(localStorage.PersonalBest);
     };
     var addtime = 0;
     document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
+    document.getElementById("dattable").innerHTML = '<input disabled value="Names"></input><input disabled value="Time"></input><input disabled value="Segment"></input><hr>';
     for (var step = 1; step <= this.totalSplits; step++) {
         splitsObject[step][3] = 0; /* Reset current segments */
         addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
         // variables should be used properly here. (Hard to look at / confusing)
 
         // Generate table (Now formatted DIVs) based on splitsObject
-        document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" value="' + splitsObject[step][0] + '">' + '</input>' + '<input disabled id="split' + step + '" value="' + this.realTime(addtime) + '"></input>' + '<input id="difference' + step + '" value="' + this.realTime(splitsObject[step][1]) + '"></input>' + '</span><br>';
+        document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" value="' + splitsObject[step][0] + '" onclick="updateSplitTimes()">' + '</input>' + '<input disabled id="split' + step + '" value="' + this.realTime(addtime) + '"></input>' + '<input id="difference' + step + '" value="' + this.realTime(splitsObject[step][1]) + '"></input>' + '</span><br>';
     }
 };
+
+this.updateSplitTimes = function () {
+    // for (var step = 1; step <= this.totalSplits; step++) {
+    //     splitsObject[step][1] + addtime;
+    // };
+    // this.currentSplit = 1;
+}
+
+saveNewSplits = function () {
+    for (var step = 1; step <= this.totalSplits; step++) {
+        enteredTime = document.getElementById("difference" + step).value;
+        console.log(this.parseTime(enteredTime))
+        splitsObject[step][1] = this.parseTime(enteredTime);
+    };
+    localStorage.PersonalBest = JSON.stringify(splitsObject);
+    this.genSplits();
+}
 
 window.onload = function () {
     this.genSplits();
