@@ -103,9 +103,11 @@ this.genSplits = function () {
 
 saveNewSplits = function () {
     for (var step = 1; step <= this.totalSplits; step++) {
+        splitNames = document.getElementById("splitname" + step).value;
         enteredTime = document.getElementById("difference" + step).value;
         bestsegTime = document.getElementById("bestsegment" + step).value;
         console.log(this.parseTime(enteredTime))
+        splitsObject[step][0] = splitNames;
         splitsObject[step][1] = this.parseTime(enteredTime);
         splitsObject[step][2] = this.parseTime(bestsegTime);
     };
