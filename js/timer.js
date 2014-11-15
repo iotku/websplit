@@ -179,6 +179,7 @@ function GameTimer(d) {
     };
 
     this.genSplits = function () {
+        this.currentSplit = 1;
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
@@ -367,7 +368,7 @@ function GameTimer(d) {
     };
 
     this.pad = function (n, ct) {
-        var o = n + '';
+        var o = n.toString(); // Convert to string so it doesn't get added together
         while (o.length < ct) {
             o = "0" + o;
         }
@@ -378,9 +379,6 @@ function GameTimer(d) {
     var self = this,
         d = d || {};
 
-    this.timebase = {
-        realtime: 60
-    };
     this.timer = { start: 0, now: 0, realtime: 0 };
     this.elements = {
         realtime: d.elements.realtime
