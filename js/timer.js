@@ -395,8 +395,6 @@ function GameTimer(d) {
     };
 
     this.genEditorSplits = function () {
-        // splitsObject = JSON.parse(localStorage.PersonalBest);
-        console.log(splitsObject)
         var addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
         document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Total" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
