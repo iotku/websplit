@@ -1,6 +1,7 @@
 this.timeConvert = function (hours, minutes, seconds, milliseconds) {
     // time to ms
-    var h, min, s, ms;
+    "use strict";
+    var h, min, s, ms, time;
     h = Math.floor(hours * 3600000);
     min = Math.abs(Math.floor((minutes * 60000)));
     s = Math.abs(Math.floor((seconds * 1000)));
@@ -10,7 +11,8 @@ this.timeConvert = function (hours, minutes, seconds, milliseconds) {
 };
 
 this.pad = function (n, ct) {
-    var o = n + '';
+    "use strict";
+    var o = n.toString(); // Convert to string so it doesn't get added together
     while (o.length < ct) {
         o = "0" + o;
     }
@@ -18,21 +20,21 @@ this.pad = function (n, ct) {
 };
 
 this.realTime = function (t) {
+    "use strict";
     var h = Math.floor(t / 3600000),
         m = Math.abs(Math.floor((t / 60000) % 60)),
         s = Math.abs(Math.floor((t / 1000) % 60)),
         msd = this.ms[(h > 0) ? 1 : 0],
-        ms = Math.abs(Math.floor((t % 1000) / (Math.pow(10, (3 - msd)))));
+        ms = Math.abs(Math.floor((t % 1000) / (Math.pow(10, (3 - msd))))),
+        humanTime;
     if (t < 0) {
         ms -= 1;
         s -= 1;
         m -= 1;
         h += 1; // Adding += might be a HUGE mistake here, but it seems to solve an issue with seemingly random -1 values...... 
     }
-
-    var humanTime;
-        humanTime = ((h != 0) ? h + ':' : '') + ((m != 0) ? this.pad(m,2) + ':' : '')+ this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
-        return humanTime;
+    humanTime = ((h !== 0) ? h + ':' : '') + ((m !== 0) ? this.pad(m, 2) + ':' : '') + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
+    return humanTime;
 };
 
 
@@ -47,12 +49,14 @@ if (!d.ms) {
 } else {
     this.ms = [d.ms, d.ms];
     this.currently = 'stop';
-};
+}
 
 this.parseTime = function (input) {
     // Lets break everything.....
-    output = input.split(":")
-    var count = 0;
+    "use strict";
+    var output, count;
+    output = input.split(":");
+    count = 0;
     for (var k in output) {if (output.hasOwnProperty(k)) {++count;}}
     if (count == 3) {
         return timeConvert(output[0], output[1], output[2], 0);
