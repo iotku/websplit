@@ -44,9 +44,8 @@ input[value=Editor] {
 input:active {color: #DDDDFF; color: #000033;}
 
 input:disabled {
-	background-color: gray;
-	color: white;
-	opacity: .1;
+	background-color: silver;
+	color: black;
 }
 
 #splits,#splits-editor {width: 200px; font-size: 18px;}
@@ -174,4 +173,8 @@ input:disabled {
 #prevtext {
 	float:left;
 	padding-left: 5px;
+}
+
+input {
+	width: 46px;
 }

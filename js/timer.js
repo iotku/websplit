@@ -337,6 +337,93 @@ function GameTimer(d) {
         }; // If this fails I'm pretty screwed.
     };
 
+
+    this.timeConvert = function (hours, minutes, seconds, milliseconds) {
+        // time to ms
+        "use strict";
+        var h, min, s, ms, time;
+        h = Math.floor(hours * 3600000);
+        min = Math.abs(Math.floor((minutes * 60000)));
+        s = Math.abs(Math.floor((seconds * 1000)));
+        ms = milliseconds;
+        time = (h + min + s + ms);
+        return time;
+    };
+
+    this.pad = function (n, ct) {
+        "use strict";
+        var o = n.toString(); // Convert to string so it doesn't get added together
+        while (o.length < ct) {
+            o = "0" + o;
+        }
+        return o;
+    };
+
+    this.editorRealTime = function (t) {
+        "use strict";
+        var h = Math.floor(t / 3600000),
+            m = Math.abs(Math.floor((t / 60000) % 60)),
+            s = Math.abs(Math.floor((t / 1000) % 60)),
+            msd = this.ms[(h > 0) ? 1 : 0],
+            ms = Math.abs(Math.floor((t % 1000) / (Math.pow(10, (3 - msd))))),
+            humanTime;
+        if (t < 0) {
+            ms -= 1;
+            s -= 1;
+            m -= 1;
+            h += 1; // Adding += might be a HUGE mistake here, but it seems to solve an issue with seemingly random -1 values...... 
+        }
+        humanTime = ((h !== 0) ? h + ':' : '') + ((m !== 0) ? this.pad(m, 2) + ':' : '') + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
+        return humanTime;
+    };
+
+    this.parseTime = function (input) {
+        // Lets break everything.....
+        "use strict";
+        var output, count;
+        output = input.split(":");
+        count = 0;
+        for (var k in output) {if (output.hasOwnProperty(k)) {++count;}}
+        if (count == 3) {
+            return this.timeConvert(output[0], output[1], output[2], 0);
+        } else if (count == 2) {
+            return this.timeConvert(0, output[0], output[1], 0);
+        } else if (count == 1) {
+            return this.timeConvert(0,0,output[0],0);
+        } else {
+            window.alert("You broke something, try again. \n Remember format is [hh:][mm:]ss[.ms]");
+        }
+    };
+
+    this.genEditorSplits = function () {
+        // splitsObject = JSON.parse(localStorage.PersonalBest);
+        console.log(splitsObject)
+        var addtime = 0;
+        document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
+        document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Total" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitsObject[step][3] = 0; /* Reset current segments */
+            addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
+            // Generate table (Now formatted DIVs) based on splitsObject
+            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" value="' + splitsObject[step][0] + '" />' + '<input disabled id="split' + step + '" value="' + this.editorRealTime(addtime) + '" />' + '<input id="bestsegment' + step + '" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
+        }
+        document.getElementById("dattable").innerHTML += '<input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>' 
+    };
+
+    this.saveNewSplits = function () {
+        var splitNames, enteredTime, bestsegTime;    
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitNames = document.getElementById("splitname" + step).value;
+            enteredTime = document.getElementById("difference" + step).value;
+            bestsegTime = document.getElementById("bestsegment" + step).value;
+            splitsObject[step][0] = splitNames;
+            splitsObject[step][1] = this.parseTime(enteredTime);
+            splitsObject[step][2] = this.parseTime(bestsegTime);
+        };
+        localStorage.PersonalBest = JSON.stringify(splitsObject);
+        t.genSplits();
+    };
+
     // Internal functions
     this.updateElements = function () {
         if (this.elements) {
@@ -421,6 +508,6 @@ this.openEditor = function () {
     if (t.currently == 'play' || t.currently == 'pause') {
         return false;
     } else {
-        window.open("editor.html",'name','height=300,width=720');
+        t.genEditorSplits();
     }
 }
