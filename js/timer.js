@@ -58,6 +58,7 @@ function GameTimer(d) {
     };
 
     this.pause = function () {
+        if (this.disableControls === true) { return false;}
         if (this.currently === 'stop') {
             this.start();
             return false;
@@ -76,6 +77,7 @@ function GameTimer(d) {
     };
 
     this.reset = function () {
+        if (this.disableControls === true) { return false;}
         if (t.currently === 'stop') {
             t.start();
             return false; // do nothing else
@@ -94,6 +96,7 @@ function GameTimer(d) {
     };
 
     this.split = function () {
+        if (this.disableControls === true) { return false;}
         if (this.currently === 'pause') {
             this.pause(); // Unpause on split, if paused
             return false;
@@ -179,6 +182,7 @@ function GameTimer(d) {
     };
 
     this.genSplits = function () {
+        this.disableControls = true; // Disable while generating splits (even though it should be incredibly fast.)
         this.currentSplit = 1;
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
@@ -206,9 +210,11 @@ function GameTimer(d) {
         document.getElementById("prevtext").innerHTML = "";
         this.currently = 'stop';
         this.setStyle(this.currently);
+        this.disableControls = false;
     };
 
     this.saveSplits = function () {
+        if (this.disableControls === true) { return false;}
         if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
@@ -225,6 +231,7 @@ function GameTimer(d) {
     };
 
     this.loadSplits = function () {
+        if (this.disableControls === true) { return false;}
         if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
         splitsObject = JSON.parse(localStorage.PersonalBest);
         this.currentSplit = 1;
@@ -233,6 +240,7 @@ function GameTimer(d) {
     };
 
     this.deleteSplits = function () {
+        if (this.disableControls === true) { return false;}
         if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
         localStorage.removeItem("PersonalBest");
         for (var step = 1; step <= this.totalSplits; step++) {
@@ -454,6 +462,7 @@ function GameTimer(d) {
     };
 
     // Set up stuff
+    var disableControls = false;
     var self = this,
         d = d || {};
 
@@ -499,6 +508,7 @@ this.openEditor = function () {
     if (t.currently == 'play' || t.currently == 'pause') {
         return false;
     } else {
+        t.disableControls = true;
         t.genEditorSplits();
     }
 }
