@@ -350,15 +350,6 @@ function GameTimer(d) {
         return time;
     };
 
-    this.pad = function (n, ct) {
-        "use strict";
-        var o = n.toString(); // Convert to string so it doesn't get added together
-        while (o.length < ct) {
-            o = "0" + o;
-        }
-        return o;
-    };
-
     this.editorRealTime = function (t) {
         "use strict";
         var h = Math.floor(t / 3600000),
