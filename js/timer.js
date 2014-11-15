@@ -244,6 +244,7 @@ function GameTimer(d) {
         if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
         localStorage.removeItem("PersonalBest");
         for (var step = 1; step <= this.totalSplits; step++) {
+            splitsObject[step][0] = step;
             splitsObject[step][1] = 0;
             splitsObject[step][2] = 0;
         }
@@ -396,13 +397,14 @@ function GameTimer(d) {
 
     this.genEditorSplits = function () {
         var addtime = 0;
+        document.getElementById("prevsplit").innerHTML = "Edit Mode.";
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
-        document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Total" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
+        document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
         for (var step = 1; step <= this.totalSplits; step++) {
-            splitsObject[step][3] = 0; /* Reset current segments */
-            addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
+            // splitsObject[step][3] = 0;  //Reset current segments 
+            // addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
             // Generate table (Now formatted DIVs) based on splitsObject
-            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" value="' + splitsObject[step][0] + '" />' + '<input disabled id="split' + step + '" value="' + this.editorRealTime(addtime) + '" />' + '<input id="bestsegment' + step + '" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
+            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
         document.getElementById("dattable").innerHTML += '<input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>' 
     };

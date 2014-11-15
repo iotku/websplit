@@ -50,17 +50,17 @@ input:disabled {
 
 #splits,#splits-editor {width: 200px; font-size: 18px;}
 
-#dattable,#splits-editor table {
+#dattable {
 	table-layout: fixed;
 	width: 100%;
-	border-spacing: 0px;
+
 }
 
 #splits-title {
 	text-align: center;
 }
 
-#splits div,#splits-editor td {
+#splits div {
 	border-bottom: 1px solid #1D1D1D;
 	padding-top: 1.5px;
 	padding-bottom: 1.5px;
@@ -99,6 +99,7 @@ input:disabled {
 #dattable span {
 	display: table-row;
 }
+
 #dattable span div:nth-child(2n+1) {
 	/*background-color: #0F0F0F;*/
 	display: table-cell;
@@ -175,6 +176,35 @@ input:disabled {
 	padding-left: 5px;
 }
 
-input {
-	width: 44px;
+
+/*
+input[type=text] {
+    border: 5px solid white; 
+    -webkit-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    -moz-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    margin: 0 0 10px 0;
+
+*/
+
+input[type=text],input:disabled{
+	border:0;
+	padding: 0;
+	background-color: transparent;
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+    width: 28%;
+}
+
+input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
+	width: 40%;
 }
