@@ -13,6 +13,7 @@ function GameTimer(d) {
     /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
     splitsObject = {
+        "info": ["Super Mario 64", "16 Star", 1],
         "1": ["BoB", 0, 0, 0],
         "2": ["WF", 0, 0, 0],
         "3": ["CCM", 0, 0, 0],
@@ -25,7 +26,8 @@ function GameTimer(d) {
         "10": ["BLJs", 0, 0, 0],
         "11": ["Done.", 0, 0, 0]
     };
-    this.totalSplits = Object.keys(splitsObject).length; /* How many splits do we have? */
+
+    this.totalSplits = Object.keys(splitsObject).length - 1; /* How many splits do we have? Don't count info. */
     this.start = function (start) {
         start = start || 0;
         this.timer = {
@@ -151,6 +153,7 @@ function GameTimer(d) {
         } else {
             this.pause();
             this.currently = 'done';
+            splitsObject["info"][2]++;
             document.getElementById("row" + this.currentSplit).className = " ";
 
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
@@ -187,6 +190,7 @@ function GameTimer(d) {
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
+        document.getElementById("splits-title").innerHTML = splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<div id="attempt-counter"><span>' + splitsObject["info"][2] + '</span></div>';
         var addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
         for (var step = 1; step <= this.totalSplits; step++) {
