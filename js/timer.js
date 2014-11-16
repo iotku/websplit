@@ -153,7 +153,7 @@ function GameTimer(d) {
         } else {
             this.pause();
             this.currently = 'done';
-            splitsObject["info"][2]++;
+            this.updateAttemptCounter();
             document.getElementById("row" + this.currentSplit).className = " ";
 
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
@@ -190,7 +190,7 @@ function GameTimer(d) {
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
-        document.getElementById("splits-title").innerHTML = splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<div id="attempt-counter"><span>' + splitsObject["info"][2] + '</span></div>';
+        document.getElementById("splits-title").innerHTML = splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<div id="attempt-counter">' + splitsObject["info"][2] + '</div>';
         var addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
         for (var step = 1; step <= this.totalSplits; step++) {
@@ -216,6 +216,10 @@ function GameTimer(d) {
         this.setStyle(this.currently);
         this.disableControls = false;
     };
+    this.updateAttemptCounter = function () {
+        splitsObject["info"][2]++;
+        localStorage.PersonalBest = JSON.stringify(splitsObject);
+    }
 
     this.saveSplits = function () {
         if (this.disableControls === true) { return false;}
