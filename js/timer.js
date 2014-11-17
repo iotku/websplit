@@ -213,6 +213,7 @@ function GameTimer(d) {
         this.setStyle(this.currently);
         this.disableControls = false;
     };
+    
     this.updateAttemptCounter = function () {
         splitsObject["info"][2]++;
         document.getElementById("attempt-counter").innerHTML = splitsObject["info"][2];
