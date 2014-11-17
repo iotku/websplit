@@ -223,8 +223,7 @@ function GameTimer(d) {
     }
 
     this.saveSplits = function () {
-        if (this.disableControls === true) { return false;}
-        if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
+        if (this.disableControls === true || this.currently === 'play') { return false;}
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
         }
@@ -240,8 +239,7 @@ function GameTimer(d) {
     };
 
     this.loadSplits = function () {
-        if (this.disableControls === true) { return false;}
-        if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
+        if (this.disableControls === true || this.currently === 'play') { return false;}
         splitsObject = JSON.parse(localStorage.PersonalBest);
         this.currentSplit = 1;
         this.genSplits();
@@ -249,8 +247,7 @@ function GameTimer(d) {
     };
 
     this.deleteSplits = function () {
-        if (this.disableControls === true) { return false;}
-        if (this.currently === 'play') { return false; }; // Don't run if timer is running, breaks things.
+        if (this.disableControls === true || this.currently === 'play') { return false;}
         localStorage.removeItem("PersonalBest");
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][0] = step;
