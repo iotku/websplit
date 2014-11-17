@@ -42,6 +42,7 @@ function GameTimer(d) {
         this.setStyle(this.currently);
         document.getElementById("row1").className += " active-split";
         document.getElementById("prevsplit").innerHTML = "...";
+        this.updateAttemptCounter();
         return this.timer.start;
     };
 
@@ -153,7 +154,6 @@ function GameTimer(d) {
         } else {
             this.pause();
             this.currently = 'done';
-            this.updateAttemptCounter();
             document.getElementById("row" + this.currentSplit).className = " ";
 
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
@@ -218,6 +218,7 @@ function GameTimer(d) {
     };
     this.updateAttemptCounter = function () {
         splitsObject["info"][2]++;
+        document.getElementById("attempt-counter").innerHTML = splitsObject["info"][2];
         localStorage.PersonalBest = JSON.stringify(splitsObject);
     }
 
