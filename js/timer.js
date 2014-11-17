@@ -40,8 +40,6 @@ function GameTimer(d) {
         this.setTimeout();
         this.currently = 'play';
         this.setStyle(this.currently);
-        document.getElementById("row1").className += " active-split";
-        document.getElementById("prevsplit").innerHTML = "...";
         this.updateAttemptCounter();
         return this.timer.start;
     };
@@ -94,8 +92,6 @@ function GameTimer(d) {
         this.currentSplit = 1;
         t.split(); /* What does this even do? */
         this.genSplits(); /* reset splits */
-        document.getElementById("prevsplit").innerHTML = "Ready";
-        document.getElementById("prevtext").innerHTML = "";
     };
 
     this.split = function () {
@@ -190,9 +186,11 @@ function GameTimer(d) {
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
+        
         document.getElementById("splits-title").innerHTML = splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<div id="attempt-counter">' + splitsObject["info"][2] + '</div>';
-        var addtime = 0;
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
+
+        var addtime = 0;
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][3] = 0; /* Reset current segments */
             addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
@@ -210,8 +208,7 @@ function GameTimer(d) {
             // Add total time upto current split
             document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
         }
-        document.getElementById("prevsplit").innerHTML = "Ready";
-        document.getElementById("prevtext").innerHTML = "";
+
         this.currently = 'stop';
         this.setStyle(this.currently);
         this.disableControls = false;
@@ -226,7 +223,7 @@ function GameTimer(d) {
         if (this.disableControls === true || this.currently === 'play') { return false;}
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
-        }
+        }        
         localStorage.PersonalBest = JSON.stringify(splitsObject);
     };
 
@@ -282,9 +279,16 @@ function GameTimer(d) {
                 difference.style.fontWeight = "Normal";
             }
             document.getElementById("prevsplit").style.color = "White";
+            document.getElementById("prevsplit").innerHTML = "Ready";
+            document.getElementById("prevtext").innerHTML = "";
+
             this.cssChange('#timers .stop1', 'stop-color', 'white');
             this.cssChange('#timers .stop2', 'stop-color', 'gray');
         } else if (currentState === 'play') {
+            if (this.currentSplit === 1) {
+                document.getElementById("row1").className += " active-split";
+                document.getElementById("prevsplit").innerHTML = "...";
+            }
             this.cssChange('#timers .stop1', 'stop-color', '#00FF68');
             this.cssChange('#timers .stop2', 'stop-color', '#00A541');
         } else if (currentState === 'pause') {
@@ -406,9 +410,6 @@ function GameTimer(d) {
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
         document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
         for (var step = 1; step <= this.totalSplits; step++) {
-            // splitsObject[step][3] = 0;  //Reset current segments 
-            // addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
-            // Generate table (Now formatted DIVs) based on splitsObject
             document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
         document.getElementById("dattable").innerHTML += '<input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>' 
@@ -420,6 +421,7 @@ function GameTimer(d) {
             splitNames = document.getElementById("splitname" + step).value;
             enteredTime = document.getElementById("difference" + step).value;
             bestsegTime = document.getElementById("bestsegment" + step).value;
+
             splitsObject[step][0] = splitNames;
             splitsObject[step][1] = this.parseTime(enteredTime);
             splitsObject[step][2] = this.parseTime(bestsegTime);
