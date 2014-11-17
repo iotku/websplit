@@ -261,6 +261,33 @@ function GameTimer(d) {
             this.updateElements(); /* Updates the now 0 timer values. */
     };
 
+    // Split Editor
+    this.genEditorSplits = function () {
+        var addtime = 0;
+        document.getElementById("prevsplit").innerHTML = "Edit Mode.";
+        document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
+        document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
+        for (var step = 1; step <= this.totalSplits; step++) {
+            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
+        }
+        document.getElementById("dattable").innerHTML += '<input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>'
+    };
+
+    this.saveNewSplits = function () {
+        var splitNames, enteredTime, bestsegTime;
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitNames = document.getElementById("splitname" + step).value;
+            enteredTime = document.getElementById("difference" + step).value;
+            bestsegTime = document.getElementById("bestsegment" + step).value;
+
+            splitsObject[step][0] = splitNames;
+            splitsObject[step][1] = this.parseTime(enteredTime);
+            splitsObject[step][2] = this.parseTime(bestsegTime);
+        };
+        localStorage.PersonalBest = JSON.stringify(splitsObject);
+        t.genSplits();
+    };
+
     // Styling Functions
     this.cssChange = function (selector, property, value) { // http://stackoverflow.com/a/11081100
         for (var i=0; i<document.styleSheets.length;i++) { // Loop through all styles
@@ -395,32 +422,6 @@ function GameTimer(d) {
         } else {
             window.alert("You broke something, try again. \n Remember format is [hh:][mm:]ss[.ms]");
         }
-    };
-
-    this.genEditorSplits = function () {
-        var addtime = 0;
-        document.getElementById("prevsplit").innerHTML = "Edit Mode.";
-        document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
-        document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
-        for (var step = 1; step <= this.totalSplits; step++) {
-            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
-        }
-        document.getElementById("dattable").innerHTML += '<input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>' 
-    };
-
-    this.saveNewSplits = function () {
-        var splitNames, enteredTime, bestsegTime;    
-        for (var step = 1; step <= this.totalSplits; step++) {
-            splitNames = document.getElementById("splitname" + step).value;
-            enteredTime = document.getElementById("difference" + step).value;
-            bestsegTime = document.getElementById("bestsegment" + step).value;
-
-            splitsObject[step][0] = splitNames;
-            splitsObject[step][1] = this.parseTime(enteredTime);
-            splitsObject[step][2] = this.parseTime(bestsegTime);
-        };
-        localStorage.PersonalBest = JSON.stringify(splitsObject);
-        t.genSplits();
     };
 
     // Internal functions
