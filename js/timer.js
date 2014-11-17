@@ -13,7 +13,7 @@ function GameTimer(d) {
     /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
     splitsObject = {
-        "info": ["Super Mario 64", "16 Star", 1],
+        "info": ["Super Mario 64", "16 Star", 0],
         "1": ["BoB", 0, 0, 0],
         "2": ["WF", 0, 0, 0],
         "3": ["CCM", 0, 0, 0],
