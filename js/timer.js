@@ -292,8 +292,8 @@ function GameTimer(d) {
             this.cssChange('#timers .stop1', 'stop-color', '#00FF68');
             this.cssChange('#timers .stop2', 'stop-color', '#00A541');
         } else if (currentState === 'pause') {
-            this.cssChange('#timers .stop1', 'stop-color', '#0062FF');
-            this.cssChange('#timers .stop2', 'stop-color', '#0088FF');
+            this.cssChange('#timers .stop1', 'stop-color', '#0088FF');
+            this.cssChange('#timers .stop2', 'stop-color', '#0058A6');
         };
     };
 
