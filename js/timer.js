@@ -353,15 +353,14 @@ function GameTimer(d) {
     };
 
 
-    this.timeConvert = function (hours, minutes, seconds, milliseconds) {
+    this.timeConvert = function (hours, minutes, seconds) {
         // time to ms
         "use strict";
         var h, min, s, ms, time;
         h = Math.floor(hours * 3600000);
         min = Math.abs(Math.floor((minutes * 60000)));
         s = Math.abs(Math.floor((seconds * 1000)));
-        ms = milliseconds;
-        time = (h + min + s + ms);
+        time = (h + min + s);
         return time;
     };
 
@@ -379,7 +378,7 @@ function GameTimer(d) {
             m -= 1;
             h += 1; // Adding += might be a HUGE mistake here, but it seems to solve an issue with seemingly random -1 values...... 
         }
-        humanTime = ((h !== 0) ? h + ':' : '') + ((m !== 0) ? this.pad(m, 2) + ':' : '') + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
+        humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
         return humanTime;
     };
 
@@ -391,11 +390,11 @@ function GameTimer(d) {
         count = 0;
         for (var k in output) {if (output.hasOwnProperty(k)) {++count;}}
         if (count == 3) {
-            return this.timeConvert(output[0], output[1], output[2], 0);
+            return this.timeConvert(output[0], output[1], output[2]);
         } else if (count == 2) {
-            return this.timeConvert(0, output[0], output[1], 0);
+            return this.timeConvert(0, output[0], output[1]);
         } else if (count == 1) {
-            return this.timeConvert(0,0,output[0],0);
+            return this.timeConvert(0,0,output[0]);
         } else {
             window.alert("You broke something, try again. \n Remember format is [hh:][mm:]ss[.ms]");
         }

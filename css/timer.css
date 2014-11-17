@@ -199,10 +199,11 @@ input[type=text] {
 input[type=text],input:disabled{
 	border:0;
 	padding: 0;
+	padding-right: 2px;
 	background-color: transparent;
 	color: white;
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 12px;
     width: 28%;
 }
 
