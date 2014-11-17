@@ -375,14 +375,7 @@ function GameTimer(d) {
             s = Math.abs(Math.floor((t / 1000) % 60)),
             msd = this.ms[(h > 0) ? 1 : 0],
             ms = Math.abs(Math.floor((t % 1000) / (Math.pow(10, (3 - msd))))),
-            humanTime;
-        if (t < 0) {
-            ms -= 1;
-            s -= 1;
-            m -= 1;
-            h += 1; // Adding += might be a HUGE mistake here, but it seems to solve an issue with seemingly random -1 values...... 
-        }
-        humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
+            humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
         return humanTime;
     };
 
