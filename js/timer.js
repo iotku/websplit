@@ -225,7 +225,7 @@ function GameTimer(d) {
             splitsObject[this.currentSplit][2] = currentSegment;
 
             // Load presaved splits (Shouldn't be resaved yet.)
-            var splitsObject = Object.create(null);
+            var tmpSplits = Object.create(null);
             tmpSplits = JSON.parse(localStorage.PersonalBest)
 
             // Change the old golds and save. Hopefully there's no case where the PB would save first.
