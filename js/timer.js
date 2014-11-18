@@ -138,7 +138,7 @@ function GameTimer(d) {
 
         // Save if Gold split (Should be same logic as setSegmentColor())
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
-            splitsObject[this.currentSplit][2] = currentSegment;
+            this.saveGoldSplit(currentSegment);
         };
 
         // Setup for next split
@@ -220,6 +220,19 @@ function GameTimer(d) {
         localStorage.PersonalBest = JSON.stringify(splitsObject);
     }
 
+    this.saveGoldSplit = function (currentSegment) {
+            // Should save if PB
+            splitsObject[this.currentSplit][2] = currentSegment;
+
+            // Load presaved splits (Shouldn't be resaved yet.)
+            var splitsObject = Object.create(null);
+            tmpSplits = JSON.parse(localStorage.PersonalBest)
+
+            // Change the old golds and save. Hopefully there's no case where the PB would save first.
+            tmpSplits[this.currentSplit][2] = currentSegment;
+            localStorage.PersonalBest = JSON.stringify(splitsObject);
+    };
+
     this.saveSplits = function () {
         if (this.disableControls === true || this.currently === 'play') { return false;}
         for (var step = 1; step <= this.totalSplits; step++) {
@@ -252,6 +265,9 @@ function GameTimer(d) {
             splitsObject[step][1] = 0;
             splitsObject[step][2] = 0;
         }
+        splitsObject["info"][0] = "No Game";
+        splitsObject["info"][1] = "No Goal";
+        splitsObject["info"][2] = 0;
         this.currentSplit = 1;
         this.genSplits();
         this.timerReset();
