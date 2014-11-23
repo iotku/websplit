@@ -27,7 +27,6 @@ function GameTimer(d) {
         "11": ["Done.", 0, 0, 0]
     };
 
-    this.totalSplits = Object.keys(splitsObject).length - 1; /* How many splits do we have? Don't count info. */
     this.start = function (start) {
         start = start || 0;
         this.timer = {
@@ -186,7 +185,8 @@ function GameTimer(d) {
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
-        
+        this.totalSplits = Object.keys(splitsObject).length - 1; /* How many splits do we have? Don't count info. */
+
         document.getElementById("splits-title").innerHTML = splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<div id="attempt-counter">' + splitsObject["info"][2] + '</div>';
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
 
@@ -478,6 +478,14 @@ function GameTimer(d) {
         }
         return o;
     };
+
+    this.addSplit = function (selectedSplit) {
+        var replaceMe = this.totalSplits
+        splitsObject[replaceMe + 1] = [replaceMe + 1,0,0,0];
+        this.totalSplits = this.totalSplits + 1;
+        console.log(splitsObject);
+        this.genEditorSplits();
+    }
 
     // Set up stuff
     var disableControls = false;
