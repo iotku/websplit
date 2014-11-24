@@ -132,6 +132,8 @@ function GameTimer(d) {
         prevSplit.innerHTML = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
 
         // Set finished split time *bold* / Set color for segment and prevsplit
+        document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getSegmentTime());
+        console.log(this.getSegmentTime());
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
 
@@ -445,7 +447,7 @@ function GameTimer(d) {
     this.updateElements = function () {
         if (this.elements) {
             document.getElementById(this.elements.realtime).textContent = this.realTime(this.timer.realtime);
-            document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.timer.realtime);
+            // document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.timer.realtime);
         }
     };
 
