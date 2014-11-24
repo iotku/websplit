@@ -282,6 +282,7 @@ function GameTimer(d) {
 
     // Split Editor
     this.genEditorSplits = function () {
+        this.timerReset();
         var addtime = 0;
         document.getElementById("prevsplit").innerHTML = "Edit Mode.";
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
@@ -486,6 +487,14 @@ function GameTimer(d) {
         splitsObject[replaceMe + 1] = [replaceMe + 1,0,0,0];
         this.totalSplits = this.totalSplits + 1;
         console.log(splitsObject);
+        this.genEditorSplits();
+    }
+
+    this.removeSplit = function () {
+        if (this.totalSplits < 2) {return false}
+
+        delete splitsObject[this.totalSplits];
+        this.totalSplits = this.totalSplits - 1;
         this.genEditorSplits();
     }
 
