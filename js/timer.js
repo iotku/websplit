@@ -58,7 +58,7 @@ function GameTimer(d) {
     };
 
     this.pause = function () {
-        if (this.disableControls === true) { return false;}
+        if (this.disableControls === true) {return false;}
         if (this.currently === 'stop') {
             this.start();
             return false;
@@ -77,7 +77,7 @@ function GameTimer(d) {
     };
 
     this.reset = function () {
-        if (this.disableControls === true) { return false;}
+        if (this.disableControls === true) {return false;}
         if (t.currently === 'stop') {
             t.start();
             return false; // do nothing else
@@ -94,7 +94,7 @@ function GameTimer(d) {
     };
 
     this.split = function () {
-        if (this.disableControls === true) { return false;}
+        if (this.disableControls === true) {return false;}
         if (this.currently === 'pause') {
             this.pause(); // Unpause on split, if paused
             return false;
@@ -133,7 +133,6 @@ function GameTimer(d) {
 
         // Set finished split time *bold* / Set color for segment and prevsplit
         document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getSegmentTime());
-        console.log(this.getSegmentTime());
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
 
@@ -183,6 +182,7 @@ function GameTimer(d) {
 
     this.genSplits = function () {
         this.disableControls = true; // Disable while generating splits (even though it should be incredibly fast.)
+        this.editorEnabled = false;
         this.currentSplit = 1;
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
@@ -236,7 +236,7 @@ function GameTimer(d) {
     };
 
     this.saveSplits = function () {
-        if (this.disableControls === true || this.currently === 'play') { return false;}
+        if (this.disableControls === true || this.currently === 'play') {return false;}
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
         }        
@@ -252,7 +252,7 @@ function GameTimer(d) {
     };
 
     this.loadSplits = function () {
-        if (this.disableControls === true || this.currently === 'play') { return false;}
+        if (this.disableControls === true || this.currently === 'play') {return false;}
         splitsObject = JSON.parse(localStorage.PersonalBest);
         this.currentSplit = 1;
         this.genSplits();
@@ -260,7 +260,7 @@ function GameTimer(d) {
     };
 
     this.deleteSplits = function () {
-        if (this.disableControls === true || this.currently === 'play') { return false;}
+        if (this.disableControls === true || this.currently === 'play') {return false;}
         localStorage.removeItem("PersonalBest");
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][0] = step;
@@ -483,14 +483,15 @@ function GameTimer(d) {
     };
 
     this.addSplit = function (selectedSplit) {
+        if (this.editorEnabled === false) {return false}
         var replaceMe = this.totalSplits
         splitsObject[replaceMe + 1] = [replaceMe + 1,0,0,0];
         this.totalSplits = this.totalSplits + 1;
-        console.log(splitsObject);
         this.genEditorSplits();
     }
 
     this.removeSplit = function () {
+        if (this.editorEnabled === false) {return false}
         if (this.totalSplits < 2) {return false}
 
         delete splitsObject[this.totalSplits];
@@ -500,6 +501,7 @@ function GameTimer(d) {
 
     // Set up stuff
     var disableControls = false;
+    var editorEnabled = false;
     var self = this,
         d = d || {};
 
@@ -546,6 +548,7 @@ this.openEditor = function () {
         return false;
     } else {
         t.disableControls = true;
+        t.editorEnabled = true;
         t.genEditorSplits();
     }
 }

@@ -44,7 +44,7 @@ input:disabled {
 	color: black;
 }
 
-#splits,#splits-editor {width: 200px; font-size: 18px;}
+#splits,#splits-editor {width: 200px; font-family: "Segoe UI"; font-size: 16px;}
 
 #dattable {
 	table-layout: fixed;
@@ -54,7 +54,7 @@ input:disabled {
 
 #splits-title {
 	text-align: center;
-	font-size: 16px;
+	font-size: 13px;
 }
 
 #dattable div {
