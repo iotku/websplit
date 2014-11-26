@@ -552,3 +552,13 @@ this.openEditor = function () {
         t.genEditorSplits();
     }
 }
+
+// Prompt before navigating away from page
+var confirmOnPageExit = function (e) { // http://stackoverflow.com/a/1119324
+    e = e || window.event;
+    var message = 'Navigating away from this page will result in the timer stopping.\n\nAny unsaved splits will be discarded.';
+    if (e) {e.returnValue = message;}
+    return message;
+};
+
+window.onbeforeunload = confirmOnPageExit;
