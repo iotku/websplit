@@ -4,7 +4,7 @@ html {
 }
 
 body {
-	font-family: Arial, Tahoma, Verdana, sans-serif;
+	font-family: "Segoe UI", sans-serif;
 	background-color: black;
 	color: white;
 }
@@ -54,7 +54,9 @@ input:disabled {
 
 #splits-title {
 	text-align: center;
-	font-size: 13px;
+	font-size: 15px;
+	line-height: 16px;
+	padding-bottom: 2px;
 }
 
 #dattable div {
@@ -82,14 +84,9 @@ input:disabled {
 #timers .stop1 { stop-color: white; }
 #timers .stop2 { stop-color: gray; }
 
-#prevsplit {
-	position: relative;
-	top: -2px;
-}
 #prevsplit,#dattable div:nth-child(3n+3) {
 	text-align: right;
 	padding-right: 5px;
-	font-family: "Segoe UI", sans-serif;
 }
 
 #dattable {
@@ -102,7 +99,6 @@ input:disabled {
 }
 
 #dattable span div:nth-child(2n+1) {
-	/*background-color: #0F0F0F;*/
 	display: table-cell;
 }
 
@@ -115,7 +111,6 @@ input:disabled {
 	display: table-cell;
 	text-align: left;
 	padding-left: 5px;
-	font-family: "Segoe UI", sans-serif;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -178,7 +173,7 @@ input:disabled {
 }
 
 input[type=text],input:disabled{
-	border:0;
+	border: 0;
 	padding: 0;
 	padding-right: 2px;
 	background-color: transparent;
@@ -194,7 +189,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #attempt-counter {
 	position: absolute;
-	top: 22px;
+	top: 20px;
 	border-bottom: none;
 	width: 195px;
 	text-align: right;

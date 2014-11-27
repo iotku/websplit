@@ -551,7 +551,7 @@ this.openEditor = function () {
         t.editorEnabled = true;
         t.genEditorSplits();
     }
-}
+};
 
 // Prompt before navigating away from page
 var confirmOnPageExit = function (e) { // http://stackoverflow.com/a/1119324
