@@ -143,7 +143,7 @@ function GameTimer(d) {
 
         // Setup for next split
         if (this.totalSplits !== this.currentSplit) {
-            prevText.innerHTML = 'Previous Segment:';
+            prevText.innerHTML = 'Prev. Segment:';
             this.currentSplit = this.currentSplit + 1;
             document.getElementById('row' + (this.currentSplit)).className += " active-split";
             document.getElementById('row' + (this.currentSplit - 1)).className = " ";

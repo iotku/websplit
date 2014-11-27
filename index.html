@@ -31,19 +31,18 @@
 			</div>
 		</div>
 		<div id="timers">
-			<svg height="64" width="200">
+			<svg height="55" width="200">
 				<defs>  
 					<linearGradient id="text-gradient" x1="0%" x2="0%" y1="0%" y2="100%">  
 					    <stop class="stop1" offset="0%"/>  
 					    <stop class="stop2" offset="100%"/>  
 					</linearGradient>  
 				</defs>  			
-				<text style="fill: url(#text-gradient); font-size: 48px;" id="timer_realtime" text-anchor="end" x="195px" y="1.2em">0.0</text>
+				<text style="fill: url(#text-gradient); font-size: 40px;" id="timer_realtime" text-anchor="end" x="195px" y="1.2em">0.0</text>
 			</svg>
 		</div>
 		<div class="statusbar">
-			<div id="prevtext"></div>
-			<div id="prevsplit">Not Loaded.</div>
+			<span><div id="prevtext"></div><div id="prevsplit">Not Loaded.</div></span>
 		</div>
 		<div id="controls">
 			<input type="button" value="Start / Split"  onclick="t.split()"/><br>
