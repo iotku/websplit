@@ -13,18 +13,8 @@ function GameTimer(d) {
     /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
     splitsObject = {
-        "info": ["Super Mario 64", "16 Star", 0],
-        "1": ["BoB", 0, 0, 0],
-        "2": ["WF", 0, 0, 0],
-        "3": ["CCM", 0, 0, 0],
-        "4": ["BitDW", 0, 0, 0],
-        "5": ["LLL", 0, 0, 0],
-        "6": ["SSL", 0, 0, 0],
-        "7": ["HMC", 0, 0, 0],
-        "8": ["DDD", 0, 0, 0],
-        "9": ["BitFS", 0, 0, 0],
-        "10": ["BLJs", 0, 0, 0],
-        "11": ["Done.", 0, 0, 0]
+        "info": ["Game Name", "Goal", 0],
+        "1": ["OK (ok)", 0, 0, 0],
     };
 
     this.start = function (start) {
@@ -63,7 +53,7 @@ function GameTimer(d) {
             this.start();
             return false;
         } else if (this.currently === 'done') {
-            return false; //Do nothing.
+            return false;
         } else if (this.currently === 'play') {
             this.currently = 'pause';
             this.update(true, true);
@@ -80,7 +70,7 @@ function GameTimer(d) {
         if (this.disableControls === true) {return false;}
         if (t.currently === 'stop') {
             t.start();
-            return false; // do nothing else
+            return false;
         };
 
         if (t.currently === 'play') {
@@ -182,7 +172,7 @@ function GameTimer(d) {
 
     this.genSplits = function () {
         this.disableControls = true; // Disable while generating splits (even though it should be incredibly fast.)
-        this.editorEnabled = false;
+        this.editorEnabled = false; // It's fairly safe to assume if this function is running the editor has either been closed, or never opened.
         this.currentSplit = 1;
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
@@ -284,7 +274,11 @@ function GameTimer(d) {
     this.genEditorSplits = function () {
         this.timerReset();
         var addtime = 0;
+        document.getElementById("prevsplit").style.color = "white";
         document.getElementById("prevsplit").innerHTML = "Edit Mode.";
+        // Change title/goal/attempt counter may require html restructure
+        // document.getElementById("splits-title").innerHTML = '<input value="' + splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<input id="attempt-counter" value="' + splitsObject["info"][2] + '" />';
+
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
         document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
         for (var step = 1; step <= this.totalSplits; step++) {
@@ -405,7 +399,7 @@ function GameTimer(d) {
 
 
     this.timeConvert = function (hours, minutes, seconds) {
-        // time to ms
+        // Convert from syntax like "00:00:00.00" to ms for use internally
         "use strict";
         var h, min, s, ms, time;
         h = Math.floor(hours * 3600000);
@@ -415,7 +409,7 @@ function GameTimer(d) {
         return time;
     };
 
-    this.editorRealTime = function (t) {
+    this.editorRealTime = function (t) { // This should probably be merged into this.realTime(), pretty redundant. (Is there even any differences?)
         "use strict";
         var h = Math.floor(t / 3600000),
             m = Math.abs(Math.floor((t / 60000) % 60)),
