@@ -173,22 +173,26 @@ function GameTimer(d) {
     };
 
     this.genSplits = function () {
-        this.disableControls = true; // Disable while generating splits (even though it should be incredibly fast.)
-        this.editorEnabled = false; // It's fairly safe to assume if this function is running the editor has either been closed, or never opened.
+        // Disable while generating splits (even though it should be fast.)
+        this.disableControls = true;
+        // It's fairly safe to assume if this function is running the editor
+        // has either been closed, or never opened.
+        this.editorEnabled = false;
         this.currentSplit = 1;
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         };
-        this.totalSplits = Object.keys(splitsObject).length - 1; /* How many splits do we have? Don't count info. */
+        // How many splits do we have? Don't count info.
+        this.totalSplits = Object.keys(splitsObject).length - 1;
 
         document.getElementById("splits-title").innerHTML = splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<div id="attempt-counter">' + splitsObject["info"][2] + '</div>';
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
 
         var addtime = 0;
         for (var step = 1; step <= this.totalSplits; step++) {
-            splitsObject[step][3] = 0; /* Reset current segments */
+            splitsObject[step][3] = 0; // Reset current segments
             addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
-            // variables should be used properly here. (Hard to look at / confusing)
+            /* variables should be used properly here. (confusing) */
 
             // Generate table (Now formatted DIVs) based on splitsObject
             document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<div id="splitname' + step + '"></div>' + '<div id="split' + step + '"></div>' + '<div id="difference' + step + '"></div>' + '</span>';
@@ -222,7 +226,8 @@ function GameTimer(d) {
             var tmpSplits = Object.create(null);
             tmpSplits = JSON.parse(localStorage.PersonalBest)
 
-            // Change the old golds and save. Hopefully there's no case where the PB would save first.
+            // Change the old golds and save. 
+            // Hopefully there's no case where the PB would save first.
             tmpSplits[this.currentSplit][2] = currentSegment;
             localStorage.PersonalBest = JSON.stringify(splitsObject);
     };
@@ -238,7 +243,8 @@ function GameTimer(d) {
     this.saveInitialSplits = function () {
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
-            splitsObject[step][2] = splitsObject[step][3]; // Tansfer all to best split aswell, to remove initization values
+            // Tansfer all to best split aswell, to remove initization values
+            splitsObject[step][2] = splitsObject[step][3];
         }
         localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
     };
@@ -266,8 +272,9 @@ function GameTimer(d) {
         this.genSplits();
         this.timerReset();
     };
-
-    this.timerReset = function () { //useful after stopping timer, makes sure things reset completely
+    
+    // Useful after stopping timer, makes sure things reset completely
+    this.timerReset = function () {
             this.timer = { start: 0, now: 0, realtime: 0 };
             this.updateElements(); /* Updates the now 0 timer values. */
     };
@@ -384,7 +391,9 @@ function GameTimer(d) {
             ms -= 1;
             s -= 1;
             m -= 1;
-            h += 1; // Adding += might be a HUGE mistake here, but it seems to solve an issue with seemingly random -1 values...... 
+            // Adding += might be a HUGE mistake here,
+            // but it seems to solve an issue with seemingly random -1 values...
+            h += 1;  
         }
 
         var humanTime;
@@ -400,7 +409,7 @@ function GameTimer(d) {
             return humanTime;
         } else if ( t <= 0 && h == 0){
             return '-' + humanTime;
-        } else if (h != 0) { // Hour adds the negative sign itself apparently.....
+        } else if (h != 0) { // Hour adds the negative sign itself apparently...
             return humanTime;
         }; // If this fails I'm pretty screwed.
     };
@@ -417,7 +426,9 @@ function GameTimer(d) {
         return time;
     };
 
-    this.editorRealTime = function (t) { // This should probably be merged into this.realTime(), pretty redundant. (Is there even any differences?)
+    // This should probably be merged into this.realTime(), pretty redundant.
+    // (Is there even any differences?)
+    this.editorRealTime = function (t) { 
         "use strict";
         var h = Math.floor(t / 3600000),
             m = Math.abs(Math.floor((t / 60000) % 60)),
