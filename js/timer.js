@@ -141,15 +141,17 @@ function GameTimer(d) {
             this.pause();
             this.currently = 'done';
             document.getElementById("row" + this.currentSplit).className = " ";
-
             if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
+                this.setStyle("ahead");
                 this.saveSplits();
             } else if (this.getTotalTime() === 0) {
                 prevText.innerHTML = '<i>First Record</i>';
+                this.setStyle("ahead");
                 this.saveInitialSplits();
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
+                this.setStyle("behind");
             }
         }
     };
@@ -332,9 +334,15 @@ function GameTimer(d) {
             }
             this.cssChange('#timers .stop1', 'stop-color', '#00FF68');
             this.cssChange('#timers .stop2', 'stop-color', '#00A541');
-        } else if (currentState === 'pause') {
-            this.cssChange('#timers .stop1', 'stop-color', '#0088FF');
-            this.cssChange('#timers .stop2', 'stop-color', '#0058A6');
+        } else if (currentState === 'pause') { // Same as stopped
+            this.cssChange('#timers .stop1', 'stop-color', 'white');
+            this.cssChange('#timers .stop2', 'stop-color', 'gray');
+        } else if (currentState === 'ahead') {
+            this.cssChange('#timers .stop1', 'stop-color', '#00B3FF');
+            this.cssChange('#timers .stop2', 'stop-color', '#00A1E6');
+        } else if (currentState === 'behind') {
+            this.cssChange('#timers .stop1', 'stop-color', '#FF0000');
+            this.cssChange('#timers .stop2', 'stop-color', '#E30000');
         };
     };
 
