@@ -535,7 +535,7 @@ function GameTimer(d) {
 var t; /* ? */
 t = new GameTimer({
     elements: { realtime: 'timer_realtime' },
-    interval: 10,
+    interval: 100, // How fast to update (in ms)
     ms: [2, 1]
 });
 
