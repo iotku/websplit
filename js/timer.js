@@ -284,7 +284,7 @@ function GameTimer(d) {
         for (var step = 1; step <= this.totalSplits; step++) {
             document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
-        document.getElementById("dattable").innerHTML += '<input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>'
+        document.getElementById("dattable").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>'
     };
 
     this.saveNewSplits = function () {
@@ -486,8 +486,7 @@ function GameTimer(d) {
 
     this.removeSplit = function () {
         if (this.editorEnabled === false) {return false}
-        if (this.totalSplits < 2) {return false}
-
+        if (this.totalSplits === 1) {return false} // Can't have 0 splits
         delete splitsObject[this.totalSplits];
         this.totalSplits = this.totalSplits - 1;
         this.genEditorSplits();
