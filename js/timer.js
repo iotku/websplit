@@ -111,16 +111,18 @@ function GameTimer(d) {
 
         // Double Tap Prevention
         if (currentSegment < 300) { return false; };
-
         // Add Current Segment to splitsObject
         splitsObject[this.currentSplit][3] = currentSegment;
-
         // Calculate Total Time Elapsed
-        timerText.innerHTML = this.realTime(splittime - this.getTotalTime());
+        if (splitsObject[this.currentSplit][1] !== 0) {
+            timerText.innerHTML = this.realTime(splittime - this.getTotalTime());
 
-        // Calculate difference between currentSegment and PBsegment
-        prevSplit.innerHTML = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
-
+            // Calculate difference between currentSegment and PBsegment
+            prevSplit.innerHTML = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
+        } else {
+            timerText.innerHTML = "-";
+            prevSplit.innerHTML = "-";
+        };
         // Set finished split time *bold* / Set color for segment and prevsplit
         document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getSegmentTime());
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
@@ -141,14 +143,10 @@ function GameTimer(d) {
             this.pause();
             this.currently = 'done';
             document.getElementById("row" + this.currentSplit).className = " ";
-            if (this.getTotalTime() > this.getSegmentTime()) { /*Dude nice*/
+            if (this.getTotalTime() > this.getSegmentTime() || this.getTotalTime() === 0 || splitsObject[this.totalSplits][1] === 0) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
                 this.setStyle("ahead");
                 this.saveSplits();
-            } else if (this.getTotalTime() === 0) {
-                prevText.innerHTML = '<i>First Record</i>';
-                this.setStyle("ahead");
-                this.saveInitialSplits();
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
                 this.setStyle("behind");
@@ -236,17 +234,14 @@ function GameTimer(d) {
         if (this.disableControls === true || this.currently === 'play') {return false;}
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
+            if (splitsObject[step][2] === 0) {
+                splitsObject[step][2] = splitsObject[step][3];
+            }
+            if (splitsObject[step][1] === 0) {
+                splitsObject[step][1] = splitsObject[step][3];
+            }
         }        
         localStorage.PersonalBest = JSON.stringify(splitsObject);
-    };
-
-    this.saveInitialSplits = function () {
-        for (var step = 1; step <= this.totalSplits; step++) {
-            splitsObject[step][1] = splitsObject[step][3];
-            // Tansfer all to best split aswell, to remove initization values
-            splitsObject[step][2] = splitsObject[step][3];
-        }
-        localStorage.PersonalBest = JSON.stringify(splitsObject); // save splits
     };
 
     this.loadSplits = function () {
@@ -362,7 +357,7 @@ function GameTimer(d) {
         if (currentSegment < bestSegment || bestSegment === 0) {
             prevSplit.style.color = "gold";
             timerText.style.color = "gold";
-            if (this.getTotalTime() < this.getSegmentTime()) {
+            if (this.getTotalTime() < this.getSegmentTime() && pbSegment !== 0) {
                 timerText.innerHTML = '+' + timerText.innerHTML;
             }
             return false; // Exit without checking anything else, gold is gold everywhere!
@@ -407,7 +402,7 @@ function GameTimer(d) {
 
         if (t >= 0) { // I hate everything about this if statement.
             return humanTime;
-        } else if ( t <= 0 && h == 0){
+        } else if ( t < 0 && h == 0){
             return '-' + humanTime;
         } else if (h != 0) { // Hour adds the negative sign itself apparently...
             return humanTime;
