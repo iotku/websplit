@@ -63,7 +63,7 @@ function GameTimer(d) {
             this.timer.start = this.now() - this.timer.realtime;
             this.update();
             this.setStyle(this.currently);
-        };
+        }
     };
 
     this.reset = function () {
@@ -71,11 +71,11 @@ function GameTimer(d) {
         if (t.currently === 'stop') {
             t.start();
             return false;
-        };
+        }
 
         if (t.currently === 'play') {
             t.pause();
-        };
+        }
 
         this.currently = 'reset';
         this.currentSplit = 1;
@@ -110,9 +110,11 @@ function GameTimer(d) {
             prevText = document.getElementById("prevtext");
 
         // Double Tap Prevention
-        if (currentSegment < 300) { return false; };
+        if (currentSegment < 300) { return false; }
+ 
         // Add Current Segment to splitsObject
         splitsObject[this.currentSplit][3] = currentSegment;
+        
         // Calculate Total Time Elapsed
         if (splitsObject[this.currentSplit][1] !== 0) {
             timerText.innerHTML = this.realTime(splittime - this.getTotalTime());
@@ -122,7 +124,8 @@ function GameTimer(d) {
         } else {
             timerText.innerHTML = "-";
             prevSplit.innerHTML = "-";
-        };
+        }
+ 
         // Set finished split time *bold* / Set color for segment and prevsplit
         document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getSegmentTime());
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
@@ -131,7 +134,7 @@ function GameTimer(d) {
         // Save if Gold split (Should be same logic as setSegmentColor())
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
             this.saveGoldSplit(currentSegment);
-        };
+        }
 
         // Setup for next split
         if (this.totalSplits !== this.currentSplit) {
@@ -143,6 +146,7 @@ function GameTimer(d) {
             this.pause();
             this.currently = 'done';
             document.getElementById("row" + this.currentSplit).className = " ";
+            // (Total Time of PB    > Total of Current Segs || No Total, so new spltits  || Last Split is empty, so we assume that the run is new, even if behind)
             if (this.getTotalTime() > this.getSegmentTime() || this.getTotalTime() === 0 || splitsObject[this.totalSplits][1] === 0) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
                 this.setStyle("ahead");
@@ -179,7 +183,7 @@ function GameTimer(d) {
         this.currentSplit = 1;
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
-        };
+        }
         // How many splits do we have? Don't count info.
         this.totalSplits = Object.keys(splitsObject).length - 1;
 
@@ -214,7 +218,7 @@ function GameTimer(d) {
         splitsObject["info"][2]++;
         document.getElementById("attempt-counter").innerHTML = splitsObject["info"][2];
         localStorage.PersonalBest = JSON.stringify(splitsObject);
-    }
+    };
 
     this.saveGoldSplit = function (currentSegment) {
             // Should save if PB
@@ -222,7 +226,7 @@ function GameTimer(d) {
 
             // Load presaved splits (Shouldn't be resaved yet.)
             var tmpSplits = Object.create(null);
-            tmpSplits = JSON.parse(localStorage.PersonalBest)
+            tmpSplits = JSON.parse(localStorage.PersonalBest);
 
             // Change the old golds and save. 
             // Hopefully there's no case where the PB would save first.
@@ -288,7 +292,7 @@ function GameTimer(d) {
         for (var step = 1; step <= this.totalSplits; step++) {
             document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
-        document.getElementById("dattable").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>'
+        document.getElementById("dattable").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
     };
 
     this.saveNewSplits = function () {
@@ -301,7 +305,7 @@ function GameTimer(d) {
             splitsObject[step][0] = splitNames;
             splitsObject[step][1] = this.parseTime(enteredTime);
             splitsObject[step][2] = this.parseTime(bestsegTime);
-        };
+        }
         localStorage.PersonalBest = JSON.stringify(splitsObject);
         t.genSplits();
     };
@@ -312,10 +316,10 @@ function GameTimer(d) {
             try { document.styleSheets[i].insertRule(selector+ ' {'+property+':'+value+'}', document.styleSheets[i].cssRules.length);
             } catch(err) {try { document.styleSheets[i].addRule(selector, property+':'+value);} catch(err) {}} // IE
         }
-    }
+    };
 
     this.setStyle = function (currentState) {
-        var timer = document.getElementById("timer_realtime")
+        var timer = document.getElementById("timer_realtime");
         if (currentState === 'stop') {
             for (var step = 1; step <= this.totalSplits; step++) {
                 var difference = document.getElementById("difference" + step),
@@ -345,7 +349,7 @@ function GameTimer(d) {
         } else if (currentState === 'behind') {
             this.cssChange('#timers .stop1', 'stop-color', '#FF0000');
             this.cssChange('#timers .stop2', 'stop-color', '#E30000');
-        };
+        }
     };
 
     this.setSegmentColor = function (currentSegment) {
@@ -372,7 +376,7 @@ function GameTimer(d) {
         } else {
             timerText.style.color = "red";
             timerText.innerHTML = '+' + timerText.innerHTML;
-        };
+        }
     };
 
     // Timing stuff
@@ -392,27 +396,26 @@ function GameTimer(d) {
         }
 
         var humanTime;
-        if (h == 0 && m == 0) {
+        if (h === 0 && m === 0) {
             humanTime = this.pad(s, 1) + ((msd) ? '.' + this.pad(ms, msd) : '').slice(0, -1);
-        } else if (h == 0 && m < 10) {
-            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 1) + ':' + this.pad(s, 2); // + ((msd) ? '.' + this.pad(ms, msd) : '');
+        } else if (h === 0 && m < 10) {
+            humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 1) + ':' + this.pad(s, 2); // + ((msd) ? '.' + this.pad(ms, msd) : '');
         } else {
-            humanTime = ((h != 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2); // + ((msd) ? '.' + this.pad(ms, msd) : '');
+            humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2); // + ((msd) ? '.' + this.pad(ms, msd) : '');
         }
 
         if (t >= 0) { // I hate everything about this if statement.
             return humanTime;
-        } else if ( t < 0 && h == 0){
+        } else if ( t < 0 && h === 0){
             return '-' + humanTime;
-        } else if (h != 0) { // Hour adds the negative sign itself apparently...
+        } else if (h !== 0) { // Hour adds the negative sign itself apparently...
             return humanTime;
-        }; // If this fails I'm pretty screwed.
+        } // If this fails I'm pretty screwed.
     };
 
 
     this.timeConvert = function (hours, minutes, seconds) {
         // Convert from syntax like "00:00:00.00" to ms for use internally
-        "use strict";
         var h, min, s, ms, time;
         h = Math.floor(hours * 3600000);
         min = Math.abs(Math.floor((minutes * 60000)));
@@ -424,7 +427,6 @@ function GameTimer(d) {
     // This should probably be merged into this.realTime(), pretty redundant.
     // (Is there even any differences?)
     this.editorRealTime = function (t) { 
-        "use strict";
         var h = Math.floor(t / 3600000),
             m = Math.abs(Math.floor((t / 60000) % 60)),
             s = Math.abs(Math.floor((t / 1000) % 60)),
@@ -436,7 +438,6 @@ function GameTimer(d) {
 
     this.parseTime = function (input) {
         // Lets break everything.....
-        "use strict";
         var output, count;
         output = input.split(":");
         count = 0;
@@ -491,26 +492,26 @@ function GameTimer(d) {
     };
 
     this.addSplit = function (selectedSplit) {
-        if (this.editorEnabled === false) {return false}
-        var replaceMe = this.totalSplits
+        if (this.editorEnabled === false) {return false;}
+        var replaceMe = this.totalSplits;
         splitsObject[replaceMe + 1] = [replaceMe + 1,0,0,0];
         this.totalSplits = this.totalSplits + 1;
         this.genEditorSplits();
-    }
+    };
 
     this.removeSplit = function () {
-        if (this.editorEnabled === false) {return false}
-        if (this.totalSplits === 1) {return false} // Can't have 0 splits
+        if (this.editorEnabled === false) {return false;}
+        if (this.totalSplits === 1) {return false;} // Can't have 0 splits
         delete splitsObject[this.totalSplits];
         this.totalSplits = this.totalSplits - 1;
         this.genEditorSplits();
-    }
+    };
 
     // Set up stuff
     var disableControls = false;
     var editorEnabled = false;
     var self = this,
-        d = d || {};
+        d = d || {}; // I really don't know about this.
 
     this.timer = { start: 0, now: 0, realtime: 0 };
     this.elements = {
@@ -543,7 +544,7 @@ window.onkeydown = function keyPress(e) {
         t.split(); // l
     } else if (k === 82) {
         t.reset(); // r
-    };
+    }
 };
 
 window.onload = function () {
