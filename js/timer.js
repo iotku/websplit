@@ -11,7 +11,7 @@ function GameTimer(d) {
     // External Functions
     this.currentSplit = 1; /* Initialize at 1st split */
     /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
-    var splitsObject = Object.create(null); /* Initalize without prototype stuff that I'm apparently not using */
+    var splitsObject = Object.create(null); /* Initialize without prototype stuff that I'm apparently not using */
     splitsObject = {
         "info": ["Game Name", "Goal", 0],
         "1": ["OK (ok)", 0, 0, 0],
@@ -173,10 +173,18 @@ function GameTimer(d) {
 
         if (this.currentSplit === 1) {
             return false;
-        } else {
+        } else { // TODO: Reuse above more efficiently?
             document.getElementById('row' + (this.currentSplit)).className = " ";
             document.getElementById('row' + (this.currentSplit - 1)).className += " active-split";
             this.currentSplit--;
+            document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
+            document.getElementById("split" + this.currentSplit).innerHTML = ' ';
+            if (splitsObject[this.currentSplit][1] === 0) {
+                document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+
+            } else {
+                document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getTotalTime());
+            }
         }
     };
 
