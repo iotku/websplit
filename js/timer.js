@@ -179,6 +179,16 @@ function GameTimer(d) {
         }
     };
 
+    this.skipSplit = function () {
+        if (this.currentSplit === this.totalSplits) {return false;} // can't skip last split
+        splitsObject[this.currentSplit][3] = 0;
+        document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+        document.getElementById("split" + this.currentSplit).innerHTML = '-';
+        this.currentSplit++;
+        document.getElementById('row' + (this.currentSplit)).className += " active-split";
+        document.getElementById('row' + (this.currentSplit - 1)).className = " ";
+    };
+
     this.getTotalTime = function () {
         var totalTime = 0;
         for (var step = 0; step !== this.currentSplit; step++) {
