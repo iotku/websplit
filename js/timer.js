@@ -274,6 +274,11 @@ function GameTimer(d) {
 
     this.saveSplits = function () {
         if (this.disableControls === true || this.currently === 'play') {return false;}
+        if (confirm("Would you like to save?")) {/* Cancel */
+        } else {
+            /* OK */
+            return false;
+        }
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[step][1] = splitsObject[step][3];
             if (splitsObject[step][2] === 0) {
