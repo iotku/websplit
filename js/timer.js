@@ -396,6 +396,11 @@ function GameTimer(d) {
             pbSegment = splitsObject[this.currentSplit][1],
             bestSegment = splitsObject[this.currentSplit][2];
 
+        if (pbSegment === 0 && bestSegment !== 0) {
+            // make sure we don't add + onto empty split
+            return false;
+        }
+        
         if (currentSegment < bestSegment || bestSegment === 0) {
             prevSplit.style.color = "gold";
             timerText.style.color = "gold";
