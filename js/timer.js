@@ -219,7 +219,7 @@ function GameTimer(d) {
         // How many splits do we have? Don't count info.
         this.totalSplits = Object.keys(splitsObject).length - 1;
 
-        document.getElementById("splits-title").innerHTML = splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<div id="attempt-counter">' + splitsObject["info"][2] + '</div>';
+        document.getElementById("splits-title").innerHTML = splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<div id="attempt-counter">' + splitsObject.info[2] + '</div>';
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
 
         var addtime = 0;
@@ -238,7 +238,7 @@ function GameTimer(d) {
             document.getElementById("split" + this.currentSplit).innerHTML = " ";
 
             // Add total time upto current split
-            if (splitsObject[this.currentSplit][1] == 0){
+            if (splitsObject[this.currentSplit][1] === 0){
                 document.getElementById("difference" + this.currentSplit).innerHTML = '-';
             } else {
                 document.getElementById("difference" + this.currentSplit).innerHTML = t.realTime(addtime);            
@@ -254,8 +254,8 @@ function GameTimer(d) {
     };
     
     this.updateAttemptCounter = function () {
-        splitsObject["info"][2]++;
-        document.getElementById("attempt-counter").innerHTML = splitsObject["info"][2];
+        splitsObject.info[2]++;
+        document.getElementById("attempt-counter").innerHTML = splitsObject.info[2];
         localStorage.PersonalBest = JSON.stringify(splitsObject);
     };
 
@@ -308,9 +308,9 @@ function GameTimer(d) {
             splitsObject[step][1] = 0;
             splitsObject[step][2] = 0;
         }
-        splitsObject["info"][0] = "No Game";
-        splitsObject["info"][1] = "No Goal";
-        splitsObject["info"][2] = 0;
+        splitsObject.info[0] = "No Game";
+        splitsObject.info[1] = "No Goal";
+        splitsObject.info[2] = 0;
         this.currentSplit = 1;
         this.genSplits();
         this.timerReset();
@@ -329,7 +329,7 @@ function GameTimer(d) {
         document.getElementById("prevsplit").style.color = "white";
         document.getElementById("prevsplit").innerHTML = "Edit Mode.";
         // Change title/goal/attempt counter may require html restructure
-        // document.getElementById("splits-title").innerHTML = '<input value="' + splitsObject["info"][0] + '<br>' + splitsObject["info"][1] + '<input id="attempt-counter" value="' + splitsObject["info"][2] + '" />';
+        // document.getElementById("splits-title").innerHTML = '<input value="' + splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<input id="attempt-counter" value="' + splitsObject.info[2] + '" />';
 
         document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
         document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
