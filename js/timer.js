@@ -158,6 +158,27 @@ function GameTimer(d) {
         }
     };
 
+    this.unsplit = function () {
+        document.getElementById("split" + this.currentSplit).innerHTML = ' ';
+        document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
+        //
+        if (splitsObject[this.currentSplit][1] === 0) {
+            document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+
+        } else {
+            document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getTotalTime());
+        }
+        splitsObject[this.currentSplit][3] = 0;
+
+        if (this.currentSplit === 1) {
+            return false;
+        } else {
+            document.getElementById('row' + (this.currentSplit)).className = " ";
+            document.getElementById('row' + (this.currentSplit - 1)).className += " active-split";
+            this.currentSplit--;
+        }
+    };
+
     this.getTotalTime = function () {
         var totalTime = 0;
         for (var step = 0; step !== this.currentSplit; step++) {
@@ -192,23 +213,30 @@ function GameTimer(d) {
 
         var addtime = 0;
         for (var step = 1; step <= this.totalSplits; step++) {
-            splitsObject[step][3] = 0; // Reset current segments
-            addtime = splitsObject[step][1] + addtime; // Add each segment together to generate split times
+            splitsObject[this.currentSplit][3] = 0; // Reset current segments
+            addtime = splitsObject[this.currentSplit][1] + addtime; // Add each segment together to generate split times
             /* variables should be used properly here. (confusing) */
 
             // Generate table (Now formatted DIVs) based on splitsObject
-            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<div id="splitname' + step + '"></div>' + '<div id="split' + step + '"></div>' + '<div id="difference' + step + '"></div>' + '</span>';
+            document.getElementById("dattable").innerHTML += '<span id="row' + this.currentSplit + '">' + '<div id="splitname' + this.currentSplit + '"></div>' + '<div id="split' + this.currentSplit + '"></div>' + '<div id="difference' + this.currentSplit + '"></div>' + '</span>';
 
             // Insert split names
-            document.getElementById("splitname" + step).innerHTML = splitsObject[step][0];
+            document.getElementById("splitname" + this.currentSplit).innerHTML = splitsObject[this.currentSplit][0];
 
             // Empty string as placeholder for split times
-            document.getElementById("split" + step).innerHTML = " ";
+            document.getElementById("split" + this.currentSplit).innerHTML = " ";
 
             // Add total time upto current split
-            document.getElementById("difference" + step).innerHTML = t.realTime(addtime);
+            if (splitsObject[this.currentSplit][1] == 0){
+                document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+            } else {
+                document.getElementById("difference" + this.currentSplit).innerHTML = t.realTime(addtime);            
+            }
+
+            this.currentSplit++;
         }
 
+        this.currentSplit = 1;
         this.currently = 'stop';
         this.setStyle(this.currently);
         this.disableControls = false;
