@@ -158,7 +158,8 @@ function GameTimer(d) {
         }
     };
 
-    this.unsplit = function () {
+    this.unsplit = function () { // TODO: Unsplit after timer has finished.
+        if (this.currently === "done") {return false;}
         document.getElementById("split" + this.currentSplit).innerHTML = ' ';
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
         //
@@ -180,7 +181,7 @@ function GameTimer(d) {
     };
 
     this.skipSplit = function () {
-        if (this.currentSplit === this.totalSplits) {return false;} // can't skip last split
+        if (this.currentSplit === this.totalSplits || this.currently === "stop") {return false;} // can't skip last split
         splitsObject[this.currentSplit][3] = 0;
         document.getElementById("difference" + this.currentSplit).innerHTML = '-';
         document.getElementById("split" + this.currentSplit).innerHTML = '-';
