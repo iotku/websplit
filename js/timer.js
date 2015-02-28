@@ -227,8 +227,10 @@ function GameTimer(d) {
         // How many splits do we have? Don't count info.
         this.totalSplits = Object.keys(splitsObject).length - 1;
 
-        document.getElementById("splits-title").innerHTML = splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<div id="attempt-counter">' + splitsObject.info[2] + '</div>';
-        document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
+        document.getElementById("splits-title").innerHTML = splitsObject.info[0];
+        document.getElementById("splits-game-name").innerHTML = splitsObject.info[1];
+        document.getElementById("attempt-counter").innerHTML = splitsObject.info[2];
+        document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
 
         var addtime = 0;
         for (var step = 1; step <= this.totalSplits; step++) {
@@ -237,7 +239,7 @@ function GameTimer(d) {
             /* variables should be used properly here. (confusing) */
 
             // Generate table (Now formatted DIVs) based on splitsObject
-            document.getElementById("dattable").innerHTML += '<span id="row' + this.currentSplit + '">' + '<div id="splitname' + this.currentSplit + '"></div>' + '<div id="split' + this.currentSplit + '"></div>' + '<div id="difference' + this.currentSplit + '"></div>' + '</span>';
+            document.getElementById("splits-table").innerHTML += '<span id="row' + this.currentSplit + '">' + '<div id="splitname' + this.currentSplit + '"></div>' + '<div id="split' + this.currentSplit + '"></div>' + '<div id="difference' + this.currentSplit + '"></div>' + '</span>';
 
             // Insert split names
             document.getElementById("splitname" + this.currentSplit).innerHTML = splitsObject[this.currentSplit][0];
@@ -339,12 +341,12 @@ function GameTimer(d) {
         // Change title/goal/attempt counter may require html restructure
         // document.getElementById("splits-title").innerHTML = '<input value="' + splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<input id="attempt-counter" value="' + splitsObject.info[2] + '" />';
 
-        document.getElementById("dattable").innerHTML = ""; // Make sure table is empty
-        document.getElementById("dattable").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
+        document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
+        document.getElementById("splits-table").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
         for (var step = 1; step <= this.totalSplits; step++) {
-            document.getElementById("dattable").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
+            document.getElementById("splits-table").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
-        document.getElementById("dattable").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
+        document.getElementById("splits-table").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
     };
 
     this.saveNewSplits = function () {
@@ -383,24 +385,24 @@ function GameTimer(d) {
             document.getElementById("prevsplit").innerHTML = "Ready";
             document.getElementById("prevtext").innerHTML = "";
 
-            this.cssChange('#timers .stop1', 'stop-color', 'white');
-            this.cssChange('#timers .stop2', 'stop-color', 'gray');
+            this.cssChange('#timer .stop1', 'stop-color', 'white');
+            this.cssChange('#timer .stop2', 'stop-color', 'gray');
         } else if (currentState === 'play') {
             if (this.currentSplit === 1) {
                 document.getElementById("row1").className += " active-split";
                 document.getElementById("prevsplit").innerHTML = "...";
             }
-            this.cssChange('#timers .stop1', 'stop-color', '#00FF68');
-            this.cssChange('#timers .stop2', 'stop-color', '#00A541');
+            this.cssChange('#timer .stop1', 'stop-color', '#00FF68');
+            this.cssChange('#timer .stop2', 'stop-color', '#00A541');
         } else if (currentState === 'pause') { // Same as stopped
-            this.cssChange('#timers .stop1', 'stop-color', 'white');
-            this.cssChange('#timers .stop2', 'stop-color', 'gray');
+            this.cssChange('#timer .stop1', 'stop-color', 'white');
+            this.cssChange('#timer .stop2', 'stop-color', 'gray');
         } else if (currentState === 'ahead') {
-            this.cssChange('#timers .stop1', 'stop-color', '#00B3FF');
-            this.cssChange('#timers .stop2', 'stop-color', '#00A1E6');
+            this.cssChange('#timer .stop1', 'stop-color', '#00B3FF');
+            this.cssChange('#timer .stop2', 'stop-color', '#00A1E6');
         } else if (currentState === 'behind') {
-            this.cssChange('#timers .stop1', 'stop-color', '#FF0000');
-            this.cssChange('#timers .stop2', 'stop-color', '#E30000');
+            this.cssChange('#timer .stop1', 'stop-color', '#FF0000');
+            this.cssChange('#timer .stop2', 'stop-color', '#E30000');
         }
     };
 

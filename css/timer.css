@@ -46,20 +46,20 @@ input:disabled {
 
 #splits,#splits-editor {width: 200px; font-family: "Segoe UI"; font-size: 14px;}
 
-#dattable {
+#splits-table {
 	table-layout: fixed;
 	width: 100%;
 
 }
 
-#splits-title {
+#splits-header {
 	text-align: center;
 	font-size: 14px;
 	line-height: 16px;
 	padding-bottom: 2px;
 }
 
-#dattable div {
+#splits-table div {
 	border-bottom: 1px solid #1D1D1D;
 	padding-top: 1.5px;
 	padding-bottom: 1.5px;
@@ -70,7 +70,7 @@ input:disabled {
   background-color: #111;
 }
 
-#timers {
+#timer {
 	border-top: 2px solid #555;
 	background-color: #0F0F0F;
 	padding-bottom: 5px;
@@ -81,32 +81,32 @@ input:disabled {
 }
 
 /* Gradient Colors for #timer_realtime */
-#timers .stop1 { stop-color: white; }
-#timers .stop2 { stop-color: gray; }
+#timer .stop1 { stop-color: white; }
+#timer .stop2 { stop-color: gray; }
 
-#prevsplit,#dattable div:nth-child(3n+3) {
+#prevsplit,#splits-table div:nth-child(3n+3) {
 	text-align: right;
 	padding-right: 5px;
 }
 
-#dattable {
+#splits-table {
 	display: table;
 	width: 100%;
 }
 
-#dattable span {
+#splits-table span {
 	display: table-row;
 }
 
-#dattable span div:nth-child(2n+1) {
+#splits-table span div:nth-child(2n+1) {
 	display: table-cell;
 }
 
-#dattable span div:nth-child(2n+2) {
+#splits-table span div:nth-child(2n+2) {
 	display: table-cell;
 }
 
-#dattable span div:nth-child(3n+1) {
+#splits-table span div:nth-child(3n+1) {
 	/*float: left;*/
 	display: table-cell;
 	text-align: left;
@@ -116,15 +116,15 @@ input:disabled {
 	text-overflow: ellipsis;
 }
 
-#dattable span:nth-child(2n+1) {
+#splits-table span:nth-child(2n+1) {
 	background-color: #111;
 }
 
-#dattable span:nth-child(2n+2) {
+#splits-table span:nth-child(2n+2) {
 	background-color: #171717;
 }
 
-#dattable span div:nth-child(2n+2) {
+#splits-table span div:nth-child(2n+2) {
 	text-align: center;
 	display: table-cell;
 }
@@ -142,7 +142,7 @@ input:disabled {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3373f4', endColorstr='#153574',GradientType=0 );
 }
 
-#splits-title {
+#splits-header {
 	background: #2a2a2a;
 	background: -moz-linear-gradient(top,  #2a2a2a 0%, #131313 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2a2a2a), color-stop(100%,#131313));
