@@ -117,17 +117,17 @@ function GameTimer(d) {
         
         // Calculate Total Time Elapsed
         if (splitsObject[this.currentSplit][1] !== 0) {
-            timerText.innerHTML = this.realTime(splittime - this.getTotalTime());
+            timerText.textContent = this.realTime(splittime - this.getTotalTime());
 
             // Calculate difference between currentSegment and PBsegment
-            prevSplit.innerHTML = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
+            prevSplit.textContent = this.realTime(currentSegment - splitsObject[this.currentSplit][1]);
         } else {
-            timerText.innerHTML = "-";
-            prevSplit.innerHTML = "-";
+            timerText.textContent = "-";
+            prevSplit.textContent = "-";
         }
  
         // Set finished split time *bold* / Set color for segment and prevsplit
-        document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getSegmentTime());
+        document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getSegmentTime());
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
 
@@ -138,7 +138,7 @@ function GameTimer(d) {
 
         // Setup for next split
         if (this.totalSplits !== this.currentSplit) {
-            prevText.innerHTML = 'Prev. Segment:';
+            prevText.textContent = 'Prev. Segment:';
             this.currentSplit = this.currentSplit + 1;
             document.getElementById('row' + (this.currentSplit)).className += " active-split";
             document.getElementById('row' + (this.currentSplit - 1)).className = " ";
@@ -162,7 +162,7 @@ function GameTimer(d) {
         if (this.currently === "done") {return false;}
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
         if (splitsObject[this.currentSplit][1] !== 0) {
-            document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getTotalTime());
+            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
         }
 
         splitsObject[this.currentSplit][3] = 0;
@@ -174,11 +174,11 @@ function GameTimer(d) {
             document.getElementById('row' + (this.currentSplit - 1)).className += " active-split";
             this.currentSplit--;
             document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
-            document.getElementById("split" + this.currentSplit).innerHTML = ' ';
+            document.getElementById("split" + this.currentSplit).textContent = ' ';
             if (splitsObject[this.currentSplit][1] === 0) {
-                document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+                document.getElementById("difference" + this.currentSplit).textContent = '-';
             } else {
-                document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getTotalTime());
+                document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             }
         }
     };
@@ -186,9 +186,9 @@ function GameTimer(d) {
     this.skipSplit = function () {
         if (this.currentSplit === this.totalSplits || this.currently === "stop") {return false;} // can't skip last split
         splitsObject[this.currentSplit][3] = 0;
-        document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+        document.getElementById("difference" + this.currentSplit).textContent = '-';
         document.getElementById("split" + this.currentSplit).style.color = "white";
-        document.getElementById("split" + this.currentSplit).innerHTML = '-';
+        document.getElementById("split" + this.currentSplit).textContent = '-';
         this.currentSplit++;
         document.getElementById('row' + (this.currentSplit)).className += " active-split";
         document.getElementById('row' + (this.currentSplit - 1)).className = " ";
@@ -223,9 +223,9 @@ function GameTimer(d) {
         // How many splits do we have? Don't count info.
         this.totalSplits = Object.keys(splitsObject).length - 1;
 
-        document.getElementById("splits-title").innerHTML = splitsObject.info[0];
-        document.getElementById("splits-game-name").innerHTML = splitsObject.info[1];
-        document.getElementById("attempt-counter").innerHTML = splitsObject.info[2];
+        document.getElementById("splits-title").textContent = splitsObject.info[0];
+        document.getElementById("splits-game-name").textContent = splitsObject.info[1];
+        document.getElementById("attempt-counter").textContent = splitsObject.info[2];
         document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
 
         // Make sure editor controls are gone (bad place for this)
@@ -249,9 +249,9 @@ function GameTimer(d) {
 
             // Add total time upto current split
             if (splitsObject[this.currentSplit][1] === 0){
-                document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+                document.getElementById("difference" + this.currentSplit).textContent = '-';
             } else {
-                document.getElementById("difference" + this.currentSplit).innerHTML = t.realTime(addtime);            
+                document.getElementById("difference" + this.currentSplit).textContent = t.realTime(addtime);            
             }
 
             this.currentSplit++;
@@ -265,7 +265,7 @@ function GameTimer(d) {
     
     this.updateAttemptCounter = function () {
         splitsObject.info[2]++;
-        document.getElementById("attempt-counter").innerHTML = splitsObject.info[2];
+        document.getElementById("attempt-counter").textContent = splitsObject.info[2];
         localStorage.PersonalBest = JSON.stringify(splitsObject);
     };
 
@@ -337,7 +337,7 @@ function GameTimer(d) {
         this.timerReset();
         var addtime = 0;
         document.getElementById("prevsplit").style.color = "white";
-        document.getElementById("prevsplit").innerHTML = "Edit Mode.";
+        document.getElementById("prevsplit").textContent = "Edit Mode.";
         // Change title/goal/attempt counter may require html restructure
         // document.getElementById("splits-title").innerHTML = '<input value="' + splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<input id="attempt-counter" value="' + splitsObject.info[2] + '" />';
 
@@ -382,15 +382,15 @@ function GameTimer(d) {
                 difference.style.fontWeight = "Normal";
             }
             document.getElementById("prevsplit").style.color = "White";
-            document.getElementById("prevsplit").innerHTML = "Ready";
-            document.getElementById("prevtext").innerHTML = "";
+            document.getElementById("prevsplit").textContent = "Ready";
+            document.getElementById("prevtext").textContent = "";
 
             this.cssChange('#timer .stop1', 'stop-color', 'white');
             this.cssChange('#timer .stop2', 'stop-color', 'gray');
         } else if (currentState === 'play') {
             if (this.currentSplit === 1) {
                 document.getElementById("row1").className += " active-split";
-                document.getElementById("prevsplit").innerHTML = "...";
+                document.getElementById("prevsplit").textContent = "...";
             }
             this.cssChange('#timer .stop1', 'stop-color', '#00FF68');
             this.cssChange('#timer .stop2', 'stop-color', '#00A541');
@@ -421,20 +421,20 @@ function GameTimer(d) {
             prevSplit.style.color = "gold";
             timerText.style.color = "gold";
             if (this.getTotalTime() < this.getSegmentTime() && pbSegment !== 0) {
-                timerText.innerHTML = '+' + timerText.innerHTML;
+                timerText.textContent = '+' + timerText.textContent;
             }
             return false; // Exit without checking anything else, gold is gold everywhere!
         } else if (currentSegment < pbSegment) {
             prevSplit.style.color = "lime";
         } else {
             prevSplit.style.color = "red";
-            prevSplit.innerHTML = '+' + prevSplit.innerHTML;
+            prevSplit.textContent = '+' + prevSplit.textContent;
         }
         if (this.getTotalTime() > this.getSegmentTime()) {
             timerText.style.color = "lime";
         } else {
             timerText.style.color = "red";
-            timerText.innerHTML = '+' + timerText.innerHTML;
+            timerText.textContent = '+' + timerText.textContent;
         }
     };
 
