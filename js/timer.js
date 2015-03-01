@@ -223,8 +223,8 @@ function GameTimer(d) {
         // How many splits do we have? Don't count info.
         this.totalSplits = Object.keys(splitsObject).length - 1;
 
-        document.getElementById("splits-title").textContent = splitsObject.info[0];
-        document.getElementById("splits-game-name").textContent = splitsObject.info[1];
+        document.getElementById("splits-game-name").textContent = splitsObject.info[0];
+        document.getElementById("splits-goal-name").textContent = splitsObject.info[1];
         document.getElementById("attempt-counter").textContent = splitsObject.info[2];
         document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
 
@@ -339,14 +339,16 @@ function GameTimer(d) {
         document.getElementById("prevsplit").style.color = "white";
         document.getElementById("prevsplit").textContent = "Edit Mode.";
         // Change title/goal/attempt counter may require html restructure
-        // document.getElementById("splits-title").innerHTML = '<input value="' + splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<input id="attempt-counter" value="' + splitsObject.info[2] + '" />';
-
+        // document.getElementById("splits-game-name").innerHTML = '<input value="' + splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<input id="attempt-counter" value="' + splitsObject.info[2] + '" />';
+        document.getElementById("splits-game-name").innerHTML = '<input id="splits-game-input" value="' + splitsObject.info[0] + '"/>';
+        document.getElementById("splits-goal-name").innerHTML = '<input id="splits-goal-input" value="' + splitsObject.info[1] + '"/>';
+        document.getElementById("attempt-counter").innerHTML = '<input id="attempt-counter-input" value="' + splitsObject.info[2] + '"/>';
         document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
         document.getElementById("splits-table").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
         for (var step = 1; step <= this.totalSplits; step++) {
             document.getElementById("splits-table").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
-        document.getElementById("editor-controls").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
+        document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
     };
 
     this.saveNewSplits = function () {
@@ -360,6 +362,10 @@ function GameTimer(d) {
             splitsObject[step][1] = this.parseTime(enteredTime);
             splitsObject[step][2] = this.parseTime(bestsegTime);
         }
+        console.log(document.getElementById("splits-game-input").value)
+        splitsObject.info[0] = document.getElementById("splits-game-input").value;
+        splitsObject.info[1] = document.getElementById("splits-goal-input").value;
+        splitsObject.info[2] = document.getElementById("attempt-counter-input").value;
         localStorage.PersonalBest = JSON.stringify(splitsObject);
         t.genSplits();
     };
@@ -367,8 +373,7 @@ function GameTimer(d) {
     // Styling Functions
     this.cssChange = function (selector, property, value) { // http://stackoverflow.com/a/11081100
         for (var i=0; i<document.styleSheets.length;i++) { // Loop through all styles
-            try { document.styleSheets[i].insertRule(selector+ ' {'+property+':'+value+'}', document.styleSheets[i].cssRules.length);
-            } catch(err) {try { document.styleSheets[i].addRule(selector, property+':'+value);} catch(err) {}} // IE
+             document.styleSheets[i].addRule(selector, property+':'+value);
         }
     };
 
@@ -496,7 +501,7 @@ function GameTimer(d) {
     };
 
     this.parseTime = function (input) {
-        // Lets break everything.....
+        // Often fails silently (== 0) if invalid input
         var output, count;
         output = input.split(":");
         count = 0;
