@@ -192,10 +192,12 @@ function GameTimer(d) {
         if (this.currentSplit === this.totalSplits || this.currently === "stop") {return false;} // can't skip last split
         splitsObject[this.currentSplit][3] = 0;
         document.getElementById("difference" + this.currentSplit).innerHTML = '-';
+        document.getElementById("split" + this.currentSplit).style.color = "white";
         document.getElementById("split" + this.currentSplit).innerHTML = '-';
         this.currentSplit++;
         document.getElementById('row' + (this.currentSplit)).className += " active-split";
         document.getElementById('row' + (this.currentSplit - 1)).className = " ";
+
     };
 
     this.getTotalTime = function () {
@@ -232,6 +234,10 @@ function GameTimer(d) {
         document.getElementById("attempt-counter").innerHTML = splitsObject.info[2];
         document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
 
+        // Make sure editor controls are gone (bad place for this)
+        document.getElementById("editor-controls").innerHTML = ""; //
+        
+        // Do split magic
         var addtime = 0;
         for (var step = 1; step <= this.totalSplits; step++) {
             splitsObject[this.currentSplit][3] = 0; // Reset current segments
@@ -346,7 +352,7 @@ function GameTimer(d) {
         for (var step = 1; step <= this.totalSplits; step++) {
             document.getElementById("splits-table").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
-        document.getElementById("splits-table").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
+        document.getElementById("editor-controls").innerHTML += '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
     };
 
     this.saveNewSplits = function () {
@@ -550,20 +556,27 @@ function GameTimer(d) {
         return o;
     };
 
-    this.addSplit = function (selectedSplit) {
+    // Either addsplit or removesplit leaves a mess behind in the DOM when used
+    // not a huge issue (I hope), but worth investigating later
+    this.addSplit = function () {
         if (this.editorEnabled === false) {return false;}
-        var replaceMe = this.totalSplits;
-        splitsObject[replaceMe + 1] = [replaceMe + 1,0,0,0];
+        var replaceMe = this.totalSplits + 1;
+        splitsObject[replaceMe] = [replaceMe,0,0,0];
         this.totalSplits = this.totalSplits + 1;
-        this.genEditorSplits();
+        // This should hopefully not lose all <input> data
+        var container = document.createElement("span");
+        container.innerHTML = '<span id="row' + replaceMe + '"><input id="splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="difference' + replaceMe + '" type="text" value="00:00.00"></span>';
+        document.getElementById("splits-table").appendChild(container);
+
     };
 
     this.removeSplit = function () {
         if (this.editorEnabled === false) {return false;}
         if (this.totalSplits === 1) {return false;} // Can't have 0 splits
         delete splitsObject[this.totalSplits];
+        var removedRow = document.getElementById("row" + this.totalSplits);
+        removedRow.parentNode.removeChild(removedRow);
         this.totalSplits = this.totalSplits - 1;
-        this.genEditorSplits();
     };
 
     // Set up stuff
