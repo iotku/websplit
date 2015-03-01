@@ -160,15 +160,11 @@ function GameTimer(d) {
 
     this.unsplit = function () { // TODO: Unsplit after timer has finished.
         if (this.currently === "done") {return false;}
-        document.getElementById("split" + this.currentSplit).innerHTML = ' ';
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
-        //
-        if (splitsObject[this.currentSplit][1] === 0) {
-            document.getElementById("difference" + this.currentSplit).innerHTML = '-';
-
-        } else {
+        if (splitsObject[this.currentSplit][1] !== 0) {
             document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getTotalTime());
         }
+
         splitsObject[this.currentSplit][3] = 0;
 
         if (this.currentSplit === 1) {
@@ -181,7 +177,6 @@ function GameTimer(d) {
             document.getElementById("split" + this.currentSplit).innerHTML = ' ';
             if (splitsObject[this.currentSplit][1] === 0) {
                 document.getElementById("difference" + this.currentSplit).innerHTML = '-';
-
             } else {
                 document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.getTotalTime());
             }
@@ -197,7 +192,6 @@ function GameTimer(d) {
         this.currentSplit++;
         document.getElementById('row' + (this.currentSplit)).className += " active-split";
         document.getElementById('row' + (this.currentSplit - 1)).className = " ";
-
     };
 
     this.getTotalTime = function () {
@@ -522,7 +516,7 @@ function GameTimer(d) {
     this.updateElements = function () {
         if (this.elements) {
             document.getElementById(this.elements.realtime).textContent = this.realTime(this.timer.realtime);
-            // document.getElementById("difference" + this.currentSplit).innerHTML = this.realTime(this.timer.realtime);
+            // document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.timer.realtime);
         }
     };
 
