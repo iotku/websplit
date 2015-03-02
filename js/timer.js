@@ -282,17 +282,9 @@ function GameTimer(d) {
     };
 
     this.saveGoldSplit = function () {
-        if (this.currently === "reset"){
-            for (var step = 1; step < this.currentSplit; step++) {
-                if (splitsObject[step][2] > splitsObject[step][3] || splitsObject[step][2] === 0) {
-                    splitsObject[step][2] = splitsObject[step][3];
-                }
-            }
-        } else if (this.currently === "done") {
-            for (var step = 1; step <= this.totalSplits; step++) {
-                if (splitsObject[step][2] > splitsObject[step][3] || splitsObject[step][2] === 0) {
-                    splitsObject[step][2] = splitsObject[step][3];
-                }
+        for (var step = 1; step <= this.totalSplits; step++) {
+            if (splitsObject[step][2] > splitsObject[step][3] || splitsObject[step][2] === 0) {
+                if(splitsObject[step][3] !== 0) {splitsObject[step][2] = splitsObject[step][3];} // Should find a better way
             }
         }
         localStorage.PersonalBest = JSON.stringify(splitsObject); // Don't break everything, please. Thanks.
