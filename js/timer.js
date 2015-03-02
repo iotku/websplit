@@ -9,7 +9,8 @@
 function GameTimer(d) {
     "use strict"; // Someday I'll have good code
     // External Functions
-    this.currentSplit = 1; /* Initialize at 1st split */
+    this.currentSplit = 1; // Initialize at 1st split
+    this.goldCounter = 0; // How Many gold splits?
     /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var splitsObject = Object.create(null); /* Initialize without prototype stuff that I'm apparently not using */
     splitsObject = {
@@ -78,6 +79,7 @@ function GameTimer(d) {
         }
 
         this.currently = 'reset';
+        if (this.goldCounter > 0) {if (window.confirm("Would you like to save your gold splits?")){this.saveGoldSplit();}} // Wo
         this.currentSplit = 1;
         t.split(); /* What does this even do? */
         this.genSplits(); /* reset splits */
@@ -131,11 +133,11 @@ function GameTimer(d) {
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
 
-        // Save if Gold split (Should be same logic as setSegmentColor())
+        // Incriment gold counter to know how many golds there are
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
-            this.saveGoldSplit(currentSegment);
+            this.goldCounter++;
         }
-
+        console.log(this.goldCounter);
         // Setup for next split
         if (this.totalSplits !== this.currentSplit) {
             prevText.textContent = 'Prev. Segment:';
@@ -150,10 +152,12 @@ function GameTimer(d) {
             if (this.getTotalTime() > this.getSegmentTime() || this.getTotalTime() === 0 || splitsObject[this.totalSplits][1] === 0) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
                 this.setStyle("ahead");
+                this.saveGoldSplit();
                 this.saveSplits();
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
                 this.setStyle("behind");
+                this.saveGoldSplit();
             }
         }
     };
@@ -216,7 +220,13 @@ function GameTimer(d) {
         // It's fairly safe to assume if this function is running the editor
         // has either been closed, or never opened.
         this.editorEnabled = false;
+        this.goldCounter = 0;
         this.currentSplit = 1;
+        // Cleanup my mess hopefully
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitsObject[step][4] = 0;
+        }
+
         if (localStorage.PersonalBest) {
             splitsObject = JSON.parse(localStorage.PersonalBest);
         }
@@ -270,17 +280,12 @@ function GameTimer(d) {
     };
 
     this.saveGoldSplit = function (currentSegment) {
-            // Should save if PB
-            splitsObject[this.currentSplit][2] = currentSegment;
-
-            // Load presaved splits (Shouldn't be resaved yet.)
-            var tmpSplits = Object.create(null);
-            tmpSplits = JSON.parse(localStorage.PersonalBest);
-
-            // Change the old golds and save. 
-            // Hopefully there's no case where the PB would save first.
-            tmpSplits[this.currentSplit][2] = currentSegment;
-            localStorage.PersonalBest = JSON.stringify(splitsObject);
+        for (var step = 1; step < this.currentSplit; step++) {
+            if (splitsObject[step][2] > splitsObject[step][3] || splitsObject[step][2] === 0) {
+                splitsObject[step][2] = splitsObject[step][3];
+            }
+        }
+        localStorage.PersonalBest = JSON.stringify(splitsObject); // Don't break everything, please. Thanks.
     };
 
     this.saveSplits = function () {
@@ -338,8 +343,6 @@ function GameTimer(d) {
         var addtime = 0;
         document.getElementById("prevsplit").style.color = "white";
         document.getElementById("prevsplit").textContent = "Edit Mode.";
-        // Change title/goal/attempt counter may require html restructure
-        // document.getElementById("splits-game-name").innerHTML = '<input value="' + splitsObject.info[0] + '<br>' + splitsObject.info[1] + '<input id="attempt-counter" value="' + splitsObject.info[2] + '" />';
         document.getElementById("splits-game-name").innerHTML = '<input id="splits-game-input" value="' + splitsObject.info[0] + '"/>';
         document.getElementById("splits-goal-name").innerHTML = '<input id="splits-goal-input" value="' + splitsObject.info[1] + '"/>';
         document.getElementById("attempt-counter").innerHTML = '<input id="attempt-counter-input" value="' + splitsObject.info[2] + '"/>';
@@ -362,7 +365,6 @@ function GameTimer(d) {
             splitsObject[step][1] = this.parseTime(enteredTime);
             splitsObject[step][2] = this.parseTime(bestsegTime);
         }
-        console.log(document.getElementById("splits-game-input").value)
         splitsObject.info[0] = document.getElementById("splits-game-input").value;
         splitsObject.info[1] = document.getElementById("splits-goal-input").value;
         splitsObject.info[2] = document.getElementById("attempt-counter-input").value;
@@ -596,8 +598,9 @@ function GameTimer(d) {
     } else {
         this.ms = [d.ms, d.ms];
         this.currently = 'stop';
-    }
+    } 
 }
+
 
 var t; /* ? */
 t = new GameTimer({
@@ -631,6 +634,7 @@ this.openEditor = function () {
         t.genEditorSplits();
     }
 };
+
 
 // Prompt before navigating away from page
 var confirmOnPageExit = function (e) { // http://stackoverflow.com/a/1119324
