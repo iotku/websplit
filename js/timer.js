@@ -153,11 +153,13 @@ function GameTimer(d) {
                 prevText.innerHTML = '<b>New Record</b>';
                 this.setStyle("ahead");
                 this.saveGoldSplit();
+                this.goldCounter = 0; // Make sure reset doesn't cause double gold save
                 this.saveSplits();
             } else {
                 prevText.innerHTML = '<b>No Record</b>';
                 this.setStyle("behind");
                 this.saveGoldSplit();
+                this.goldCounter = 0; // Make sure reset doesn't cause double gold save
             }
         }
     };
@@ -279,10 +281,18 @@ function GameTimer(d) {
         localStorage.PersonalBest = JSON.stringify(splitsObject);
     };
 
-    this.saveGoldSplit = function (currentSegment) {
-        for (var step = 1; step < this.currentSplit; step++) {
-            if (splitsObject[step][2] > splitsObject[step][3] || splitsObject[step][2] === 0) {
-                splitsObject[step][2] = splitsObject[step][3];
+    this.saveGoldSplit = function () {
+        if (this.currently === "reset"){
+            for (var step = 1; step < this.currentSplit; step++) {
+                if (splitsObject[step][2] > splitsObject[step][3] || splitsObject[step][2] === 0) {
+                    splitsObject[step][2] = splitsObject[step][3];
+                }
+            }
+        } else if (this.currently === "done") {
+            for (var step = 1; step <= this.totalSplits; step++) {
+                if (splitsObject[step][2] > splitsObject[step][3] || splitsObject[step][2] === 0) {
+                    splitsObject[step][2] = splitsObject[step][3];
+                }
             }
         }
         localStorage.PersonalBest = JSON.stringify(splitsObject); // Don't break everything, please. Thanks.
