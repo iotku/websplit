@@ -377,7 +377,8 @@ function GameTimer(d) {
     // Styling Functions
     this.cssChange = function (selector, property, value) { // http://stackoverflow.com/a/11081100
         for (var i=0; i<document.styleSheets.length;i++) { // Loop through all styles
-             document.styleSheets[i].addRule(selector, property+':'+value);
+            try { document.styleSheets[i].insertRule(selector+ ' {'+property+':'+value+'}', document.styleSheets[i].cssRules.length);
+                } catch(err) {try { document.styleSheets[i].addRule(selector, property+':'+value);} catch(err) {}} // IE
         }
     };
 
