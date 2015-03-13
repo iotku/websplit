@@ -12,14 +12,9 @@ function GameTimer(d) {
     this.goldCounter = 0; // How Many gold splits?
     this.splitID = 0; // Initialize, should be set my split selection function
     var splitsList = Object.create(null);
-    // var splitsList = Object.create(null);
+
     if (localStorage.splitsListTracker) {
         splitsList = JSON.parse(localStorage.splitsListTracker);
-        console.log("splitsList Exists")
-    } else {
-        // console.log(splitsList);
-        console.log(splitsList)
-        console.log("splitsList Doesn't Exist")
     }
     var splitsObject = Object.create(null);
     //Mom's spaghetti

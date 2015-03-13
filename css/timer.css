@@ -211,3 +211,11 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	margin-right: 20px;
 	width: 150px;
 }
+
+.alertBox {
+	font-size: 2em;
+	font-color: white;
+	background-color: red;
+	border: 2px solid white;
+	position: absolute;
+}
