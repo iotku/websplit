@@ -237,3 +237,13 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	background-color: #333;
 	list-style: square inside;
 }
+
+#split-selector .delete,#split-selector .delete a:link,#split-selector .delete a:visited {
+	position: absolute;
+	text-decoration: none;
+	font-weight: bolder;
+	left: 10px;
+	/*top: 10px;*/
+	font-size: 30px;
+	color: red;
+}
