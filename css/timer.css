@@ -230,14 +230,20 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	width: 200px;
 }
 #split-selector ul {
+
 	border: white 2px solid;
 	background-color: #222;
 	list-style: square inside;
+}
+
+#split-selector li {
+	margin-left: 20px;
 }
 #split-selector ul:hover {
 	border: white 2px solid;
 	background-color: #333;
 	list-style: square inside;
+	cursor: pointer;
 }
 
 #split-selector .delete,#split-selector .delete a:link,#split-selector .delete a:visited {
@@ -248,4 +254,14 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	/*top: 10px;*/
 	font-size: 30px;
 	color: red;
+}
+
+#split-selector .defaultSplit,#split-selector .defaultSplit a:link,#split-selector .defaultSplit a:visited {
+	position: absolute;
+	text-decoration: none;
+	font-weight: bolder;
+	left: 20px;
+	/*top: 10px;*/
+	font-size: 30px;
+	color: green;
 }

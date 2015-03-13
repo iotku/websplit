@@ -302,8 +302,12 @@ function GameTimer(d) {
             localStorage.splitsListTracker = JSON.stringify(splitsList);
             localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
             console.log(localStorage.splitsListTracker);
-            this.genSplits();
+            this.makeDefaultSplits(0);
         } else {
+            if (localStorage.splitsDefault && localStorage.splitsDefault in splitsList) {
+                    this.selectPB(localStorage.splitsDefault);
+                    return false;
+            }
             this.splitSelector();
         }
     };
@@ -317,7 +321,7 @@ function GameTimer(d) {
             var pbid;
             for (pbid in splitsList) { // Gets numbers hopefully
                 splitsObject = JSON.parse(localStorage["PB" + pbid]);
-                document.getElementById("split-selector").innerHTML += '<span class="delete"><a href="#" onclick="t.deleteSplitFile(' + pbid + ')">X</a></span><ul onclick="t.selectPB(' + pbid + ')"><li>' + splitsObject.info[0] + '</li><li>' + splitsObject.info[1] + '</li></ul>';
+                document.getElementById("split-selector").innerHTML += '<span class="delete"><a href="#" onclick="t.deleteSplitFile(' + pbid + ')">X</a></span><span class="defaultSplit"><a href="#" onclick="t.makeDefaultSplits(' + pbid + ')">✓</a></span><ul onclick="t.selectPB(' + pbid + ')"><li>' + splitsObject.info[0] + '</li><li>' + splitsObject.info[1] + '</li></ul>';
             }
             // Now that the loop has run, pbid should be the last object in the element supposibly.
             var nextpbid = parseInt(pbid, 10) + 1;
@@ -351,6 +355,11 @@ function GameTimer(d) {
         document.getElementById("split-selector").style.visibility = "hidden";
         this.genSplits();
         this.timerReset();
+    };
+
+    this.makeDefaultSplits = function (pbid) {
+        localStorage.splitsDefault = pbid;
+        this.selectPB(pbid);
     };
 
     this.deleteSplitFile = function (id) {
