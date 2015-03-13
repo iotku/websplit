@@ -26,6 +26,8 @@
 	<!--[if lt IE 9]>
 		<div class="alertBox">Sorry, IE8 and below are not supported. Please use IE9+ or Chrome/Firefox</div>
 	<![endif]-->
+	<div id="split-selector">
+	</div>
 	<div id="container">
 		<div id="splits-header">
 			<div id="splits-game-name">No Title.</div>
@@ -57,7 +59,7 @@
 			<input type="button" value="Pause"  onclick="t.pause()"/><br>
 			<input type="button" value="Save"   onclick="t.saveSplits()"/>
 			<input type="button" value="Load"   onclick="t.loadSplits()"/><br>
-			<input type="button" value="Unload" onclick="t.deleteSplits()"/>
+			<!-- <input type="button" value="Unload" onclick="t.deleteSplits()"/> -->
 			<input type="button" value="Editor" onclick="openEditor()"/>
 			<input type="button" value="unsplit" onclick="t.unsplit()"/>
 			<input type="button" value="skipsplit" onclick="t.skipSplit()"/>

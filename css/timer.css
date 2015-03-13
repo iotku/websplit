@@ -37,6 +37,9 @@ input[value=Pause],input[value=Load] {background-color: #0062FF;}
 
 input[value=Editor] {background-color: orange; width: 200px;}
 
+input[value='New Splits Entry'] {
+	background-color: green; width: 200px;
+}
 input:active {color: #DDDDFF; color: #000033;}
 
 input:disabled {
@@ -218,4 +221,19 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	background-color: red;
 	border: 2px solid white;
 	position: absolute;
+}
+
+
+#split-selector {
+	width: 200px;
+}
+#split-selector ul {
+	border: white 2px solid;
+	background-color: #222;
+	list-style: square inside;
+}
+#split-selector ul:hover {
+	border: white 2px solid;
+	background-color: #333;
+	list-style: square inside;
 }

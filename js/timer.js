@@ -17,14 +17,6 @@ function GameTimer(d) {
         splitsList = JSON.parse(localStorage.splitsListTracker);
     }
     var splitsObject = Object.create(null);
-    //Mom's spaghetti
-
-    // // ID (starts at 0), [0] Game Name, [1] Goal, [2?] Total Time
-    // splitsList = {
-    //     "0": ["Super Mario 64", "16 Star"],
-    //     "1": ["Super Mario 64", "70 Star"],
-    // };
-
 
     /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var defaultSplitsObject = Object.create(null); // Load this if, no other splits
@@ -289,6 +281,13 @@ function GameTimer(d) {
     };
 
     this.startSplits = function () {
+        //Mom's spaghetti
+
+        // // ID (starts at 0), [0] Game Name, [1] Goal, [2?] Total Time [3?] Primary Splits
+        // splitsList = {
+        //     "0": ["Super Mario 64", "16 Star"],
+        //     "1": ["Super Mario 64", "70 Star"],
+        // };
         if (Object.keys(splitsList).length === 0) {
             console.log(typeof splitsList);
              if (localStorage.PersonalBest) {
@@ -304,15 +303,47 @@ function GameTimer(d) {
             localStorage.splitsListTracker = JSON.stringify(splitsList);
             localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
             console.log(localStorage.splitsListTracker);
+            this.genSplits();
         } else {
-            if (Object.keys(splitsList).length === 1) {
-                splitsObject = JSON.parse(localStorage["PB" + this.splitID]);
+            this.splitSelector();
+        }
+    };
+
+    this.splitSelector = function () {
+            document.getElementById("split-selector").style.visibility = "visible";
+            document.getElementById("container").style.visibility = "hidden";
+            var pbid;
+            for (pbid in splitsList) { // Gets numbers hopefully
+                console.log(pbid);
+                splitsObject = JSON.parse(localStorage["PB" + pbid]);
+                document.getElementById("split-selector").innerHTML += '<ul onclick="t.selectPB(' + pbid + ')"><li>' + splitsObject.info[0] + '</li><li>' + splitsObject.info[1] + '</li></ul>';
             }
-            console.log(Object.keys(splitsList).length)
-            console.log("splits last exists 2");
-            // Do something smart here
-            // Load splitsList and prompt for something
-    }
+            // Now that the loop has run, pbid should be the last object in the element supposibly.
+            var nextpbid = parseInt(pbid, 10) + 1;
+            console.log(nextpbid);
+            document.getElementById("split-selector").innerHTML += '<input type="button" value="New Splits Entry"  onclick="t.newSplitFile(' + nextpbid + ')"></input>';
+
+    };
+
+    this.newSplitFile = function (lastfile) {
+        splitsObject = defaultSplitsObject; // Splits Skeleton
+        this.splitID = lastfile; // Start after last id
+        splitsList[this.splitID] = [splitsObject.info[0], splitsObject.info[1]];
+        console.log(splitsList);
+        localStorage.splitsListTracker = JSON.stringify(splitsList);
+        localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
+        document.getElementById("container").style.visibility = "visible";
+        document.getElementById("split-selector").innerHTML = "";
+        document.getElementById("split-selector").style.visibility = "hidden";
+        this.genSplits();
+    };
+
+    this.selectPB = function (pbid) {
+        this.splitID = pbid;
+        splitsObject = JSON.parse(localStorage["PB" + pbid]);
+        document.getElementById("container").style.visibility = "visible";
+        document.getElementById("split-selector").innerHTML = "";
+        document.getElementById("split-selector").style.visibility = "hidden";
         this.genSplits();
     };
 
@@ -358,21 +389,22 @@ function GameTimer(d) {
         this.timerReset();
     };
 
-    this.deleteSplits = function () {
-        if (this.disableControls === true || this.currently === 'play') {return false;}
-        localStorage.removeItem("PersonalBest");
-        for (var step = 1; step <= this.totalSplits; step++) {
-            splitsObject[step][0] = step;
-            splitsObject[step][1] = 0;
-            splitsObject[step][2] = 0;
-        }
-        splitsObject.info[0] = "No Game";
-        splitsObject.info[1] = "No Goal";
-        splitsObject.info[2] = 0;
-        this.currentSplit = 1;
-        this.genSplits();
-        this.timerReset();
-    };
+    // Needs to be redone for multisplits
+    // this.deleteSplits = function () {
+    //     if (this.disableControls === true || this.currently === 'play') {return false;}
+    //     localStorage.removeItem("PersonalBest");
+    //     for (var step = 1; step <= this.totalSplits; step++) {
+    //         splitsObject[step][0] = step;
+    //         splitsObject[step][1] = 0;
+    //         splitsObject[step][2] = 0;
+    //     }
+    //     splitsObject.info[0] = "No Game";
+    //     splitsObject.info[1] = "No Goal";
+    //     splitsObject.info[2] = 0;
+    //     this.currentSplit = 1;
+    //     this.genSplits();
+    //     this.timerReset();
+    // };
 
     // Useful after stopping timer, makes sure things reset completely
     this.timerReset = function () {
