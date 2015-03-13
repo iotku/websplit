@@ -33,7 +33,8 @@ input[value=Reset] {background-color: red;}
 
 input[value='Start / Split'],input[value=Unload] {background-color: red; width: 200px;}
 
-input[value=Pause],input[value=Load] {background-color: #0062FF;}
+input[value=Pause],input[value=Load],input[value='Choose Splits'] {background-color: #0062FF;}
+input[value='Choose Splits'] { width: 200px;}
 
 input[value=Editor] {background-color: orange; width: 200px;}
 

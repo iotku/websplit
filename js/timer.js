@@ -310,9 +310,11 @@ function GameTimer(d) {
     };
 
     this.splitSelector = function () {
+            if (this.disableControls === true || this.currently === 'play') {return false;}
             document.getElementById("split-selector").innerHTML = ""
             document.getElementById("split-selector").style.visibility = "visible";
             document.getElementById("container").style.visibility = "hidden";
+            document.getElementById("split-selector").innerHTML = "<h1>Select Splits</h1>"
             var pbid;
             for (pbid in splitsList) { // Gets numbers hopefully
                 console.log(pbid);
@@ -337,6 +339,8 @@ function GameTimer(d) {
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("split-selector").style.visibility = "hidden";
         this.genSplits();
+        this.disableControls = true;
+        this.editorEnabled = true;
         this.genEditorSplits();
     };
 
@@ -350,6 +354,11 @@ function GameTimer(d) {
     };
 
     this.deleteSplitFile = function (id) {
+        if (confirm("WARNING!:This will irrevocably delete the selected splits, Are you SURE you want to continue?")) {/* Cancel */
+        } else {
+            /* OK */
+            return false;
+        }
         localStorage.removeItem("PB" + id);
         delete splitsList[id];
         localStorage.splitsListTracker = JSON.stringify(splitsList);
