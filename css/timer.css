@@ -225,19 +225,33 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	position: absolute;
 }
 
-
 #split-selector {
 	width: 200px;
 }
-#split-selector ul {
 
+#split-selector h1  {
+	text-align: center;
+	margin-top: 2px;
+	border-bottom: 2px solid white;
+	margin-bottom: 10px;
+}
+
+#split-selector ul {
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 8px;
 	border: white 2px solid;
 	background-color: #222;
 	list-style: square inside;
 }
 
 #split-selector li {
-	margin-left: 20px;
+	margin-left: -5px;
+	white-space: nowrap;
+	margin-right: 25px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 #split-selector ul:hover {
 	border: white 2px solid;
@@ -248,20 +262,31 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #split-selector .delete,#split-selector .delete a:link,#split-selector .delete a:visited {
 	position: absolute;
+	background-color: #222;
 	text-decoration: none;
 	font-weight: bolder;
-	left: 10px;
-	/*top: 10px;*/
+	left: 87px;
+	width: 30px;
+	text-align: center;
+	margin-top: 2px;
 	font-size: 30px;
 	color: red;
+	border-left: white 1px solid;
 }
 
 #split-selector .defaultSplit,#split-selector .defaultSplit a:link,#split-selector .defaultSplit a:visited {
 	position: absolute;
 	text-decoration: none;
 	font-weight: bolder;
-	left: 20px;
-	/*top: 10px;*/
+	text-align: center;
+	width: 30px;
+	background-color: #222;
+	border-right: white 1px solid;
+	left: 5px;
+	margin-top: 2px;
 	font-size: 30px;
 	color: green;
+}
+#split-selector a:hover {
+	background-color: #333 !important;
 }
