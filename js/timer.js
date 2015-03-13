@@ -350,6 +350,7 @@ function GameTimer(d) {
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("split-selector").style.visibility = "hidden";
         this.genSplits();
+        this.timerReset();
     };
 
     this.deleteSplitFile = function (id) {
