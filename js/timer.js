@@ -22,7 +22,7 @@ function GameTimer(d) {
     var defaultSplitsObject = Object.create(null); // Load this if, no other splits
     defaultSplitsObject = {
         "info": ["Game Name", "Goal", 0],
-        "1": ["OK (ok)", 0, 0, 0],
+        "1": ["1", 0, 0, 0],
     };
 
     this.start = function (start) {
@@ -245,11 +245,11 @@ function GameTimer(d) {
         document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
 
         // Make sure editor controls are gone (bad place for this)
-        document.getElementById("editor-controls").innerHTML = ""; //
+        document.getElementById("editor-controls").innerHTML = "";
 
         // Do split magic
         var addtime = 0;
-        for (var step = 1; step <= this.totalSplits; step++) {
+        for (step = 1; step <= this.totalSplits; step++) {
             splitsObject[this.currentSplit][3] = 0; // Reset current segments
             addtime = splitsObject[this.currentSplit][1] + addtime; // Add each segment together to generate split times
             /* variables should be used properly here. (confusing) */
@@ -313,20 +313,22 @@ function GameTimer(d) {
     };
 
     this.splitSelector = function () {
-            if (this.disableControls === true || this.currently === 'play') {return false;}
-            document.getElementById("split-selector").innerHTML = "";
-            document.getElementById("split-selector").style.visibility = "visible";
-            document.getElementById("container").style.visibility = "hidden";
-            document.getElementById("split-selector").innerHTML = "<h1>Select Splits</h1>";
-            var pbid;
-            for (pbid in splitsList) { // Gets numbers hopefully
-                splitsObject = JSON.parse(localStorage["PB" + pbid]);
-                document.getElementById("split-selector").innerHTML += '<span class="delete"><a href="#" onclick="t.deleteSplitFile(' + pbid + ')">X</a></span><span class="defaultSplit"><a href="#" onclick="t.makeDefaultSplits(' + pbid + ')">✓</a></span><ul onclick="t.selectPB(' + pbid + ')"><li>' + splitsObject.info[0] + '</li><li>' + splitsObject.info[1] + '</li></ul>';
-            }
-            // Now that the loop has run, pbid should be the last object in the element supposibly.
-            var nextpbid = parseInt(pbid, 10) + 1;
-            console.log("Next PBID: " + nextpbid);
-            document.getElementById("split-selector").innerHTML += '<input type="button" value="New Splits Entry"  onclick="t.newSplitFile(' + nextpbid + ')"></input>';
+        if (this.disableControls === true || this.currently === 'play') {return false;}
+        
+        document.getElementById("split-selector").innerHTML = "";
+        document.getElementById("split-selector").style.visibility = "visible";
+        document.getElementById("container").style.visibility = "hidden";
+        document.getElementById("split-selector").innerHTML = "<h1>Select Splits</h1>";
+        
+        var pbid; // Keep this outside for loop so it stays for the rest of the function
+        for (pbid in splitsList) { // Gets numbers hopefully
+            splitsObject = JSON.parse(localStorage["PB" + pbid]);
+            document.getElementById("split-selector").innerHTML += '<span class="delete"><a href="#" onclick="t.deleteSplitFile(' + pbid + ')">X</a></span><span class="defaultSplit"><a href="#" onclick="t.makeDefaultSplits(' + pbid + ')">✓</a></span><ul onclick="t.selectPB(' + pbid + ')"><li>' + splitsObject.info[0] + '</li><li>' + splitsObject.info[1] + '</li></ul>';
+        }
+        // Now that the loop has run, pbid should be the last object in the element supposibly.
+        var nextpbid = parseInt(pbid, 10) + 1;
+        console.log("Next PBID: " + nextpbid);
+        document.getElementById("split-selector").innerHTML += '<input type="button" value="New Splits Entry"  onclick="t.newSplitFile(' + nextpbid + ')"></input>';
 
     };
 
