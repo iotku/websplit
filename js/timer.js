@@ -254,8 +254,10 @@ function GameTimer(d) {
             /* variables should be used properly here. (confusing) */
 
             // Generate table (Now formatted DIVs) based on splitsObject
-            document.getElementById("splits-table").innerHTML += '<span id="row' + this.currentSplit + '">' + '<div id="splitname' + this.currentSplit + '"></div>' + '<div id="split' + this.currentSplit + '"></div>' + '<div id="difference' + this.currentSplit + '"></div>' + '</span>';
-
+            var container = document.createElement('span');
+            container.id = "row" + this.currentSplit;
+            container.innerHTML = '<div id="splitname' + this.currentSplit + '"></div>' + '<div id="split' + this.currentSplit + '"></div>' + '<div id="difference' + this.currentSplit + '"></div>';
+            document.getElementById("splits-table").appendChild(container);
             // Insert split names
             document.getElementById("splitname" + this.currentSplit).innerHTML = splitsObject[this.currentSplit][0];
 
@@ -313,6 +315,7 @@ function GameTimer(d) {
         if (this.disableControls === true || this.currently === 'play') {return false;}
         this.disableControls = true; // Disable hotkeys while on menu, gensplits reenables
         document.getElementById("split-selector").innerHTML = "";
+        document.getElementById("splits-table").innerHTML = "";
         document.getElementById("split-selector").style.visibility = "visible";
         document.getElementById("container").style.visibility = "hidden";
         document.getElementById("split-selector").innerHTML = "<h1>Select Splits</h1>";
@@ -430,8 +433,12 @@ function GameTimer(d) {
         document.getElementById("splits-table").innerHTML = ""; // Make sure table is empty
         document.getElementById("splits-table").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
         for (var step = 1; step <= this.totalSplits; step++) {
-            document.getElementById("splits-table").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
+            var container = document.createElement('span');
+            container.id = "row" + step;
+            container.innerHTML = '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">';
+            document.getElementById("splits-table").appendChild(container);
         }
+            // document.getElementById("splits-table").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/>&nbsp<input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
     };
 
