@@ -311,7 +311,7 @@ function GameTimer(d) {
 
     this.splitSelector = function () {
         if (this.disableControls === true || this.currently === 'play') {return false;}
-        
+        this.disableControls = true; // Disable hotkeys while on menu, gensplits reenables
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("split-selector").style.visibility = "visible";
         document.getElementById("container").style.visibility = "hidden";
