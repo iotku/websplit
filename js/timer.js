@@ -312,14 +312,14 @@ function GameTimer(d) {
     };
 
     this.splitSelector = function () {
-        if (this.disableControls === true || this.currently === 'play') {return false;}
+        if (this.currently === 'play' || this.currently === 'pause' ) {return false;}
         this.disableControls = true; // Disable hotkeys while on menu, gensplits reenables
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("splits-table").innerHTML = "";
         document.getElementById("split-selector").style.visibility = "visible";
         document.getElementById("container").style.visibility = "hidden";
         document.getElementById("split-selector").innerHTML = "<h1>Select Splits</h1>";
-        
+
         var pbid; // Keep this outside for loop so it stays for the rest of the function
         for (pbid in splitsList) { // Gets numbers hopefully
             splitsObject = JSON.parse(localStorage["PB" + pbid]);
@@ -414,7 +414,7 @@ function GameTimer(d) {
         this.genSplits();
         this.timerReset();
     };
-    
+
     // Useful after stopping timer, makes sure things reset completely
     this.timerReset = function () {
             this.timer = { start: 0, now: 0, realtime: 0 };
