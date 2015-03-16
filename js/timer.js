@@ -144,7 +144,6 @@ function GameTimer(d) {
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
             this.goldCounter++;
         }
-        console.log(this.goldCounter);
         // Setup for next split
         if (this.totalSplits !== this.currentSplit) {
             prevText.textContent = 'Prev. Segment:';
@@ -288,25 +287,23 @@ function GameTimer(d) {
         //     "1": ["Super Mario 64", "70 Star"],
         // };
         if (Object.keys(splitsList).length === 0) {
-            console.log(typeof splitsList);
              if (localStorage.PersonalBest) {
                 splitsObject = JSON.parse(localStorage.PersonalBest); // Migrate from previous saved splits
             } else {
                 splitsObject = defaultSplitsObject; // Splits Skeleton
             }
-            console.log(localStorage.PersonalBest);
             this.splitID = 0; // Ensure starts at first id 0
             splitsList = Object.create(null);
             splitsList[0] = [splitsObject.info[0], splitsObject.info[1]];
-            console.log(splitsList);
             localStorage.splitsListTracker = JSON.stringify(splitsList);
             localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
-            console.log(localStorage.splitsListTracker);
             this.makeDefaultSplits(0);
         } else {
             if (localStorage.splitsDefault && localStorage.splitsDefault in splitsList) {
-                    this.selectPB(localStorage.splitsDefault);
-                    return false;
+                this.selectPB(localStorage.splitsDefault);
+                return false;
+            } else if (localStorage.splitsDefault) { // Remove splits default if it no longer exists
+                localStorage.removeItem("splitsDefault");
             }
             this.splitSelector();
         }
@@ -327,7 +324,6 @@ function GameTimer(d) {
         }
         // Now that the loop has run, pbid should be the last object in the element supposibly.
         var nextpbid = parseInt(pbid, 10) + 1;
-        console.log("Next PBID: " + nextpbid);
         document.getElementById("split-selector").innerHTML += '<input type="button" value="New Splits Entry"  onclick="t.newSplitFile(' + nextpbid + ')"></input>';
 
     };
@@ -336,7 +332,6 @@ function GameTimer(d) {
         splitsObject = defaultSplitsObject; // Splits Skeleton
         this.splitID = lastfile; // Start after last id
         splitsList[this.splitID] = [splitsObject.info[0], splitsObject.info[1]];
-        console.log(splitsList);
         localStorage.splitsListTracker = JSON.stringify(splitsList);
         localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
         document.getElementById("container").style.visibility = "visible";
@@ -349,7 +344,6 @@ function GameTimer(d) {
     };
 
     this.selectPB = function (pbid) {
-        console.log("Selected PBID: " + pbid);
         this.splitID = pbid;
         splitsObject = JSON.parse(localStorage["PB" + pbid]);
         document.getElementById("container").style.visibility = "visible";
@@ -438,7 +432,7 @@ function GameTimer(d) {
         for (var step = 1; step <= this.totalSplits; step++) {
             document.getElementById("splits-table").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         }
-        document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/><input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
+        document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/>&nbsp<input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
     };
 
     this.saveNewSplits = function () {
@@ -456,6 +450,8 @@ function GameTimer(d) {
         splitsObject.info[1] = document.getElementById("splits-goal-input").value;
         splitsObject.info[2] = document.getElementById("attempt-counter-input").value;
         localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
+        splitsList[this.splitID] = [splitsObject.info[0], splitsObject.info[1]];
+        localStorage.splitsListTracker = JSON.stringify(splitsList);
         t.genSplits();
     };
 
