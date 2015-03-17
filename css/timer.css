@@ -4,7 +4,7 @@ html {
 }
 
 body {
-	font-family: "Segoe UI", sans-serif;
+	font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
 	background-color: black;
 	color: white;
 }
@@ -48,7 +48,7 @@ input:disabled {
 	color: black;
 }
 
-#splits,#splits-editor {width: 200px; font-family: "Segoe UI"; font-size: 14px;}
+#splits,#splits-editor {width: 200px; font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; font-size: 14px;}
 
 #splits-table {
 	table-layout: fixed;
@@ -227,9 +227,11 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #split-selector {
 	width: 200px;
+
 }
 
 #split-selector h1  {
+	font-size: 28px;
 	text-align: center;
 	margin-top: 2px;
 	border-bottom: 2px solid white;
@@ -240,19 +242,24 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	margin-left: 0;
 	margin-right: 0;
 	margin-top: 0;
-	margin-bottom: 8px;
+	margin-bottom: 10px;
 	border: white 2px solid;
 	background-color: #222;
 	list-style: square inside;
+	height: 45px;
+	max-height: 45px;
+
 }
 
 #split-selector li {
 	margin-left: -5px;
+	margin-top: 3px;
 	white-space: nowrap;
 	margin-right: 25px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
 #split-selector ul:hover {
 	border: white 2px solid;
 	background-color: #333;
@@ -268,10 +275,11 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	left: 87px;
 	width: 30px;
 	text-align: center;
-	margin-top: 2px;
+	margin-top: 1px;
 	font-size: 30px;
 	color: red;
 	border-left: white 1px solid;
+	z-index: 2;
 }
 
 #split-selector .defaultSplit,#split-selector .defaultSplit a:link,#split-selector .defaultSplit a:visited {
@@ -283,10 +291,56 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	background-color: #222;
 	border-right: white 1px solid;
 	left: 5px;
-	margin-top: 2px;
+	margin-top: 1px;
 	font-size: 30px;
 	color: green;
+	z-index: 2;
 }
+
+#split-selector span {
+	line-height:45px;
+}
+.delete a,.defaultSplit a {
+	height: 45px;
+	min-height: 45px;
+	max-height: 45px;
+}
+
 #split-selector a:hover {
 	background-color: #333 !important;
+}
+
+.slide {
+	font-size: 16px;
+	position: absolute;
+	left: 42px;
+	background-color: #333;
+	/*opacity: 0;*/
+	height: 100%;
+	width: 0px;
+	margin-top: 1px;
+	height: 44px;
+	max-height: 44px;
+	max-width: 132px;
+	transition: 1s;
+	line-height:45px;
+}
+
+.slide p {
+	overflow: hidden;
+	text-align: center;
+	margin-top: 2px;
+}
+
+.defaultSplit .slide {
+	left: 37px;
+}
+.delete .slide {
+	left: -46px;
+}
+#split-selector a:hover + .slide {
+	transition: 1s;
+	/*opacity: 1;*/
+	width: 134px;
+	z-index: 1;
 }

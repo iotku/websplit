@@ -312,7 +312,8 @@ function GameTimer(d) {
     };
 
     this.splitSelector = function () {
-        if (this.currently === 'play' || this.currently === 'pause' ) {return false;}
+        if (this.currently === 'play' || this.currently === 'pause' || this.editorEnabled === true) {return false;}
+        this.currently = "menu";
         this.disableControls = true; // Disable hotkeys while on menu, gensplits reenables
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("splits-table").innerHTML = "";
@@ -323,7 +324,7 @@ function GameTimer(d) {
         var pbid; // Keep this outside for loop so it stays for the rest of the function
         for (pbid in splitsList) { // Gets numbers hopefully
             splitsObject = JSON.parse(localStorage["PB" + pbid]);
-            document.getElementById("split-selector").innerHTML += '<span class="delete"><a href="#" onclick="t.deleteSplitFile(' + pbid + ')">X</a></span><span class="defaultSplit"><a href="#" onclick="t.makeDefaultSplits(' + pbid + ')">✓</a></span><ul onclick="t.selectPB(' + pbid + ')"><li>' + splitsObject.info[0] + '</li><li>' + splitsObject.info[1] + '</li></ul>';
+            document.getElementById("split-selector").innerHTML += '<span class="delete"><a href="#" onclick="t.deleteSplitFile(' + pbid + ')">X</a><div class="slide"><p>Delete&nbsp;File</p></div></span><span class="defaultSplit"><a href="#" onclick="t.makeDefaultSplits(' + pbid + ')">✓</a><div class="slide"><p>Make&nbsp;Default</p></div></span><ul onclick="t.selectPB(' + pbid + ')"><li>' + splitsObject.info[0] + '</li><li>' + splitsObject.info[1] + '</li></ul>';
         }
         // Now that the loop has run, pbid should be the last object in the element supposibly.
         var nextpbid = parseInt(pbid, 10) + 1;
@@ -424,6 +425,7 @@ function GameTimer(d) {
     // Split Editor
     this.genEditorSplits = function () {
         this.timerReset();
+        this.editorEnabled = true;
         var addtime = 0;
         document.getElementById("prevsplit").style.color = "white";
         document.getElementById("prevsplit").textContent = "Edit Mode.";
@@ -721,7 +723,6 @@ this.openEditor = function () {
         return false;
     } else {
         t.disableControls = true;
-        t.editorEnabled = true;
         t.genEditorSplits();
     }
 };
@@ -732,7 +733,7 @@ var confirmOnPageExit = function (e) { // http://stackoverflow.com/a/1119324
     e = e || window.event;
     var message = 'Navigating away from this page will result in the timer stopping.\n\nAny unsaved splits will be discarded.';
 
-    if (t.currently === "stop" || t.currently === "done") {
+    if (t.currently === "stop" || t.currently === "done" || t.currently === 'menu') {
         // Don't notify
     } else {
         if (e) {e.returnValue = message;}
