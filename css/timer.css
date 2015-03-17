@@ -227,7 +227,6 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #split-selector {
 	width: 200px;
-
 }
 
 #split-selector h1  {
@@ -239,25 +238,22 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 }
 
 #split-selector ul {
-	margin-left: 0;
-	margin-right: 0;
-	margin-top: 0;
-	margin-bottom: 10px;
+	margin: 2px auto;
+	text-align: left;
 	border: white 2px solid;
 	background-color: #222;
 	list-style: square inside;
 	height: 45px;
 	max-height: 45px;
-
 }
 
 #split-selector li {
 	margin-left: -5px;
-	margin-top: 3px;
 	white-space: nowrap;
 	margin-right: 25px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	text-align: left;
 }
 
 #split-selector ul:hover {
@@ -300,6 +296,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 #split-selector span {
 	line-height:45px;
 }
+
 .delete a,.defaultSplit a {
 	height: 45px;
 	min-height: 45px;
@@ -319,9 +316,9 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	height: 100%;
 	width: 0px;
 	margin-top: 1px;
-	height: 44px;
-	max-height: 44px;
-	max-width: 132px;
+	height: 45px;
+	max-height: 45px;
+	max-width: 134x;
 	transition: 1s;
 	line-height:45px;
 }
@@ -333,10 +330,10 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 }
 
 .defaultSplit .slide {
-	left: 37px;
+	left: 36px;
 }
 .delete .slide {
-	left: -46px;
+	left: -47px;
 }
 #split-selector a:hover + .slide {
 	transition: 1s;
