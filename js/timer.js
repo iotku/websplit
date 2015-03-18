@@ -347,6 +347,42 @@ function GameTimer(d) {
         this.genEditorSplits();
     };
 
+    this.wsplitExport = function () {
+        var splitInfo = "Title=" + splitsObject.info[0] + " :: " + splitsObject.info[1] + "\r\n" + "Attempts="+ splitsObject.info[2] + "\r\n" + "Offset=0\r\nSize=152,25" + "\r\n";
+
+        var splitSplits = "",
+            splitIcons = "",
+            addtime = 0;
+        for (var step = 1; step <= this.totalSplits; step++) {
+            addtime = splitsObject[step][1] + addtime;
+            splitSplits += splitsObject[step][0] + ",0," + (addtime / 1000) + "," + (splitsObject[step][1] / 1000) + "\r\n";
+            splitIcons += '"",';
+        }
+
+        var wspltFile = splitInfo + splitSplits + "Icons=" + splitIcons;
+
+        var textFile = null,
+        makeTextFile = function (text) {
+          var data = new Blob([text], {type: 'application/octet-stream'});
+
+          if (textFile !== null) {
+            window.URL.revokeObjectURL(textFile);
+          }
+
+          textFile = window.URL.createObjectURL(data);
+
+          return textFile;
+        };
+
+
+        var create = document.getElementById('wspltFile'),
+        textbox = document.getElementById('textbox');
+        var link = document.getElementById('wsplit-export');
+        link.href = makeTextFile(wspltFile); // How does any of this crap work?
+        link.style.display = 'block';
+        document.getElementById("wsplit-export").click();
+    };
+
     this.selectPB = function (pbid) {
         this.splitID = pbid;
         splitsObject = JSON.parse(localStorage["PB" + pbid]);

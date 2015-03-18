@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>RTA Timer</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<!-- Mobile Support kinda, prevents zooming -->
 	<meta name="viewport" content="height = 400, width = 215, user-scalable = no" />
 	<link rel="stylesheet" type="text/css" href="css/timer.css" />
@@ -41,12 +41,12 @@
 		<div id="editor-controls"></div>
 		<div id="timer">
 			<svg height="55" width="200">
-				<defs>  
-					<linearGradient id="text-gradient" x1="0%" x2="0%" y1="0%" y2="100%">  
-					    <stop class="stop1" offset="0%"/>  
-					    <stop class="stop2" offset="100%"/>  
-					</linearGradient>  
-				</defs>  			
+				<defs>
+					<linearGradient id="text-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+					    <stop class="stop1" offset="0%"/>
+					    <stop class="stop2" offset="100%"/>
+					</linearGradient>
+				</defs>
 				<text style="fill: url(#text-gradient); font-size: 42px;" id="timer_realtime" text-anchor="end" x="195px" y="1.2em">0.0</text>
 			</svg>
 		</div>
@@ -63,6 +63,7 @@
 			<input type="button" value="Editor" onclick="openEditor()"/>
 			<input type="button" value="unsplit" onclick="t.unsplit()"/>
 			<input type="button" value="skipsplit" onclick="t.skipSplit()"/>
+			<a href="#" id="wsplit-export" onclick="t.wsplitExport()">asdasd</a>
 		</div>
 	</div>
 </body>
