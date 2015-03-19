@@ -15,6 +15,7 @@
 	<![endif]-->
 	<script type="text/javascript" src="js/timer.js"></script>
 	<script type="application/javascript" src="js/fastclick-min.js"></script>
+	<script type="application/javascript" src="js/FileSaver.min.js"></script>
 	<script type="application/javascript">
 		window.addEventListener('load', function() {
 			var attachFastClick = Origami.fastclick;
@@ -63,7 +64,7 @@
 			<input type="button" value="Editor" onclick="openEditor()"/>
 			<input type="button" value="unsplit" onclick="t.unsplit()"/>
 			<input type="button" value="skipsplit" onclick="t.skipSplit()"/>
-			<a href="#" id="wsplit-export" onclick="t.wsplitExport()">asdasd</a>
+			<input type="button" value="Export as Wsplit"  onclick="t.wsplitExport()"/>
 		</div>
 	</div>
 </body>

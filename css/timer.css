@@ -36,11 +36,12 @@ input[value='Start / Split'],input[value=Unload] {background-color: red; width: 
 input[value=Pause],input[value=Load],input[value='Choose Splits'] {background-color: #0062FF;}
 input[value='Choose Splits'] { width: 200px;}
 
-input[value=Editor] {background-color: orange; width: 200px;}
+input[value=Editor],input[value='Export as Wsplit'] {background-color: orange; width: 200px;}
 
 input[value='New Splits Entry'] {
 	background-color: green; width: 200px;
 }
+
 input:active {color: #DDDDFF; color: #000033;}
 
 input:disabled {

@@ -359,28 +359,22 @@ function GameTimer(d) {
             splitIcons += '"",';
         }
 
-        var wspltFile = splitInfo + splitSplits + "Icons=" + splitIcons;
+        var wspltFile = splitInfo + splitSplits + "Icons=" + splitIcons.slice(0, - 1);
 
         var textFile = null,
         makeTextFile = function (text) {
-          var data = new Blob([text], {type: 'application/octet-stream'});
+            var data = new Blob([text], {type: 'application/octet-stream'});
 
-          if (textFile !== null) {
-            window.URL.revokeObjectURL(textFile);
-          }
+            if (textFile !== null) {
+              window.URL.revokeObjectURL(textFile);
+            }
 
-          textFile = window.URL.createObjectURL(data);
-
-          return textFile;
+            textFile = window.URL.createObjectURL(data);
+            console.log(splitsObject.info[0])
+            saveAs(data, splitsObject.info[0] + " - " + splitsObject.info[1] + ".wsplit");
         };
 
-
-        var create = document.getElementById('wspltFile'),
-        textbox = document.getElementById('textbox');
-        var link = document.getElementById('wsplit-export');
-        link.href = makeTextFile(wspltFile); // How does any of this crap work?
-        link.style.display = 'block';
-        document.getElementById("wsplit-export").click();
+        makeTextFile(wspltFile); // How does any of this crap work?
     };
 
     this.selectPB = function (pbid) {
