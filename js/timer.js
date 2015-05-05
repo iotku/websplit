@@ -225,6 +225,8 @@ function GameTimer(d) {
     this.genSplits = function () {
         // Disable while generating splits (even though it should be fast.)
         this.disableControls = true;
+        // Show controls after hiding them for the split menu
+        document.getElementById("controls").style.display = "block"; 
         // It's fairly safe to assume if this function is running the editor
         // has either been closed, or never opened.
         this.editorEnabled = false;
@@ -317,6 +319,7 @@ function GameTimer(d) {
         this.disableControls = true; // Disable hotkeys while on menu, gensplits reenables
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("splits-table").innerHTML = "";
+        document.getElementById("controls").style.display = "none";
         document.getElementById("split-selector").style.visibility = "visible";
         document.getElementById("container").style.visibility = "hidden";
         document.getElementById("split-selector").innerHTML = "<h1>Select Splits</h1>";
