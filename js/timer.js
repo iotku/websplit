@@ -35,9 +35,10 @@ function GameTimer(d) {
         this.updateElements();
         this.clearTimeout();
         this.setTimeout();
-        this.currently = 'play';
-        this.setStyle(this.currently);
+
+        this.setState("play");
         this.updateAttemptCounter();
+        
         return this.timer.start;
     };
 
@@ -63,14 +64,12 @@ function GameTimer(d) {
         } else if (this.currently === 'done') {
             return false;
         } else if (this.currently === 'play') {
-            this.currently = 'pause';
+            this.setState("pause");
             this.update(true, true);
-            this.setStyle(this.currently);
         } else {
-            this.currently = 'play';
+            this.setState("play");
             this.timer.start = this.now() - this.timer.realtime;
             this.update();
-            this.setStyle(this.currently);
         }
     };
 
@@ -277,9 +276,14 @@ function GameTimer(d) {
         }
 
         this.currentSplit = 1;
-        this.currently = 'stop';
-        this.setStyle(this.currently);
+        this.setState("stop");
         this.disableControls = false;
+    };
+
+    this.setState = function (state) {
+        console.log("State:", state);
+        this.currently = state;
+        this.setStyle(state);
     };
 
     this.startSplits = function () {
@@ -315,7 +319,7 @@ function GameTimer(d) {
 
     this.splitSelector = function () {
         if (this.currently === 'play' || this.currently === 'pause' || this.editorEnabled === true) {return false;}
-        this.currently = "menu";
+        this.setState("menu");
         this.disableControls = true; // Disable hotkeys while on menu, gensplits reenables
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("splits-table").innerHTML = "";
@@ -723,7 +727,7 @@ function GameTimer(d) {
         this.ms = d.ms;
     } else {
         this.ms = [d.ms, d.ms];
-        this.currently = 'stop';
+        this.setState("stop");
     }
 }
 
