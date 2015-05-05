@@ -474,10 +474,9 @@ function GameTimer(d) {
         for (var step = 1; step <= this.totalSplits; step++) {
             var container = document.createElement('span');
             container.id = "row" + step;
-            container.innerHTML = '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">';
+            container.innerHTML = '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.realTime(splitsObject[step][2], true) + '">' + '<input id="difference' + step + '" type="text" value="' + this.realTime(splitsObject[step][1], true) + '">';
             document.getElementById("splits-table").appendChild(container);
         }
-            // document.getElementById("splits-table").innerHTML += '<span id="row' + step + '">' + '<input id="splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="bestsegment' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][2]) + '">' + '<input id="difference' + step + '" type="text" value="' + this.editorRealTime(splitsObject[step][1]) + '">' + '</span>';
         document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/>&nbsp<input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
     };
 
@@ -576,13 +575,13 @@ function GameTimer(d) {
     };
 
     // Timing stuff
-    this.realTime = function (t) {
-        var h = Math.floor(t / 3600000),
-            m = Math.abs(Math.floor((t / 60000) % 60)),
-            s = Math.abs(Math.floor((t / 1000) % 60)),
+    this.realTime = function (time, isEditor) {
+        var h = Math.floor(time / 3600000),
+            m = Math.abs(Math.floor((time / 60000) % 60)),
+            s = Math.abs(Math.floor((time / 1000) % 60)),
             msd = this.ms[(h > 0) ? 1 : 0],
-            ms = Math.abs(Math.floor((t % 1000) / (Math.pow(10, (3 - msd)))));
-        if (t < 0) {
+            ms = Math.abs(Math.floor((time % 1000) / (Math.pow(10, (3 - msd)))));
+        if (time < 0) {
             ms -= 1;
             s -= 1;
             m -= 1;
@@ -590,6 +589,11 @@ function GameTimer(d) {
             // but it seems to solve an issue with seemingly random -1 values...
             h += 1;
         }
+        
+        if (isEditor === true) {
+            humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
+            return humanTime;
+        };
 
         var humanTime;
         if (h === 0 && m === 0) {
@@ -600,9 +604,9 @@ function GameTimer(d) {
             humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2); // + ((msd) ? '.' + this.pad(ms, msd) : '');
         }
 
-        if (t >= 0) { // I hate everything about this if statement.
+        if (time >= 0) { // I hate everything about this if statement.
             return humanTime;
-        } else if ( t < 0 && h === 0){
+        } else if ( time < 0 && h === 0){
             return '-' + humanTime;
         } else if (h !== 0) { // Hour adds the negative sign itself apparently...
             return humanTime;
@@ -618,18 +622,6 @@ function GameTimer(d) {
         s = Math.abs(Math.floor((seconds * 1000)));
         time = (h + min + s);
         return time;
-    };
-
-    // This should probably be merged into this.realTime(), pretty redundant.
-    // (Is there even any differences?)
-    this.editorRealTime = function (t) {
-        var h = Math.floor(t / 3600000),
-            m = Math.abs(Math.floor((t / 60000) % 60)),
-            s = Math.abs(Math.floor((t / 1000) % 60)),
-            msd = this.ms[(h > 0) ? 1 : 0],
-            ms = Math.abs(Math.floor((t % 1000) / (Math.pow(10, (3 - msd))))),
-            humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
-        return humanTime;
     };
 
     this.parseTime = function (input) {
