@@ -171,9 +171,7 @@ function GameTimer(d) {
         }
     };
 
-    this.unsplit = function () { // TODO: Unsplit after timer has finished.
-        // unsplit after done
-        // Currently the main timer looks right, while the actual split time seems off for an unknown reason...
+    this.unsplit = function () {
         if (this.currently === "done" && this.currentSplit === this.totalSplits) {
             this.setState("play");
             this.timer.start = this.startTime;
@@ -297,7 +295,6 @@ function GameTimer(d) {
     };
 
     this.setState = function (state) {
-        console.log("State:", state);
         this.currently = state;
         this.setStyle(state);
     };
@@ -393,7 +390,6 @@ function GameTimer(d) {
             }
 
             textFile = window.URL.createObjectURL(data);
-            console.log(splitsObject.info[0])
             saveAs(data, splitsObject.info[0] + " - " + splitsObject.info[1] + ".wsplit");
         };
 
