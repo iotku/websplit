@@ -75,10 +75,6 @@ function GameTimer(d) {
         }
     };
 
-    this.getStartTimeTMP = function () {
-        console.log(this.startTime)
-    }
-
     this.reset = function () {
         if (this.disableControls === true) {return false;}
         if (t.currently === 'stop') {
@@ -178,10 +174,11 @@ function GameTimer(d) {
     this.unsplit = function () { // TODO: Unsplit after timer has finished.
         // unsplit after done
         // Currently the main timer looks right, while the actual split time seems off for an unknown reason...
-        if (this.currently === "done") {
+        if (this.currently === "done" && this.currentSplit === this.totalSplits) {
             this.setState("play");
             this.timer.start = this.startTime;
             this.update();
+            splitsObject[this.currentSplit][3] = 0;
             document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
             document.getElementById('row' + this.currentSplit).className += " active-split";
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
