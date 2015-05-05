@@ -7,10 +7,11 @@
 // - iotku
 
 function GameTimer(d) {
-    "use strict"; // Someday I'll have good code
+    "use strict";          // Someday I'll have good code
     this.currentSplit = 1; // Initialize at 1st split
-    this.goldCounter = 0; // How Many gold splits?
-    this.splitID = 0; // Initialize, should be set my split selection function
+    this.goldCounter = 0;  // How Many gold splits?
+    this.splitID = 0;      // Initialize, should be set my split selection function
+    this.startTime = 0;    // Keep track of inital start time for unsplit.
     var splitsList = Object.create(null);
 
     if (localStorage.splitsListTracker) {
@@ -32,6 +33,7 @@ function GameTimer(d) {
             now: 0,
             realtime: 0
         };
+        this.startTime = this.timer.start;
         this.updateElements();
         this.clearTimeout();
         this.setTimeout();
@@ -72,6 +74,10 @@ function GameTimer(d) {
             this.update();
         }
     };
+
+    this.getStartTimeTMP = function () {
+        console.log(this.startTime)
+    }
 
     this.reset = function () {
         if (this.disableControls === true) {return false;}
@@ -170,7 +176,20 @@ function GameTimer(d) {
     };
 
     this.unsplit = function () { // TODO: Unsplit after timer has finished.
-        if (this.currently === "done") {return false;}
+        // unsplit after done
+        // Currently the main timer looks right, while the actual split time seems off for an unknown reason...
+        if (this.currently === "done") {
+            this.setState("play");
+            this.timer.start = this.startTime;
+            this.update();
+            document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
+            document.getElementById('row' + this.currentSplit).className += " active-split";
+            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
+            document.getElementById("split" + this.currentSplit).textContent = ' ';
+            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
+            return false;
+        }
+
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
         if (splitsObject[this.currentSplit][1] !== 0) {
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
