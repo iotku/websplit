@@ -189,7 +189,7 @@ function GameTimer(d) {
             document.getElementById('row' + this.currentSplit).className += " active-split";
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             document.getElementById("split" + this.currentSplit).textContent = ' ';
-            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
+            document.getElementByd("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             return false;
         }
 
@@ -214,6 +214,11 @@ function GameTimer(d) {
                 document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             }
         }
+        if (this.currentSplit > 5 && (this.totalSplits - this.currentSplit) > 4) {
+            console.log("firing")
+            document.getElementById("row" + (this.currentSplit - 5)).style.display = "table-row";
+            document.getElementById("row" + (this.currentSplit + 4)).style.display = "none";
+        }
     };
 
     this.skipSplit = function () {
@@ -225,6 +230,13 @@ function GameTimer(d) {
         this.currentSplit++;
         document.getElementById('row' + (this.currentSplit)).className += " active-split";
         document.getElementById('row' + (this.currentSplit - 1)).className = " ";
+        // advance visible splits when truncated 
+        if (this.currentSplit > 5 && this.totalSplits > 10) {// Don't start until half way thru visible splits
+            if ((this.totalSplits - this.currentSplit) >= 5) {
+            document.getElementById("row" + (this.currentSplit + 4)).style.display = "table-row";
+            document.getElementById("row" + (this.currentSplit - 5)).style.display = "none";
+            }
+        }
     };
 
     this.getTotalTime = function () {
@@ -726,7 +738,6 @@ function GameTimer(d) {
         if (this.totalSplits > this.maxSplits) {
             for (var i = this.totalSplits - 1; i >= this.maxSplits; i--) {
                 document.getElementById("row" + i).style.display = "none";
-
             }
         }
     }
