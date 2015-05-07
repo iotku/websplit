@@ -192,7 +192,6 @@ function GameTimer(d) {
             document.getElementById('row' + this.currentSplit).className += " active-split";
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             document.getElementById("split" + this.currentSplit).textContent = ' ';
-            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             return false;
         }
 
