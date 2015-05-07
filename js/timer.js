@@ -7,11 +7,11 @@
 // - iotku
 
 function GameTimer(d) {
-    "use strict";          // Someday I'll have good code
     this.currentSplit = 1; // Initialize at 1st split
     this.goldCounter = 0;  // How Many gold splits?
     this.splitID = 0;      // Initialize, should be set my split selection function
     this.startTime = 0;    // Keep track of inital start time for unsplit.
+    this.maxSplits = 10;   // Max splits to display at once
     var splitsList = Object.create(null);
 
     if (localStorage.splitsListTracker) {
@@ -141,7 +141,7 @@ function GameTimer(d) {
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
 
-        // Incriment gold counter to know how many golds there are
+        // Increment gold counter to know how many golds there are
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
             this.goldCounter++;
         }
@@ -151,11 +151,19 @@ function GameTimer(d) {
             this.currentSplit = this.currentSplit + 1;
             document.getElementById('row' + (this.currentSplit)).className += " active-split";
             document.getElementById('row' + (this.currentSplit - 1)).className = " ";
+            
+            // advance visible splits when truncated 
+            if (this.currentSplit > 5 && this.totalSplits > 10) {// Don't start until half way thru visible splits
+                if ((this.totalSplits - this.currentSplit) >= 5) {
+                document.getElementById("row" + (this.currentSplit + 4)).style.display = "table-row";
+                document.getElementById("row" + (this.currentSplit - 5)).style.display = "none";
+                }
+            }
         } else {
             this.pause();
             this.currently = 'done';
             document.getElementById("row" + this.currentSplit).className = " ";
-            // (Total Time of PB    > Total of Current Segs || No Total, so new spltits  || Last Split is empty, so we assume that the run is new, even if behind)
+            // (Total Time of PB    > Total of Current Segs || No Total, so new splits  || Last Split is empty, so we assume that the run is new, even if behind)
             if (this.getTotalTime() > this.getSegmentTime() || this.getTotalTime() === 0 || splitsObject[this.totalSplits][1] === 0) { /*Dude nice*/
                 prevText.innerHTML = '<b>New Record</b>';
                 this.setStyle("ahead");
@@ -288,7 +296,7 @@ function GameTimer(d) {
 
             this.currentSplit++;
         }
-
+        this.resizeSplits();
         this.currentSplit = 1;
         this.setState("stop");
         this.disableControls = false;
@@ -713,6 +721,15 @@ function GameTimer(d) {
         removedRow.parentNode.removeChild(removedRow);
         this.totalSplits = this.totalSplits - 1;
     };
+
+    this.resizeSplits = function (argument) {
+        if (this.totalSplits > this.maxSplits) {
+            for (var i = this.totalSplits - 1; i >= this.maxSplits; i--) {
+                document.getElementById("row" + i).style.display = "none";
+
+            }
+        }
+    }
 
     // Set up stuff
     var disableControls = false;
