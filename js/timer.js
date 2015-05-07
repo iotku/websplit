@@ -215,7 +215,6 @@ function GameTimer(d) {
             }
         }
         if (this.currentSplit > 5 && (this.totalSplits - this.currentSplit) > 4) {
-            console.log("firing")
             document.getElementById("row" + (this.currentSplit - 5)).style.display = "table-row";
             document.getElementById("row" + (this.currentSplit + 4)).style.display = "none";
         }
