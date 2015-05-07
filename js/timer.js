@@ -7,11 +7,14 @@
 // - iotku
 
 function GameTimer(d) {
+    /* User configurable settings */
+    this.maxSplits = 10;   // Max splits to display at once
+    
+    /* Timer variables (do not change unless you're sure) */
     this.currentSplit = 1; // Initialize at 1st split
     this.goldCounter = 0;  // How Many gold splits?
     this.splitID = 0;      // Initialize, should be set my split selection function
     this.startTime = 0;    // Keep track of inital start time for unsplit.
-    this.maxSplits = 10;   // Max splits to display at once
     var splitsList = Object.create(null);
 
     if (localStorage.splitsListTracker) {
@@ -189,7 +192,7 @@ function GameTimer(d) {
             document.getElementById('row' + this.currentSplit).className += " active-split";
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             document.getElementById("split" + this.currentSplit).textContent = ' ';
-            document.getElementByd("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
+            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             return false;
         }
 
