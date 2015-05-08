@@ -66,16 +66,16 @@ input[type=button] {
 	-webkit-border-radius: 7px;
 }
 
-input[value=Save] {background-color: green;}
+input[value=Save] {background-color: green; width: 120px;}
 
 input[value=Reset] {background-color: red;}
 
 input[value='Start / Split'],input[value=Unload] {background-color: red; width: 215px;}
 
 input[value=Pause],input[value=Load],input[value='Choose Splits'] {background-color: #0062FF;}
-input[value='Choose Splits'] { width: 215px;}
+input[value='Choose Splits'] { width: 120px;}
 
-input[value=Editor],input[value='Export as Wsplit'] {background-color: orange; width: 215px;}
+input[value=Editor],input[value='Export as Wsplit'] {background-color: orange; width: 120px;}
 
 input[value='New Splits Entry'] {
 	background-color: green; width: 215px;
@@ -221,6 +221,10 @@ input:disabled {
 	font-size: 14px;
 }
 
+nav a:link,a:visited {
+color: silver;
+font-size: 13px;
+}
 input[type=text],input:disabled{
 	border: 0;
 	padding: 0;

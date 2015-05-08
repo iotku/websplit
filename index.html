@@ -33,31 +33,33 @@
 	<![endif]-->
 
 <nav id="menu" class="menu slideout-menu">
-      <a href="https://github.com/iotku/websplit" target="_blank">
-        <header class="menu-header">
-          <span class="menu-header-title">View on Github</span>
-        </header>
-      </a>
-
       <section class="menu-section">
-        <h3 class="menu-section-title">Docs</h3>
-        <ul class="menu-section-list">
-          <li><a href="#" target="_blank">Usage</a></li>
-        </ul>
+			<input type="button" value="Save"   onclick="t.saveSplits()"/>
+			<!-- <input type="button" value="Load"   onclick="t.loadSplits()"/><br> -->
+			<input type="button" value="Choose Splits" onclick="t.splitSelector()"/>
+			<input type="button" value="Editor" onclick="openEditor()"/>
+			<input type="button" value="Export as Wsplit" onclick="t.wsplitExport()"/>
       </section>
 
       <section class="menu-section">
         <h3 class="menu-section-title">WebSplit</h3>
         <ul class="menu-section-list">
-          <li><a href="https://github.com/iotku/websplit" target="_blank">Fork it</a></li>
+          <li><a href="https://github.com/iotku/websplit" target="_blank">View on Github</a></li>
           <li><a href="https://github.com/iotku/websplit/issues/new" target="_blank">Create an issue</a></li>
+        </ul>
+      </section>
+
+	  <section class="menu-section">
+         <h3 class="menu-section-title">Docs</h3>
+         <ul class="menu-section-list">
+         <li><a href="#" target="_blank">Usage</a></li>
         </ul>
       </section>
     </nav>
 
-	<div id="split-selector">
-	</div>
 	<div id="container">
+		<div id="split-selector">
+	</div>
 		<button class="toggle-button">Menu</button>
 		<div id="splits-header">
 			<div id="splits-game-name">No Title.</div>
@@ -70,14 +72,14 @@
 		</div>
 		<div id="editor-controls"></div>
 		<div id="timer">
-			<svg height="55" width="200">
+			<svg height="55" width="215">
 				<defs>
 					<linearGradient id="text-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
 					    <stop class="stop1" offset="0%"/>
 					    <stop class="stop2" offset="100%"/>
 					</linearGradient>
 				</defs>
-				<text style="fill: url(#text-gradient); font-size: 42px;" id="timer_realtime" text-anchor="end" x="195px" y="1.2em">0.0</text>
+				<text style="fill: url(#text-gradient); font-size: 42px;" id="timer_realtime" text-anchor="end" x="210px" y="1.2em">0.0</text>
 			</svg>
 		</div>
 		<div class="statusbar">
@@ -85,15 +87,10 @@
 		</div>
 		<div id="controls">
 			<input type="button" value="Start / Split"  onclick="t.split()"/><br>
+			<input type="button" value="Unsplit" onclick="t.unsplit()"/>
+			<input type="button" value="Skip Split" onclick="t.skipSplit()"/>
 			<input type="button" value="Reset"  onclick="t.reset()"/>
 			<input type="button" value="Pause"  onclick="t.pause()"/><br>
-			<input type="button" value="Save"   onclick="t.saveSplits()"/>
-			<input type="button" value="Load"   onclick="t.loadSplits()"/><br>
-			<input type="button" value="Choose Splits" onclick="t.splitSelector()"/>
-			<input type="button" value="Editor" onclick="openEditor()"/>
-			<input type="button" value="unsplit" onclick="t.unsplit()"/>
-			<input type="button" value="skipsplit" onclick="t.skipSplit()"/>
-			<input type="button" value="Export as Wsplit" onclick="t.wsplitExport()"/>
 		</div>
 	</div>
 	</main>
