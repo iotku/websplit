@@ -95,6 +95,7 @@
 	</div>
 	</main>
 	<script src="js/slideout.min.js"></script>
+<!-- Load margin toggle for IE9 here maybe... -->
     <script>
       var slideout = new Slideout({
         'panel': document.getElementById('container'),
@@ -102,11 +103,11 @@
         'padding': 125,
         'tolerance': 70
       });
-
       // Toggle button
       document.querySelector('.toggle-button').addEventListener('click', function() {
         slideout.toggle();
       });
     </script>
+
 </body>
 </html>
