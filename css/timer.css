@@ -1,3 +1,4 @@
+* { margin:0; padding:0; }
 html {
     -ms-touch-action: manipulation;
     touch-action: manipulation;
@@ -7,14 +8,52 @@ body {
 	font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
 	background-color: black;
 	color: white;
+	width: 100%;
+	height: 100%;
 }
 
+.slideout-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 0;
+  width: 123px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: none;
+  background-color: #222;
+  border-right: #333 2px solid;
+}
+
+.slideout-panel {
+  position:relative;
+  z-index: 1;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+  overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+  display: block;
+}
+
+.toggle-button {
+	position: absolute;
+	left: 2px;
+	top: 5px;
+	padding: 2px;
+}
 
 input[type=button] {
 	font-family: Tahoma, sans-serif;
 	font-size: 14px;
 	font-weight: bold;
-	width: 97px;
+	width: 105px;
 	height: 26px;
 	color: white;
 	border: 1px solid #333;
@@ -31,15 +70,15 @@ input[value=Save] {background-color: green;}
 
 input[value=Reset] {background-color: red;}
 
-input[value='Start / Split'],input[value=Unload] {background-color: red; width: 200px;}
+input[value='Start / Split'],input[value=Unload] {background-color: red; width: 215px;}
 
 input[value=Pause],input[value=Load],input[value='Choose Splits'] {background-color: #0062FF;}
-input[value='Choose Splits'] { width: 200px;}
+input[value='Choose Splits'] { width: 215px;}
 
-input[value=Editor],input[value='Export as Wsplit'] {background-color: orange; width: 200px;}
+input[value=Editor],input[value='Export as Wsplit'] {background-color: orange; width: 215px;}
 
 input[value='New Splits Entry'] {
-	background-color: green; width: 200px;
+	background-color: green; width: 215px;
 }
 
 input:active {color: #DDDDFF; color: #000033;}
@@ -49,7 +88,7 @@ input:disabled {
 	color: black;
 }
 
-#splits,#splits-editor {width: 200px; font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; font-size: 14px;}
+#splits,#splits-editor {width: 215px; font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; font-size: 14px;}
 
 #splits-table {
 	table-layout: fixed;
@@ -71,7 +110,7 @@ input:disabled {
 }
 
 #container {
-  width: 200px;
+  width: 215px;
   background-color: #111;
 }
 
@@ -201,7 +240,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	position: absolute;
 	top: 20px;
 	border-bottom: none;
-	width: 195px;
+	width: 210px;
 	text-align: right;
 }
 
@@ -214,8 +253,8 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 #splits-game-name input,#splits-goal-name input {
 	background: transparent;
 	color: white;
-	margin-right: 20px;
-	width: 150px;
+	margin-right: 2px;
+	width: 130px;
 }
 
 .alertBox {
@@ -227,7 +266,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 }
 
 #split-selector {
-	width: 200px;
+	width: 215px;
 }
 
 #split-selector h1  {

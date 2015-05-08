@@ -83,9 +83,7 @@ function GameTimer(d) {
         if (t.currently === 'stop') {
             t.start();
             return false;
-        }
-
-        if (t.currently === 'play') {
+        } else if (t.currently === 'play') {
             t.pause();
         }
 

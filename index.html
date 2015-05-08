@@ -31,9 +31,34 @@
 	<!--[if lt IE 9]>
 		<div class="alertBox">Sorry, IE8 and below are not supported. Please use IE9+ or Chrome/Firefox</div>
 	<![endif]-->
+
+<nav id="menu" class="menu slideout-menu">
+      <a href="https://github.com/iotku/websplit" target="_blank">
+        <header class="menu-header">
+          <span class="menu-header-title">View on Github</span>
+        </header>
+      </a>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="#" target="_blank">Usage</a></li>
+        </ul>
+      </section>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">WebSplit</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout" target="_blank">Fork it</a></li>
+          <li><a href="https://github.com/mango/slideout/issues/new" target="_blank">Create an issue</a></li>
+        </ul>
+      </section>
+    </nav>
+
 	<div id="split-selector">
 	</div>
 	<div id="container">
+		<button class="toggle-button">☰</button>
 		<div id="splits-header">
 			<div id="splits-game-name">No Title.</div>
 			<div id="splits-goal-name">No Game.</div>
@@ -71,5 +96,20 @@
 			<input type="button" value="Export as Wsplit" onclick="t.wsplitExport()"/>
 		</div>
 	</div>
+	</main>
+	<script src="js/slideout.min.js"></script>
+    <script>
+      var slideout = new Slideout({
+        'panel': document.getElementById('container'),
+        'menu': document.getElementById('menu'),
+        'padding': 125,
+        'tolerance': 70
+      });
+
+      // Toggle button
+      document.querySelector('.toggle-button').addEventListener('click', function() {
+        slideout.toggle();
+      });
+    </script>
 </body>
 </html>
