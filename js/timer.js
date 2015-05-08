@@ -593,17 +593,32 @@ function GameTimer(d) {
                 timerText.textContent = '+' + timerText.textContent;
             }
             return false; // Exit without checking anything else, gold is gold everywhere!
-        } else if (currentSegment < pbSegment) {
+        } else if (currentSegment < pbSegment && this.getSegmentTime() < this.getTotalTime()) {
+            // Ahead Split + Ahead Total Time
             prevSplit.style.color = "lime";
-        } else {
-            prevSplit.style.color = "red";
-            prevSplit.textContent = '+' + prevSplit.textContent;
-        }
-        if (this.getTotalTime() > this.getSegmentTime()) {
             timerText.style.color = "lime";
-        } else {
+        } else if (currentSegment < pbSegment && this.getSegmentTime() > this.getTotalTime()) {
+            // Ahead Split, But not ahead total time
+            prevSplit.style.color = "lime";
+            timerText.style.color = "#CC0000";
+            timerText.textContent = '+' + timerText.textContent;
+        } else if (currentSegment > pbSegment && this.getSegmentTime() > this.getTotalTime()) {
+            // Behind Split, and behind total time.
+            prevSplit.style.color = "red";
             timerText.style.color = "red";
             timerText.textContent = '+' + timerText.textContent;
+            prevSplit.textContent = '+' + prevSplit.textContent;
+        } else if (currentSegment > pbSegment && this.getSegmentTime() < this.getTotalTime()) {
+            // Behind Split, but ahead total time
+            prevSplit.style.color = "red";
+            timerText.style.color = "#00CC00";
+            prevSplit.textContent = '+' + prevSplit.textContent;
+        } else { // Hopefully, all our bases are covered....
+            // Make obvious something went wrong somehow.
+            prevSplit.style.color = "yellow";
+            timerText.style.color = "yellow";
+            prevSplit.textContent = '?' + prevSplit.textContent;
+            timerText.textContent = '?' + timerText.textContent;
         }
     };
 
@@ -735,7 +750,7 @@ function GameTimer(d) {
         this.totalSplits = this.totalSplits - 1;
     };
 
-    this.resizeSplits = function (argument) {
+    this.resizeSplits = function () {
         if (this.totalSplits > this.maxSplits) {
             for (var i = this.totalSplits - 1; i >= this.maxSplits; i--) {
                 document.getElementById("row" + i).style.display = "none";
