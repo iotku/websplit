@@ -66,7 +66,9 @@ input[type=button] {
 	-webkit-border-radius: 7px;
 }
 
-input[value=Save] {background-color: green; width: 120px;}
+input[value=Save] {background-color: green;}
+input[value="Save Splits"] {background-color: green; width: 120px;}
+
 
 input[value=Reset] {background-color: red;}
 
@@ -78,7 +80,9 @@ input[value='Choose Splits'] { width: 120px;}
 input[value=Editor],input[value='Export as Wsplit'] {background-color: orange; width: 120px;}
 
 input[value='New Splits Entry'] {
-	background-color: green; width: 215px;
+	background-color: green;
+	width: 215px;
+	margin-left: 5px;
 }
 
 input:active {color: #DDDDFF; color: #000033;}
@@ -271,6 +275,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #split-selector {
 	width: 215px;
+	margin-left: 5px;
 }
 
 #split-selector h1  {
@@ -283,6 +288,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #split-selector ul {
 	margin: 2px auto;
+	margin-left: 34px;
 	text-align: left;
 	border: white 2px solid;
 	background-color: #222;
@@ -312,10 +318,9 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	background-color: #222;
 	text-decoration: none;
 	font-weight: bolder;
-	left: 87px;
+	left: 93px;
 	width: 30px;
 	text-align: center;
-	margin-top: 1px;
 	font-size: 30px;
 	color: red;
 	border-left: white 1px solid;
@@ -331,7 +336,6 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	background-color: #222;
 	border-right: white 1px solid;
 	left: 5px;
-	margin-top: 1px;
 	font-size: 30px;
 	color: green;
 	z-index: 2;
@@ -345,6 +349,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	height: 45px;
 	min-height: 45px;
 	max-height: 45px;
+	border: white solid 2px;
 }
 
 #split-selector a:hover {
@@ -374,14 +379,16 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 }
 
 .defaultSplit .slide {
-	left: 36px;
+	left: 35px;
+	top: 1px;
 }
 .delete .slide {
-	left: -47px;
+	left: -50px;
+	top: 1px;
 }
 #split-selector a:hover + .slide {
 	transition: 1s;
 	/*opacity: 1;*/
-	width: 134px;
+	width: 142px;
 	z-index: 1;
 }

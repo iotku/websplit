@@ -34,11 +34,11 @@
 
 <nav id="menu" class="menu slideout-menu">
       <section class="menu-section">
-			<input type="button" value="Save"   onclick="t.saveSplits()"/>
+			<input type="button" class="menu-btn" value="Save Splits" onclick="t.saveSplits()"/>
 			<!-- <input type="button" value="Load"   onclick="t.loadSplits()"/><br> -->
-			<input type="button" value="Choose Splits" onclick="t.splitSelector()"/>
-			<input type="button" value="Editor" onclick="openEditor()"/>
-			<input type="button" value="Export as Wsplit" onclick="t.wsplitExport()"/>
+			<input type="button" value="Choose Splits" onclick="t.splitSelector();slideout.toggle();"/>
+			<input type="button" value="Editor" onclick="openEditor();slideout.toggle();"/>
+			<input type="button" value="Export as Wsplit" onclick="t.wsplitExport();slideout.toggle();"/>
       </section>
 
       <section class="menu-section">
