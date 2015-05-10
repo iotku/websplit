@@ -141,6 +141,7 @@ function GameTimer(d) {
         document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getSegmentTime());
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "bolder";
         this.setSegmentColor(currentSegment);
+        this.resizeSplitColum();
 
         // Increment gold counter to know how many golds there are
         if (currentSegment < bestSegment || bestSegment === 0) { // If better than best segment
@@ -307,8 +308,8 @@ function GameTimer(d) {
 
             this.currentSplit++;
         }
-        this.resizeSplits();
         this.currentSplit = 1;
+        this.resizeSplits();
         this.setState("stop");
         this.disableControls = false;
     };
@@ -748,7 +749,30 @@ function GameTimer(d) {
         this.totalSplits = this.totalSplits - 1;
     };
 
+    this.resizeSplitColum = function () {
+        split = document.getElementById("split" + this.currentSplit);
+        diff = document.getElementById("difference" + this.currentSplit);
+        difflen = diff.textContent.length * 9.8;
+        splitlen = split.textContent.length * 9.8;
+        split.style.width = splitlen + "px";
+        diff.style.width = difflen + "px";
+
+
+        left = 215 - (difflen + splitlen);
+        for (var i = this.totalSplits; i >= 1; i--) {
+        console.log(left)
+        document.getElementById("splitname" + i).style.width = (left - 25) + "px";
+    }
+    }
+
+    this.debugAddTime = function () {
+        this.timer.start = this.startTime - 10000000;
+        this.update();
+    }
+
     this.resizeSplits = function () {
+        this.resizeSplitColum();
+
         if (this.totalSplits > this.maxSplits) {
             for (var i = this.totalSplits - 1; i >= this.maxSplits; i--) {
                 document.getElementById("row" + i).style.display = "none";

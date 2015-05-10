@@ -135,15 +135,17 @@ input:disabled {
 #prevsplit,#splits-table div:nth-child(3n+3) {
 	text-align: right;
 	padding-right: 5px;
+;
 }
 
 #splits-table {
 	display: table;
-	width: 100%;
+	width: 215px;
 }
 
 #splits-table span {
 	display: table-row;
+	width: 100%;
 }
 
 #splits-table span div:nth-child(2n+1) {
@@ -173,8 +175,12 @@ input:disabled {
 }
 
 #splits-table span div:nth-child(2n+2) {
-	text-align: center;
+	text-align: right;
 	display: table-cell;
+}
+
+#splits-table span div:nth-child(2n+3) {
+	text-align: right;
 }
 
 .active-split {
@@ -229,6 +235,7 @@ nav a:link,a:visited {
 color: silver;
 font-size: 13px;
 }
+
 input[type=text],input:disabled{
 	border: 0;
 	padding: 0;
