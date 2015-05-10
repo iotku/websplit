@@ -750,6 +750,8 @@ function GameTimer(d) {
     };
 
     this.resizeSplitColum = function () {
+        // Voodoo Magic
+        // Sometimes Works... sometimes doesn't?
         split = document.getElementById("split" + this.currentSplit);
         diff = document.getElementById("difference" + this.currentSplit);
         difflen = diff.textContent.length * 9.8;
@@ -760,14 +762,8 @@ function GameTimer(d) {
 
         left = 215 - (difflen + splitlen);
         for (var i = this.totalSplits; i >= 1; i--) {
-        console.log(left)
-        document.getElementById("splitname" + i).style.width = (left - 25) + "px";
-    }
-    }
-
-    this.debugAddTime = function () {
-        this.timer.start = this.startTime - 10000000;
-        this.update();
+            document.getElementById("splitname" + i).style.width = (left - 25) + "px";
+        }
     }
 
     this.resizeSplits = function () {
