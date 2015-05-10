@@ -592,22 +592,22 @@ function GameTimer(d) {
                 timerText.textContent = '+' + timerText.textContent;
             }
             return false; // Exit without checking anything else, gold is gold everywhere!
-        } else if (currentSegment < pbSegment && this.getSegmentTime() < this.getTotalTime()) {
+        } else if (currentSegment <= pbSegment && this.getSegmentTime() <= this.getTotalTime()) {
             // Ahead Split + Ahead Total Time
             prevSplit.style.color = "lime";
             timerText.style.color = "lime";
-        } else if (currentSegment < pbSegment && this.getSegmentTime() > this.getTotalTime()) {
+        } else if (currentSegment <= pbSegment && this.getSegmentTime() >= this.getTotalTime()) {
             // Ahead Split, But not ahead total time
             prevSplit.style.color = "lime";
             timerText.style.color = "#CC0000";
             timerText.textContent = '+' + timerText.textContent;
-        } else if (currentSegment > pbSegment && this.getSegmentTime() > this.getTotalTime()) {
+        } else if (currentSegment >= pbSegment && this.getSegmentTime() >= this.getTotalTime()) {
             // Behind Split, and behind total time.
             prevSplit.style.color = "red";
             timerText.style.color = "red";
             timerText.textContent = '+' + timerText.textContent;
             prevSplit.textContent = '+' + prevSplit.textContent;
-        } else if (currentSegment > pbSegment && this.getSegmentTime() < this.getTotalTime()) {
+        } else if (currentSegment >= pbSegment && this.getSegmentTime() <= this.getTotalTime()) {
             // Behind Split, but ahead total time
             prevSplit.style.color = "red";
             timerText.style.color = "#00CC00";
