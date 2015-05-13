@@ -755,14 +755,14 @@ function GameTimer(d) {
         split = document.getElementById("split" + this.currentSplit);
         diff = document.getElementById("difference" + this.currentSplit);
         difflen = diff.textContent.length * 9.8;
-        splitlen = split.textContent.length * 9.8;
+        splitlen = (split.textContent.length * 9.8);
         split.style.width = splitlen + "px";
         diff.style.width = difflen + "px";
 
 
         left = 215 - (difflen + splitlen);
         for (var i = this.totalSplits; i >= 1; i--) {
-            document.getElementById("splitname" + i).style.width = (left - 25) + "px";
+            document.getElementById("splitname" + i).style.maxWidth = (left - 25) + "px";
         }
     }
 

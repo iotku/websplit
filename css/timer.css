@@ -100,7 +100,8 @@ input:disabled {
 }
 
 #splits-table {
-	width: 100%;
+	/*table-layout: fixed;*/
+	width: 215px;
 }
 
 #splits-header {
