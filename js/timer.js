@@ -6,6 +6,36 @@
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
+function webSocket(f){
+    var websocketURL = 'ws://localhost:8080/';
+
+    console.log(t.maxSplits)
+    ws = new WebSocket(websocketURL);
+    
+    ws.onopen = function() {
+    console.log("WebSockets: Connected to " + websocketURL)
+    }
+
+    this.sendTest = function (start) {
+        ws.send(t.maxSplits);
+        console.log("firing")
+    }
+
+    ws.onmessage = function(event) {
+      console.log(event.data);
+    };
+
+    ws.onerror = function (error) {
+      console.log('WebSocket Error ' + error.toString());
+    };
+     ws.onclose = function(){
+        //try to reconnect in 5 seconds
+        console.log("Connection lost! Retrying in 5s.")
+        setTimeout(function(){webSocket();}, 5000);}
+    var self = this,
+    d = d || {}; // I really don't know about this.
+}
+
 function GameTimer(d) {
     /* User configurable settings */
     this.maxSplits = 10;   // Max splits to display at once
@@ -805,6 +835,9 @@ t = new GameTimer({
     ms: [2, 1]
 });
 
+var websock;
+websock = new webSocket();
+
 // Hotkeys. onkeydown is more responsive than onkeyup
 window.onkeydown = function keyPress(e) {
     var k = e.which || e.keyCode;
@@ -818,6 +851,7 @@ window.onkeydown = function keyPress(e) {
 };
 
 window.onload = function () {
+    // websock 
     t.startSplits();
 };
 
