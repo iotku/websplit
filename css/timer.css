@@ -403,3 +403,21 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	width: 142px;
 	z-index: 1;
 }
+
+#debug-output {
+	white-space: pre-line;
+	width: 350px;
+	height: 98%;
+	position: absolute;
+	left: 225px;
+	top: 5px;
+	overflow: auto;
+	border: red solid 2px;
+	background-color: #222;
+	display: none;
+}
+
+#websock-status {
+	font-size: 12px;
+	text-align: center;
+}

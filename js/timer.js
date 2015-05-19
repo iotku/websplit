@@ -6,6 +6,43 @@
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
+function debugMsg(text) {
+    var currentTime = new Date();    
+    document.getElementById("debug-output").innerHTML += currentTime.getHours() + ":" + t.pad(currentTime.getMinutes(), 2) + ":" + t.pad(currentTime.getSeconds(), 2) + ": " + text + '<br>';
+}
+
+function webSocket(f){
+    var websocketURL = 'ws://localhost:8080/';
+    ws = new WebSocket(websocketURL);
+    
+    ws.onopen = function() {
+    debugMsg("Connected to " + websocketURL);
+    document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
+    }
+
+    this.closeSocket = function () {
+        // Should autorespawn
+        ws.close();
+    }
+
+    ws.onmessage = function(event) {
+      debugMsg("Recived: " + event.data);
+    };
+
+    ws.onerror = function (error) {
+
+      console.log('WebSocket Error ' + error);
+    };
+     ws.onclose = function(){
+        //try to reconnect in 5 seconds
+        console.log("Connection lost! Retrying in 5s.")
+        debugMsg("Connection Lost!")
+        document.getElementById("websock-status").textContent = "Not Connected."
+        setTimeout(function(){webSocket();}, 5000);}
+    var self = this,
+    d = d || {}; // I really don't know about this.
+}
+
 function GameTimer(d) {
     /* User configurable settings */
     this.maxSplits = 10;   // Max splits to display at once
@@ -805,6 +842,9 @@ t = new GameTimer({
     ms: [2, 1]
 });
 
+var websock;
+websock = new webSocket();
+
 // Hotkeys. onkeydown is more responsive than onkeyup
 window.onkeydown = function keyPress(e) {
     var k = e.which || e.keyCode;
@@ -818,6 +858,7 @@ window.onkeydown = function keyPress(e) {
 };
 
 window.onload = function () {
+    // websock 
     t.startSplits();
 };
 
