@@ -6,31 +6,38 @@
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
+function debugMsg(text) {
+    var currentTime = new Date();    
+    document.getElementById("debug-output").innerHTML += currentTime.getHours() + ":" + t.pad(currentTime.getMinutes(), 2) + ":" + t.pad(currentTime.getSeconds(), 2) + ": " + text + '<br>';
+}
+
 function webSocket(f){
     var websocketURL = 'ws://localhost:8080/';
-
-    console.log(t.maxSplits)
     ws = new WebSocket(websocketURL);
     
     ws.onopen = function() {
-    console.log("WebSockets: Connected to " + websocketURL)
+    debugMsg("Connected to " + websocketURL);
+    document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
     }
 
-    this.sendTest = function (start) {
-        ws.send(t.maxSplits);
-        console.log("firing")
+    this.closeSocket = function () {
+        // Should autorespawn
+        ws.close();
     }
 
     ws.onmessage = function(event) {
-      console.log(event.data);
+      debugMsg("Recived: " + event.data);
     };
 
     ws.onerror = function (error) {
-      console.log('WebSocket Error ' + error.toString());
+
+      console.log('WebSocket Error ' + error);
     };
      ws.onclose = function(){
         //try to reconnect in 5 seconds
         console.log("Connection lost! Retrying in 5s.")
+        debugMsg("Connection Lost!")
+        document.getElementById("websock-status").textContent = "Not Connected."
         setTimeout(function(){webSocket();}, 5000);}
     var self = this,
     d = d || {}; // I really don't know about this.

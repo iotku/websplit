@@ -85,14 +85,15 @@
 		<div class="statusbar">
 			<span><div id="prevtext"></div><div id="prevsplit">Not Loaded.</div></span>
 		</div>
+		<span><div class="statusbar" id="websock-status">Not Connected.</div></span>
 		<div id="controls">
 			<input type="button" value="Start / Split"  onclick="t.split()"/><br>
 			<input type="button" value="Unsplit" onclick="t.unsplit()"/>
 			<input type="button" value="Skip Split" onclick="t.skipSplit()"/>
 			<input type="button" value="Reset"  onclick="t.reset()"/>
 			<input type="button" value="Pause"  onclick="t.pause()"/><br>
-			<input type="button" value="Sendtest"  onclick="websock.sendTest()"/><br>
-
+			<input type="button" value="Close Conn"  onclick="websock.closeSocket()"/><br>
+			<input type="button" value="Debug Window"  onclick="document.getElementById('debug-output').style.display = 'inline-block'" /><br>
 		</div>
 	</div>
 	</main>
@@ -110,6 +111,6 @@
         slideout.toggle();
       });
     </script>
-
+<div id="debug-output"></div>
 </body>
 </html>
