@@ -4,7 +4,7 @@ Websocket Support
 http://caniuse.com/#feat=websockets
 
 Browser | Works? | Notes
----------------
+--------|--------|------
 Firefox (Desktop, Current)      | Full        | Seems to work fine.
 Chrome  (Desktop, Current)      | Full        | Seems to work fine.
 Internet Explorer (Desktop, 11) | Mostly      | Doesn't appear to always run ws.onopen until after it has been closed, so using that may be unreliable for connection checking
