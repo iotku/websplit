@@ -26,6 +26,12 @@ function webSocket(f){
     }
 
     ws.onmessage = function(event) {
+      switch (event.data) {
+          case "start": t.split(); break;
+          case "unsplit": t.unsplit(); break;
+          case "skipsplit": t.skipSplit(); break;
+          default: debugMsg(t.parseTime(event.data)); break;
+        }
       debugMsg("Recived: " + event.data);
     };
 
@@ -497,9 +503,11 @@ function GameTimer(d) {
 
     this.saveSplits = function () {
         if (this.disableControls === true || this.currently === 'play') {return false;}
+        this.disableControls = true;
         if (confirm("Would you like to save?")) {/* Cancel */
         } else {
             /* OK */
+            this.disableControls = "false";
             return false;
         }
         for (var step = 1; step <= this.totalSplits; step++) {
@@ -512,6 +520,7 @@ function GameTimer(d) {
             }
         }
         localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
+        this.disableControls = "false";
     };
 
     this.loadSplits = function () {
