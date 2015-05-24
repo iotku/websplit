@@ -6,6 +6,9 @@
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
+// Very Gloabal options...
+this.useWebsockets = true; // Use Websocket interface?
+
 function debugMsg(text) {
     var currentTime = new Date();    
     var container = document.createElement('span');
@@ -56,7 +59,6 @@ function webSocket(f){
 function GameTimer(d) {
     /* User configurable settings */
     this.maxSplits = 10;   // Max splits to display at once
-    this.useWebsockets = false; // Use Websocket interface?
     
     /* Timer variables (do not change unless you're sure) */
     this.currentSplit = 1; // Initialize at 1st split
@@ -231,6 +233,8 @@ function GameTimer(d) {
     };
 
     this.unsplit = function () {
+        if (this.disableControls === true) { return false }
+
         if (this.currently === "done" && this.currentSplit === this.totalSplits) {
             this.setState("play");
             this.timer.start = this.startTime;
@@ -264,7 +268,7 @@ function GameTimer(d) {
                 document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             }
         }
-        if (this.currentSplit > 5 && (this.totalSplits - this.currentSplit) > 4) {
+        if (this.currentSplit >= 5 && (this.totalSplits - this.currentSplit) > 4) { // >= 5 cause a type error, but otherwise splits seem to disapear randomly... hopefully harmless
             document.getElementById("row" + (this.currentSplit - 5)).style.display = "table-row";
             document.getElementById("row" + (this.currentSplit + 4)).style.display = "none";
         }
@@ -858,10 +862,10 @@ t = new GameTimer({
     ms: [2, 1]
 });
 
-// if (useWebsockets === true) {
+if (useWebsockets === true) {
     var websock;
     websock = new webSocket();
-// }
+}
 
 // Hotkeys. onkeydown is more responsive than onkeyup
 window.onkeydown = function keyPress(e) {

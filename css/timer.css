@@ -47,6 +47,7 @@ body {
 	left: 2px;
 	top: 5px;
 	padding: 2px;
+	z-index: 1;
 }
 
 input[type=button] {
@@ -265,6 +266,8 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #attempt-counter input {
 	width: 20px;
+	left: 188px;
+	position: absolute;
 	color: white;
 	background: transparent;
 }
@@ -272,8 +275,11 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 #splits-game-name input,#splits-goal-name input {
 	background: transparent;
 	color: white;
+	margin-left: 22px;
 	margin-right: 2px;
 	width: 130px;
+	margin-bottom: 2px;
+	z-index: 1;
 }
 
 .alertBox {
