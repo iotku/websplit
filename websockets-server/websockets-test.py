@@ -3,7 +3,11 @@ from sys import stdout
 from sys import stdin
 from time import sleep
 
-while True:
-	print("05:00:00.5")
-	sleep(1)
-	stdout.flush()
+print("start")
+sleep(1)
+print("00:01:00.5")
+print("00:02:00.5")
+print("00:03:00.5")
+print("00:04:00.5")
+print("00:05:00.5")
+stdout.flush()

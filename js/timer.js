@@ -8,7 +8,13 @@
 
 function debugMsg(text) {
     var currentTime = new Date();    
-    document.getElementById("debug-output").innerHTML += currentTime.getHours() + ":" + t.pad(currentTime.getMinutes(), 2) + ":" + t.pad(currentTime.getSeconds(), 2) + ": " + text + '<br>';
+    var container = document.createElement('span');
+    container.innerHTML = currentTime.getHours() + ":" + t.pad(currentTime.getMinutes(), 2) + ":" + t.pad(currentTime.getSeconds(), 2) + ": " + text + '<br>';
+    document.getElementById("debug-output").appendChild(container);
+
+    // Scroll to bottom automatically?    
+    var objDiv = document.getElementById("debug-output");
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
 
 function webSocket(f){
@@ -26,22 +32,20 @@ function webSocket(f){
     }
 
     ws.onmessage = function(event) {
+      debugMsg("Recived: " + event.data);
       switch (event.data) {
           case "start": t.split(); break;
           case "unsplit": t.unsplit(); break;
           case "skipsplit": t.skipSplit(); break;
-          default: debugMsg(t.parseTime(event.data)); break;
+          default: t.split(t.parseTime(event.data)); break;
         }
-      debugMsg("Recived: " + event.data);
     };
 
     ws.onerror = function (error) {
-
-      console.log('WebSocket Error ' + error);
+      debugMsg('WebSocket Error ' + error);
     };
      ws.onclose = function(){
         //try to reconnect in 5 seconds
-        console.log("Connection lost! Retrying in 5s.")
         debugMsg("Connection Lost!")
         document.getElementById("websock-status").textContent = "Not Connected."
         setTimeout(function(){webSocket();}, 5000);}
@@ -52,6 +56,7 @@ function webSocket(f){
 function GameTimer(d) {
     /* User configurable settings */
     this.maxSplits = 10;   // Max splits to display at once
+    this.useWebsockets = false; // Use Websocket interface?
     
     /* Timer variables (do not change unless you're sure) */
     this.currentSplit = 1; // Initialize at 1st split
@@ -137,15 +142,16 @@ function GameTimer(d) {
         this.genSplits(); /* reset splits */
     };
 
-    this.split = function () {
+    this.split = function (splittime) {
         if (this.disableControls === true) {return false;}
+        splittime = splittime || this.timer.realtime;
         if (this.currently === 'pause') {
             this.pause(); // Unpause on split, if paused
             return false;
         } else if (this.currently === 'play') {
             this.update(true, true);
             this.setTimeout(0);
-            this.updateSplit(this.timer.realtime);
+            this.updateSplit(splittime);
         } else if (this.currentSplit === this.totalSplits && this.totalSplits != 1) {
             this.reset();
         } else if (this.timer.start === 0) {
@@ -683,6 +689,7 @@ function GameTimer(d) {
             h += 1;
         }
         
+        // I think msd was supposed to avoid this mess somehow (a value to set to show how much to truicate?)
         if (isEditor === true) {
             humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
             return humanTime;
@@ -851,8 +858,10 @@ t = new GameTimer({
     ms: [2, 1]
 });
 
-var websock;
-websock = new webSocket();
+// if (useWebsockets === true) {
+    var websock;
+    websock = new webSocket();
+// }
 
 // Hotkeys. onkeydown is more responsive than onkeyup
 window.onkeydown = function keyPress(e) {
