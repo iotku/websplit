@@ -11,11 +11,11 @@
 	<meta name="format-detection" content="telephone=no" />
 	<link rel="stylesheet" type="text/css" href="css/timer.css" />
 	<!--[if gte IE 9]>
-	  <style type="text/css">
-	    .gradient {
-	       filter: none;
-	    }
-	  </style>
+		<style type="text/css">
+		.gradient {
+			filter: none;
+		}
+		</style>
 	<![endif]-->
 	<script type="text/javascript" src="js/timer.js"></script>
 	<script type="application/javascript" src="js/fastclick-min.js"></script>
@@ -28,34 +28,34 @@
 	</script>
 </head>
 <body>
-	<!--[if lt IE 9]>
-		<div class="alertBox">Sorry, IE8 and below are not supported. Please use IE9+ or Chrome/Firefox</div>
+	<!--[if lt IE 10]>
+		<div class="alertBox">Sorry, IE9 and below are not supported. Please use IE10+ or Chrome/Firefox</div>
 	<![endif]-->
 
 <nav id="menu" class="menu slideout-menu">
-      <section class="menu-section">
+		<section class="menu-section">
 			<input type="button" class="menu-btn" value="Save Splits" onclick="t.saveSplits()"/>
 			<!-- <input type="button" value="Load"   onclick="t.loadSplits()"/><br> -->
 			<input type="button" value="Choose Splits" onclick="t.splitSelector();slideout.toggle();"/>
 			<input type="button" value="Editor" onclick="openEditor();slideout.toggle();"/>
 			<input type="button" value="Export as Wsplit" onclick="t.wsplitExport();slideout.toggle();"/>
-      </section>
+		</section>
 
-      <section class="menu-section">
-        <h3 class="menu-section-title">WebSplit</h3>
-        <ul class="menu-section-list">
-          <li><a href="https://github.com/iotku/websplit" target="_blank">View on Github</a></li>
-          <li><a href="https://github.com/iotku/websplit/issues/new" target="_blank">Create an issue</a></li>
-        </ul>
-      </section>
+		<section class="menu-section">
+			<h3 class="menu-section-title">WebSplit</h3>
+			<ul class="menu-section-list">
+				<li><a href="https://github.com/iotku/websplit" target="_blank">View on Github</a></li>
+				<li><a href="https://github.com/iotku/websplit/issues/new" target="_blank">Create an issue</a></li>
+			</ul>
+		</section>
 
-	  <section class="menu-section">
-         <h3 class="menu-section-title">Docs</h3>
-         <ul class="menu-section-list">
-         <li><a href="#" target="_blank">Usage</a></li>
-        </ul>
-      </section>
-    </nav>
+		<section class="menu-section">
+		<h3 class="menu-section-title">Docs</h3>
+		<ul class="menu-section-list">
+			<li><a href="#" target="_blank">Usage</a></li>
+		</ul>
+		</section>
+	</nav>
 
 	<div id="container">
 		<div id="split-selector">
@@ -75,8 +75,8 @@
 			<svg height="55" width="215">
 				<defs>
 					<linearGradient id="text-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
-					    <stop class="stop1" offset="0%"/>
-					    <stop class="stop2" offset="100%"/>
+						<stop class="stop1" offset="0%"/>
+						<stop class="stop2" offset="100%"/>
 					</linearGradient>
 				</defs>
 				<text style="fill: url(#text-gradient); font-size: 42px;" id="timer_realtime" text-anchor="end" x="210px" y="1.2em">0.0</text>
@@ -92,25 +92,26 @@
 			<input type="button" value="Skip Split" onclick="t.skipSplit()"/>
 			<input type="button" value="Reset"  onclick="t.reset()"/>
 			<input type="button" value="Pause"  onclick="t.pause()"/><br>
+		</div>
+		<div id="websock-controls">
 			<input type="button" value="Close Conn"  onclick="websock.closeSocket()"/><br>
-			<input type="button" value="Debug Window"  onclick="document.getElementById('debug-output').style.display = 'inline-block'" /><br>
+			<input type="button" value="Debug Window"  onclick="document.getElementById('debug-output').style.display = 'inline-block'" />
 		</div>
 	</div>
 	</main>
 	<script src="js/slideout.min.js"></script>
-<!-- Load margin toggle for IE9 here maybe... -->
-    <script>
-      var slideout = new Slideout({
-        'panel': document.getElementById('container'),
-        'menu': document.getElementById('menu'),
-        'padding': 125,
-        'tolerance': 70
-      });
-      // Toggle button
-      document.querySelector('.toggle-button').addEventListener('click', function() {
-        slideout.toggle();
-      });
-    </script>
+	<script>
+		var slideout = new Slideout({
+		'panel': document.getElementById('container'),
+		'menu': document.getElementById('menu'),
+		'padding': 125,
+		'tolerance': 70
+		});
+		// Toggle button
+		document.querySelector('.toggle-button').addEventListener('click', function() {
+		slideout.toggle();
+	  });
+	</script>
 <div id="debug-output"></div>
 </body>
 </html>

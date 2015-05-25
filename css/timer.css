@@ -1,7 +1,7 @@
 * { margin:0; padding:0; }
 html {
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
 }
 
 body {
@@ -13,33 +13,33 @@ body {
 }
 
 .slideout-menu {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 0;
-  width: 123px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  display: none;
-  background-color: #222;
-  border-right: #333 2px solid;
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 0;
+	width: 123px;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	display: none;
+	background-color: #222;
+	border-right: #333 2px solid;
 }
 
 .slideout-panel {
-  position:relative;
-  z-index: 1;
+	position:relative;
+	z-index: 1;
 }
 
 .slideout-open,
 .slideout-open body,
 .slideout-open .slideout-panel {
-  overflow: hidden;
+	overflow: hidden;
 }
 
 .slideout-open .slideout-menu {
-  display: block;
+	display: block;
 }
 
 .toggle-button {
@@ -119,8 +119,8 @@ input:disabled {
 }
 
 #container {
-  width: 215px;
-  background-color: #111;
+	width: 215px;
+	background-color: #111;
 }
 
 #timer {
@@ -249,7 +249,7 @@ input[type=text],input:disabled{
 	color: white;
 	font-weight: bold;
 	font-size: 12px;
-    width: 28%;
+	width: 28%;
 }
 
 input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
