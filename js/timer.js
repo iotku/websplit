@@ -262,8 +262,8 @@ function GameTimer(d) {
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
         }
 
-        // Reset Current split (before decrimenting)
-        splitsObject[this.currentSplit][3] = 0;
+        // Reset Previous split before switching to it
+        splitsObject[this.currentSplit - 1][3] = 0;
 
         if (this.currentSplit === 1) {
             return false;
