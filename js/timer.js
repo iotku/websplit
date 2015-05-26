@@ -7,7 +7,7 @@
 // - iotku
 
 // Very Global options...
-this.useWebsockets = false; // Use Websocket interface?
+this.useWebsockets = true; // Use Websocket interface?
 
 function debugMsg(text) {
     var currentTime = new Date();
