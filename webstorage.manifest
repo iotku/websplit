@@ -1,9 +1,11 @@
 CACHE MANIFEST
 
+#Bump?
 CACHE:
 index.html
 js/FileSaver.min.js
 js/fastclick-min.js
+js/performance-now-polyfill.js
 js/slideout.min.js
 js/timer.js
 css/timer.css
