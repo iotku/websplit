@@ -6,6 +6,57 @@
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
+// Very Global options...
+this.useWebsockets = false; // Use Websocket interface?
+
+function debugMsg(text) {
+    var currentTime = new Date();
+    var container = document.createElement('span');
+    container.innerHTML = currentTime.getHours() + ":" + t.pad(currentTime.getMinutes(), 2) + ":" + t.pad(currentTime.getSeconds(), 2) + ": " + text + '<br>';
+    document.getElementById("debug-output").appendChild(container);
+
+    // Scroll to bottom automatically?
+    var objDiv = document.getElementById("debug-output");
+    objDiv.scrollTop = objDiv.scrollHeight;
+}
+
+function webSocket(f){
+    var websocketURL = 'ws://localhost:8080/';
+    ws = new WebSocket(websocketURL);
+    
+    ws.onopen = function() {
+    debugMsg("Connected to " + websocketURL);
+    document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
+    }
+
+    this.closeSocket = function () {
+        // Should autorespawn
+        ws.close();
+    }
+
+    ws.onmessage = function(event) {
+      debugMsg("Recived: " + event.data);
+      switch (event.data) {
+          case "start": t.split(); break;
+          case "reset": t.reset(); break;
+          case "unsplit": t.unsplit(); break;
+          case "skipsplit": t.skipSplit(); break;
+          default: t.split(t.parseTime(event.data)); break;
+        }
+    };
+
+    ws.onerror = function (error) {
+      debugMsg('WebSocket Error ' + error);
+    };
+     ws.onclose = function(){
+        //try to reconnect in 5 seconds
+        debugMsg("Connection Lost!")
+        document.getElementById("websock-status").textContent = "Not Connected."
+        setTimeout(function(){webSocket();}, 5000);}
+    var self = this,
+    d = d || {}; // I really don't know about this.
+}
+
 function GameTimer(d) {
     /* User configurable settings */
     this.maxSplits = 10;   // Max splits to display at once
@@ -30,9 +81,10 @@ function GameTimer(d) {
     };
 
     this.start = function (start) {
+        pref = performance.now()
         start = start || 0;
         this.timer = {
-            start: this.now() + (start * 1000),
+            start: pref + (start * 1000),
             now: 0,
             realtime: 0
         };
@@ -49,7 +101,7 @@ function GameTimer(d) {
 
     this.update = function (no_timeout, clear_timeout) {
         var t = this.timer;
-        t.now = this.now();
+        t.now = performance.now();
         t.realtime = t.now - t.start;
         this.updateElements();
         if (clear_timeout === true) {
@@ -63,18 +115,20 @@ function GameTimer(d) {
 
     this.pause = function () {
         if (this.disableControls === true) {return false;}
-        if (this.currently === 'stop') {
+        if (this.currently === 'play') {
+            this.setState("pause");
+            this.update(true, true);
+        } else if (this.currently === 'stop') {
             this.start();
             return false;
         } else if (this.currently === 'done') {
             return false;
-        } else if (this.currently === 'play') {
-            this.setState("pause");
-            this.update(true, true);
         } else {
             this.setState("play");
-            this.timer.start = this.now() - this.timer.realtime;
+            var timeOffset = this.now() - this.timer.realtime;
+            this.timer.start = timeOffset;
             this.update();
+            this.startTime = timeOffset; // For unsplitting after timer stops
         }
     };
 
@@ -94,15 +148,17 @@ function GameTimer(d) {
         this.genSplits(); /* reset splits */
     };
 
-    this.split = function () {
+    this.split = function (splittime) {
+        var actualtime = this.timer.realtime
         if (this.disableControls === true) {return false;}
+        // splittime = splittime || actualtime;
         if (this.currently === 'pause') {
             this.pause(); // Unpause on split, if paused
             return false;
         } else if (this.currently === 'play') {
             this.update(true, true);
             this.setTimeout(0);
-            this.updateSplit(this.timer.realtime);
+            this.updateSplit(actualtime);
         } else if (this.currentSplit === this.totalSplits && this.totalSplits != 1) {
             this.reset();
         } else if (this.timer.start === 0) {
@@ -122,6 +178,13 @@ function GameTimer(d) {
 
         // Double Tap Prevention
         if (currentSegment < 300) { return false; }
+
+        if (this.totalSplits === this.currentSplit) {
+            // Stop timer and match time with last split
+            this.pause();
+            this.currently = 'done';
+            document.getElementById("timer_realtime").textContent = this.realTime(splittime);
+        }
 
         // Add Current Segment to splitsObject
         splitsObject[this.currentSplit][3] = currentSegment;
@@ -162,8 +225,6 @@ function GameTimer(d) {
                 }
             }
         } else {
-            this.pause();
-            this.currently = 'done';
             document.getElementById("row" + this.currentSplit).className = " ";
             // (Total Time of PB    > Total of Current Segs || No Total, so new splits  || Last Split is empty, so we assume that the run is new, even if behind)
             if (this.getTotalTime() > this.getSegmentTime() || this.getTotalTime() === 0 || splitsObject[this.totalSplits][1] === 0) { /*Dude nice*/
@@ -182,6 +243,8 @@ function GameTimer(d) {
     };
 
     this.unsplit = function () {
+        if (this.disableControls === true) { return false }
+
         if (this.currently === "done" && this.currentSplit === this.totalSplits) {
             this.setState("play");
             this.timer.start = this.startTime;
@@ -199,6 +262,7 @@ function GameTimer(d) {
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
         }
 
+        // Reset Current split (before decrimenting)
         splitsObject[this.currentSplit][3] = 0;
 
         if (this.currentSplit === 1) {
@@ -215,7 +279,7 @@ function GameTimer(d) {
                 document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             }
         }
-        if (this.currentSplit > 5 && (this.totalSplits - this.currentSplit) > 4) {
+        if (this.currentSplit >= 5 && (this.totalSplits - this.currentSplit) > 4) { // >= 5 causes a type error, but otherwise splits seem to disapear randomly... hopefully harmless
             document.getElementById("row" + (this.currentSplit - 5)).style.display = "table-row";
             document.getElementById("row" + (this.currentSplit + 4)).style.display = "none";
         }
@@ -460,9 +524,11 @@ function GameTimer(d) {
 
     this.saveSplits = function () {
         if (this.disableControls === true || this.currently === 'play') {return false;}
+        this.disableControls = true;
         if (confirm("Would you like to save?")) {/* Cancel */
         } else {
             /* OK */
+            this.disableControls = "false";
             return false;
         }
         for (var step = 1; step <= this.totalSplits; step++) {
@@ -475,6 +541,7 @@ function GameTimer(d) {
             }
         }
         localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
+        this.disableControls = "false";
     };
 
     this.loadSplits = function () {
@@ -637,6 +704,7 @@ function GameTimer(d) {
             h += 1;
         }
         
+        // I think msd was supposed to avoid this mess somehow (a value to set to show how much to truicate?)
         if (isEditor === true) {
             humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
             return humanTime;
@@ -697,8 +765,8 @@ function GameTimer(d) {
     };
 
     this.now = function () {
-        var t = new Date();
-        return t.getTime();
+        var t = performance.now();
+        return t;
     };
 
     this.setTimeout = function (interval) {
@@ -805,6 +873,11 @@ t = new GameTimer({
     ms: [2, 1]
 });
 
+if (useWebsockets === true) {
+    var websock;
+    websock = new webSocket();
+}
+
 // Hotkeys. onkeydown is more responsive than onkeyup
 window.onkeydown = function keyPress(e) {
     var k = e.which || e.keyCode;
@@ -818,6 +891,11 @@ window.onkeydown = function keyPress(e) {
 };
 
 window.onload = function () {
+    if (this.useWebsockets === false) {
+        document.getElementById("websock-status").style.display = "none";
+        document.getElementById("websock-controls").style.display = "none";
+    }
+    
     t.startSplits();
 };
 
