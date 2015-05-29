@@ -151,14 +151,14 @@ function GameTimer(d) {
     this.split = function (splittime) {
         var actualtime = this.timer.realtime
         if (this.disableControls === true) {return false;}
-        // splittime = splittime || actualtime;
+        splittime = splittime || actualtime;
         if (this.currently === 'pause') {
             this.pause(); // Unpause on split, if paused
             return false;
         } else if (this.currently === 'play') {
             this.update(true, true);
             this.setTimeout(0);
-            this.updateSplit(actualtime);
+            this.updateSplit(splittime);
         } else if (this.currentSplit === this.totalSplits && this.totalSplits != 1) {
             this.reset();
         } else if (this.timer.start === 0) {
@@ -243,42 +243,39 @@ function GameTimer(d) {
     };
 
     this.unsplit = function () {
-        if (this.disableControls === true) { return false }
+        if (this.disableControls === true || this.currentSplit === 1) { return false }
+
+        document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
 
         if (this.currently === "done" && this.currentSplit === this.totalSplits) {
             this.setState("play");
             this.timer.start = this.startTime;
             this.update();
+
+            // Reset current (Still last) split
             splitsObject[this.currentSplit][3] = 0;
-            document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
+            
             document.getElementById('row' + this.currentSplit).className += " active-split";
-            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             document.getElementById("split" + this.currentSplit).textContent = ' ';
+            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
             return false;
         }
 
-        document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
-        if (splitsObject[this.currentSplit][1] !== 0) {
-            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
-        }
 
         // Reset Previous split before switching to it
         splitsObject[this.currentSplit - 1][3] = 0;
 
-        if (this.currentSplit === 1) {
-            return false;
-        } else { // TODO: Reuse above more efficiently?
-            document.getElementById('row' + (this.currentSplit)).className = " ";
-            document.getElementById('row' + (this.currentSplit - 1)).className += " active-split";
-            this.currentSplit--;
-            document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
-            document.getElementById("split" + this.currentSplit).textContent = ' ';
-            if (splitsObject[this.currentSplit][1] === 0) {
-                document.getElementById("difference" + this.currentSplit).textContent = '-';
-            } else {
-                document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
-            }
+        document.getElementById('row' + (this.currentSplit)).className = " ";
+        document.getElementById('row' + (this.currentSplit - 1)).className += " active-split";
+        this.currentSplit--;
+        document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
+        document.getElementById("split" + this.currentSplit).textContent = ' ';
+        if (splitsObject[this.currentSplit][1] === 0) {
+            document.getElementById("difference" + this.currentSplit).textContent = '-';
+        } else {
+            document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
         }
+
         if (this.currentSplit >= 5 && (this.totalSplits - this.currentSplit) > 4) { // >= 5 causes a type error, but otherwise splits seem to disapear randomly... hopefully harmless
             document.getElementById("row" + (this.currentSplit - 5)).style.display = "table-row";
             document.getElementById("row" + (this.currentSplit + 4)).style.display = "none";
