@@ -59,7 +59,7 @@ function webSocket(f){
 
 function GameTimer(d) {
     /* User configurable settings */
-    this.maxSplits = 10;   // Max splits to display at once
+    this.maxSplits = 10;   // Max splits to display at once :: Not yet implemented.
     
     /* Timer variables (do not change unless you're sure) */
     this.currentSplit = 1; // Initialize at 1st split
@@ -175,7 +175,6 @@ function GameTimer(d) {
             bestSegment = splitsObject[this.currentSplit][2],
             prevSplit = document.getElementById("prevsplit"),
             prevText = document.getElementById("prevtext");
-
         // Double Tap Prevention
         if (currentSegment < 300) { return false; }
 
@@ -276,9 +275,9 @@ function GameTimer(d) {
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
         }
 
-        if (this.currentSplit >= 5 && (this.totalSplits - this.currentSplit) > 4) { // >= 5 causes a type error, but otherwise splits seem to disapear randomly... hopefully harmless
-            document.getElementById("row" + (this.currentSplit - 5)).style.display = "table-row";
-            document.getElementById("row" + (this.currentSplit + 4)).style.display = "none";
+        if (this.currentSplit >= 5 && this.totalSplits > this.maxSplits && (this.totalSplits - this.currentSplit) > 5) {// Don't start until half way thru visible splits, currently hard-coded to 10 splits
+            document.getElementById("row" + (this.currentSplit - 4)).style.display = "table-row";
+            document.getElementById("row" + (this.currentSplit + 5)).style.display = "none";
         }
     };
 
