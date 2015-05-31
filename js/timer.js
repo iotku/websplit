@@ -801,7 +801,9 @@ function GameTimer(d) {
         var container = document.createElement("span");
         container.innerHTML = '<span id="row' + replaceMe + '"><input id="splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="difference' + replaceMe + '" type="text" value="00:00.00"></span>';
         document.getElementById("splits-table").appendChild(container);
-
+        // Scroll to bottom automatically
+        var objDiv = document.getElementById("splits");
+        objDiv.scrollTop = objDiv.scrollHeight;
     };
 
     this.removeSplit = function () {

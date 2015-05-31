@@ -98,6 +98,11 @@ input:disabled {
 	font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
 	font-size: 14px;
 	max-width: 215px;
+	/* for editor */
+	min-height: 190px;
+	max-height: 190px;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 #splits-table {
@@ -171,9 +176,6 @@ input:disabled {
 	text-overflow: ellipsis;
 }
 
-#splits-table span:nth-child(2n+1) {
-	background-color: #111;
-}
 
 #splits-table span:nth-child(2n+2) {
 	background-color: #171717;
@@ -247,14 +249,20 @@ input[type=text],input:disabled{
 	padding-right: 2px;
 	background-color: transparent;
 	color: white;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	font-size: 12px;
 	width: 28%;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
+
+input:disabled{font-weight: bold;}
 
 input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	width: 40%;
 }
+
+
 
 #attempt-counter {
 	position: absolute;
