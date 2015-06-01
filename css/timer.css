@@ -1,4 +1,6 @@
-* { margin:0; padding:0; }
+/* html5doctor.com Reset v1.6.1 - http://cssreset.com */
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}nav ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}a{margin:0;padding:0;font-size:100%;vertical-align:baseline;background:transparent}ins{background-color:#ff9;color:#000;text-decoration:none}mark{background-color:#ff9;color:#000;font-style:italic;font-weight:bold}del{text-decoration:line-through}abbr[title],dfn[title]{border-bottom:1px dotted;cursor:help}table{border-collapse:collapse;border-spacing:0}hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}input,select{vertical-align:middle}
+
 html {
 	-ms-touch-action: manipulation;
 	touch-action: manipulation;
@@ -100,6 +102,16 @@ input:disabled {
 	max-width: 215px;
 }
 
+#splits-editor {
+	display: none;
+	min-height: 180px;
+	max-height: 180px;
+	padding-right: 2px;
+	padding-left: 2px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
 #splits-table {
 	/*table-layout: fixed;*/
 	width: 215px;
@@ -114,8 +126,8 @@ input:disabled {
 
 #splits-table div {
 	border-bottom: 1px solid #1D1D1D;
-	padding-top: 1.5px;
-	padding-bottom: 1.5px;
+	padding-top: 2.5px;
+	padding-bottom: 2.5px;
 }
 
 #container {
@@ -171,11 +183,8 @@ input:disabled {
 	text-overflow: ellipsis;
 }
 
-#splits-table span:nth-child(2n+1) {
-	background-color: #111;
-}
 
-#splits-table span:nth-child(2n+2) {
+#splits-table span:nth-child(2n+2),#splits-editor-table span:nth-child(2n+2) {
 	background-color: #171717;
 }
 
@@ -247,14 +256,20 @@ input[type=text],input:disabled{
 	padding-right: 2px;
 	background-color: transparent;
 	color: white;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	font-size: 12px;
 	width: 28%;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
+
+input:disabled{font-weight: bold;}
 
 input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 	width: 40%;
 }
+
+
 
 #attempt-counter {
 	position: absolute;
