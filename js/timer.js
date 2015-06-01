@@ -25,14 +25,14 @@ function webSocket(f){
     ws = new WebSocket(websocketURL);
     
     ws.onopen = function() {
-    debugMsg("Connected to " + websocketURL);
-    document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
-    }
+        debugMsg("Connected to " + websocketURL);
+        document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
+    };
 
     this.closeSocket = function () {
         // Should autorespawn
         ws.close();
-    }
+    };
 
     ws.onmessage = function(event) {
       switch (event.data) {
@@ -50,9 +50,9 @@ function webSocket(f){
     };
      ws.onclose = function(){
         //try to reconnect in 5 seconds
-        debugMsg("Connection Lost!")
-        document.getElementById("websock-status").textContent = "Not Connected."
-        setTimeout(function(){webSocket();}, 5000);}
+        debugMsg("Connection Lost!");
+        document.getElementById("websock-status").textContent = "Not Connected.";
+        setTimeout(function(){webSocket();}, 5000);};
     var self = this,
     d = d || {}; // I really don't know about this.
 }
@@ -148,10 +148,10 @@ function GameTimer(d) {
         this.genSplits(); /* reset splits */
     };
 
-    this.split = function (splittime) {
-        var actualtime = this.timer.realtime
+    this.split = function (splitTime) {
+        var actualTime = this.timer.realtime;
         if (this.disableControls === true) {return false;}
-        splittime = splittime || actualtime;
+        splittime = splitTime || actualTime;
         if (this.currently === 'pause') {
             this.pause(); // Unpause on split, if paused
             return false;
@@ -242,7 +242,7 @@ function GameTimer(d) {
     };
 
     this.unsplit = function () {
-        if (this.disableControls === true || this.currentSplit === 1) { return false }
+        if (this.disableControls === true || this.currentSplit === 1) { return false; }
 
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
 
@@ -322,8 +322,8 @@ function GameTimer(d) {
         document.getElementById("controls").style.display = "block"; 
         // It's fairly safe to assume if this function is running the editor
         // has either been closed, or never opened.
-        document.getElementById("splits-editor").style.display = "none"
-        document.getElementById("splits-editor-table").style.display = "none"
+        document.getElementById("splits-editor").style.display = "none";
+        document.getElementById("splits-editor-table").style.display = "none";
         document.getElementById("splits-table").style.display = "table"; // Make sure table is empty
         document.getElementById("splits").style.display = "block"; // Make sure table is empty
 
@@ -575,8 +575,8 @@ function GameTimer(d) {
         document.getElementById("attempt-counter").innerHTML = '<input id="attempt-counter-input" value="' + splitsObject.info[2] + '"/>';
 
         // Show editor
-        document.getElementById("splits-editor").style.display = "block"
-        document.getElementById("splits-editor-table").style.display = "table"
+        document.getElementById("splits-editor").style.display = "block";
+        document.getElementById("splits-editor-table").style.display = "table";
         document.getElementById("splits-editor-table").innerHTML = ""; // Make sure table is empty
         document.getElementById("splits-editor-table").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
         
@@ -849,23 +849,35 @@ function GameTimer(d) {
         for (var i = this.totalSplits; i >= 1; i--) {
             document.getElementById("splitname" + i).style.maxWidth = (left - 25) + "px";
         }
-    }
+    };
+
+    this.padSplits = function () {
+        if (this.totalSplits < this.maxSplits) {
+            for (i = 0; i < (this.maxSplits - this.totalSplits); i++) {
+                var container = document.createElement('span');
+                container.className = "pad";
+                container.innerHTML = '<div>&nbsp;</div>' + '<div></div>' + '<div></div>';
+                document.getElementById("splits-table").appendChild(container);
+            }
+        }
+    };
 
     this.resizeSplits = function () {
         this.resizeSplitColumn();
 
         // Get the height of rows which seems to differ slightly by browser for some reason
         // And enforce height to be the exact same as the maxSplits amount
-        var rowHeight = (document.getElementById('row1').clientHeight * this.maxSplits) + "px"
+        var rowHeight = (document.getElementById('row1').clientHeight * this.maxSplits) + "px";
         document.getElementById("splits").style.minHeight = rowHeight;
         document.getElementById("splits").style.maxHeight = rowHeight;
+        this.padSplits();
 
         if (this.totalSplits > this.maxSplits) {
             for (var i = this.totalSplits - 1; i >= this.maxSplits; i--) {
                 document.getElementById("row" + i).style.display = "none";
             }
         }
-    }
+    };
 
     // Set up stuff
     var disableControls = false;

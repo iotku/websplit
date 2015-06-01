@@ -273,7 +273,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #attempt-counter {
 	position: absolute;
-	top: 20px;
+	top: 16px;
 	border-bottom: none;
 	width: 210px;
 	text-align: right;
@@ -441,4 +441,8 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 #websock-status {
 	font-size: 12px;
 	text-align: center;
+}
+
+.pad {
+	background-color: #0F0F0F !important;
 }
