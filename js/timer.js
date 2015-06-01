@@ -856,7 +856,7 @@ function GameTimer(d) {
 
         // Get the height of rows which seems to differ slightly by browser for some reason
         // And enforce height to be the exact same as the maxSplits amount
-        var rowHeight = (document.getElementById('row1').rowHeight * this.maxSplits) + "px"
+        var rowHeight = (document.getElementById('row1').clientHeight * this.maxSplits) + "px"
         document.getElementById("splits").style.minHeight = rowHeight;
         document.getElementById("splits").style.maxHeight = rowHeight;
 
