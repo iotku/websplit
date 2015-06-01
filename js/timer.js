@@ -853,11 +853,12 @@ function GameTimer(d) {
 
     this.padSplits = function () {
         if (this.totalSplits < this.maxSplits) {
+            lastSplit = document.getElementById("row" + this.totalSplits);
             for (i = 0; i < (this.maxSplits - this.totalSplits); i++) {
                 var container = document.createElement('span');
                 container.className = "pad";
                 container.innerHTML = '<div>&nbsp;</div>' + '<div></div>' + '<div></div>';
-                document.getElementById("splits-table").appendChild(container);
+                document.getElementById("splits-table").insertBefore(container, lastSplit);
             }
         }
     };
