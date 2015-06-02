@@ -81,7 +81,7 @@ function GameTimer(d) {
     };
 
     this.start = function (start) {
-        pref = performance.now()
+        pref = performance.now();
         start = start || 0;
         this.timer = {
             start: pref + (start * 1000),
@@ -719,7 +719,7 @@ function GameTimer(d) {
         if (isEditor === true) {
             humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
             return humanTime;
-        };
+        }
 
         var humanTime;
         if (h === 0 && m === 0) {
@@ -822,7 +822,6 @@ function GameTimer(d) {
     };
 
     this.removeSplit = function () {
-        console.log(this.totalSplits)
         if (this.editorEnabled === false) {return false;}
         if (this.totalSplits === 1) {return false;} // Can't have 0 splits
         delete splitsObject[this.totalSplits];
