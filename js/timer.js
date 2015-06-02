@@ -840,7 +840,7 @@ function GameTimer(d) {
         // Calculate room left for splitname
         left = 215 - (difflen + splitlen);
         for (var i = this.totalSplits; i >= 1; i--) {
-            document.getElementById("splitname" + i).style.maxWidth = (left - 6) + "px";
+            document.getElementById("splitname" + i).style.maxWidth = (left - 12) + "px";
         }
     };
 
