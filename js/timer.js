@@ -845,22 +845,16 @@ function GameTimer(d) {
     };
 
     this.resizeSplitColumn = function () {
-        // Voodoo Magic 
-        // Sometimes Works... sometimes doesn't?
         split = document.getElementById("split" + this.currentSplit);
         diff = document.getElementById("difference" + this.currentSplit);
 
-        // These lengths are complete guesses and not based on anything useful.
-        // After a while the columns occupy significantly more space than required
-        difflen = diff.textContent.length * 9.8;
-        splitlen = (split.textContent.length * 9.8);
-        split.style.width = splitlen + "px";
-        diff.style.width = difflen + "px";
+        difflen = diff.clientWidth;
+        splitlen = split.clientWidth;
 
-
+        // Calculate room left for splitname
         left = 215 - (difflen + splitlen);
         for (var i = this.totalSplits; i >= 1; i--) {
-            document.getElementById("splitname" + i).style.maxWidth = (left - 25) + "px";
+            document.getElementById("splitname" + i).style.maxWidth = (left - 6) + "px";
         }
     };
 

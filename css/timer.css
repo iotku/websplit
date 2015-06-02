@@ -177,6 +177,7 @@ input:disabled {
 
 #splits-table span div:nth-child(2n+2) {
 	display: table-cell;
+	padding-right: 2px;
 }
 
 #splits-table span div:nth-child(3n+1) {
