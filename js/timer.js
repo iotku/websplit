@@ -584,7 +584,7 @@ function GameTimer(d) {
         for (var step = 1; step <= this.totalSplits; step++) {
             var container = document.createElement('span');
             container.id = "editor-row" + step;
-            container.innerHTML = '<input id="editor-splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="editor-bestsegment' + step + '" type="text" value="' + this.realTime(splitsObject[step][2], true) + '">' + '<input id="editor-difference' + step + '" type="text" value="' + this.realTime(splitsObject[step][1], true) + '">';
+            container.innerHTML = '<input id="editor-splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="editor-bestsegment' + step + '" type="text" value="' + this.realTime(splitsObject[step][2], true) + '">' + '<input id="editor-difference' + step + '" type="text" value="' + this.realTime(splitsObject[step][1], true) + '"><br/><p class="editor-split-controls"><a onclick="t.addSplit(' +step+ ')">+</a> / <a onclick="t.removeSplit(' + step + ')">-</a> / ^ / V</p>';
             document.getElementById("splits-editor-table").appendChild(container);
         }
         document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/>&nbsp<input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
@@ -807,18 +807,32 @@ function GameTimer(d) {
 
     // Either addsplit or removesplit leaves a mess behind in the DOM when used
     // not a huge issue (I hope), but worth investigating later
-    this.addSplit = function () {
+    this.addSplit = function (split) {
         if (this.editorEnabled === false) {return false;}
-        var replaceMe = this.totalSplits + 1;
-        splitsObject[replaceMe] = [replaceMe,0,0,0];
-        this.totalSplits = this.totalSplits + 1;
-        // This should hopefully not lose all <input> data
+        var replaceMe = split + 1 || this.totalSplits + 1;
+        var tmpSplitObject = Object.create(null);
+        for (i = 1; i !== replaceMe; i++){
+            tmpSplitObject[i] = splitsObject[i]
+            console.log("huh?")
+        }
+        tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
+        this.totalSplits++;
+
+        for (i = replaceMe + 1; i !== this.totalSplits; i++){
+            tmpSplitObject[i] = splitsObject[i - 1]
+        }
+        console.log(tmpSplitObject)
+
+        // splitsObject[replaceMe] = [replaceMe,0,0,0];
+        // this.totalSplits = this.totalSplits + 1;
+        // // This should hopefully not lose all <input> data
+        var splitRow = document.getElementById("editor-row" + replaceMe);
         var container = document.createElement("span");
         container.innerHTML = '<span id="editor-row' + replaceMe + '"><input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"></span>';
-        document.getElementById("splits-editor-table").appendChild(container);
-        // Scroll to bottom automatically
-        var objDiv = document.getElementById("splits-editor");
-        objDiv.scrollTop = objDiv.scrollHeight;
+        document.getElementById("splits-editor-table").insertBefore(container, splitRow);
+        // // Scroll to bottom automatically
+        // var objDiv = document.getElementById("splits-editor");
+        // objDiv.scrollTop = objDiv.scrollHeight;
     };
 
     this.removeSplit = function () {

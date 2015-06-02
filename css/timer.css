@@ -112,6 +112,12 @@ input:disabled {
 	overflow-y: auto;
 }
 
+#splits-editor span {
+	min-width: 215px;
+	max-width: 215px;
+	/*border: white 1px solid;*/
+}
+
 #splits-table {
 	/*table-layout: fixed;*/
 	width: 215px;
@@ -445,4 +451,8 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 .pad {
 	background-color: #0F0F0F !important;
+}
+
+.editor-split-controls {
+	text-align: center;
 }
