@@ -811,25 +811,33 @@ function GameTimer(d) {
         if (this.editorEnabled === false) {return false;}
         var replaceMe = split + 1 || this.totalSplits + 1;
         var tmpSplitObject = Object.create(null);
-        for (i = 1; i !== replaceMe; i++){
+        tmpSplitObject.info = splitsObject.info;
+        for (i = 1; i <= replaceMe - 1; i++){
             tmpSplitObject[i] = splitsObject[i]
             console.log("huh?")
         }
+        tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1]
         tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
-        this.totalSplits++;
-
-        for (i = replaceMe + 1; i !== this.totalSplits; i++){
-            tmpSplitObject[i] = splitsObject[i - 1]
+        console.log(replaceMe);
+        for (i = replaceMe; i <= this.totalSplits; i++){
+            console.log("burp")
+            tmpSplitObject[i + 1] = splitsObject[i]
+            document.getElementById("editor-row" + i).id = "editor-row" + (i + 1);            
+            document.getElementById("editor-splitname" + i).id = "editor-splitname" + (i + 1);
+            document.getElementById("editor-bestsegment" + i).id = "editor-bestsegment" + (i + 1);
+            document.getElementById("editor-difference" + i).id = "editor-difference" + (i + 1);
         }
         console.log(tmpSplitObject)
 
+        this.totalSplits++;
+        splitsObject = tmpSplitObject;
         // splitsObject[replaceMe] = [replaceMe,0,0,0];
         // this.totalSplits = this.totalSplits + 1;
         // // This should hopefully not lose all <input> data
-        var splitRow = document.getElementById("editor-row" + replaceMe);
-        var container = document.createElement("span");
-        container.innerHTML = '<span id="editor-row' + replaceMe + '"><input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"></span>';
-        document.getElementById("splits-editor-table").insertBefore(container, splitRow);
+        //var splitRow = document.getElementById("editor-row" + (split + 1));
+        //var container = document.createElement("span");
+        //container.innerHTML = '<span id="editor-row' + replaceMe + '"><input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"></span>';
+        //document.getElementById("splits-editor-table").insertBefore(container, splitRow);
         // // Scroll to bottom automatically
         // var objDiv = document.getElementById("splits-editor");
         // objDiv.scrollTop = objDiv.scrollHeight;
@@ -855,6 +863,7 @@ function GameTimer(d) {
         left = 215 - (difflen + splitlen);
         for (var i = this.totalSplits; i >= 1; i--) {
             document.getElementById("splitname" + i).style.maxWidth = (left - 12) + "px";
+            document.getElementById("splitname" + i).style.minWidth = (left - 12) + "px";
         }
     };
 
@@ -930,6 +939,8 @@ window.onkeydown = function keyPress(e) {
         t.split(); // l
     } else if (k === 82) {
         t.reset(); // r
+    } else if (k === 69) {
+            openEditor();
     }
 };
 
