@@ -859,16 +859,15 @@ function GameTimer(d) {
             removedRow.parentNode.removeChild(removedRow);
             this.totalSplits = this.totalSplits - 1;
         } else {
-            console.log("Deleting splits");
             var removedRow = document.getElementById("editor-row" + splitToDelete);
             removedRow.parentNode.removeChild(removedRow);
             this.totalSplits = this.totalSplits - 1;
             
             delete splitsObject[split];
-            this.totalSplits--;
-            for (i = split; i <= this.totalSplits; i++) {
+            splitsObject[split] = splitsObject[split+1];
+            for (i = split + 1; i <= this.totalSplits; i++) {
                 console.log(splitsObject)
-                splitsObject[split] = splitsObject[i + 1];
+                splitsObject[i] = splitsObject[i + 1];
                 delete splitsObject[i + 1];
 
                 document.getElementById("editor-row" + (i + 1)).id = "editor-row" + (i - 1)
@@ -876,7 +875,6 @@ function GameTimer(d) {
                 document.getElementById("editor-difference" + (i + 1)).id = "editor-difference" + (i - 1)
                 document.getElementById("editor-bestsegment" + (i + 1)).id = "editor-bestsegment" + (i - 1)
             }
-            console.log(splitsObject);
         }
 
     };
