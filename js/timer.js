@@ -596,7 +596,8 @@ function GameTimer(d) {
             splitNames = document.getElementById("editor-splitname" + step).value;
             enteredTime = document.getElementById("editor-difference" + step).value;
             bestsegTime = document.getElementById("editor-bestsegment" + step).value;
-
+        console.log(splitNames);
+        console.log(splitsObject);
             splitsObject[step][0] = splitNames;
             splitsObject[step][1] = this.parseTime(enteredTime);
             splitsObject[step][2] = this.parseTime(bestsegTime);
@@ -805,42 +806,47 @@ function GameTimer(d) {
         return o;
     };
 
+    this.addSplit = function (split) {
     // Either addsplit or removesplit leaves a mess behind in the DOM when used
     // not a huge issue (I hope), but worth investigating later
-    this.addSplit = function (split) {
         if (this.editorEnabled === false) {return false;}
         var replaceMe = split + 1 || this.totalSplits + 1;
         var tmpSplitObject = Object.create(null);
         tmpSplitObject.info = splitsObject.info;
         for (i = 1; i <= replaceMe - 1; i++){
             tmpSplitObject[i] = splitsObject[i]
-            console.log("huh?")
         }
         tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1]
         tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
-        console.log(replaceMe);
         for (i = replaceMe; i <= this.totalSplits; i++){
-            console.log("burp")
             tmpSplitObject[i + 1] = splitsObject[i]
-            document.getElementById("editor-row" + i).id = "editor-row" + (i + 1);            
-            document.getElementById("editor-splitname" + i).id = "editor-splitname" + (i + 1);
-            document.getElementById("editor-bestsegment" + i).id = "editor-bestsegment" + (i + 1);
-            document.getElementById("editor-difference" + i).id = "editor-difference" + (i + 1);
         }
-        console.log(tmpSplitObject)
 
+        for (i = split + 1; i <= this.totalSplits; i++) {
+                document.getElementById("editor-row" + i).id = "editor-row-tmp" + (i + 1);
+                document.getElementById("editor-splitname" + i).id = "editor-splitname-tmp" + (i + 1);
+                document.getElementById("editor-difference" + i).id = "editor-difference-tmp" + (i + 1);
+                document.getElementById("editor-bestsegment" + i).id = "editor-bestsegment-tmp" + (i + 1);
+        }
+                var splitRow = document.getElementById("editor-row-tmp" + (replaceMe + 1));
+                var container = document.createElement("span");
+                container.id = "editor-row" + replaceMe;
+        container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00">';
+
+        document.getElementById("splits-editor-table").insertBefore(container, splitRow);
+        
         this.totalSplits++;
+        for (i = split + 2; i <= this.totalSplits; i++) {
+                document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
+                document.getElementById("editor-splitname-tmp" + i).id = ("editor-splitname" + i); 
+                document.getElementById("editor-difference-tmp" + i).id = ("editor-difference" + i); 
+                document.getElementById("editor-bestsegment-tmp" + i).id = ("editor-bestsegment" + i); 
+        }
+        
         splitsObject = tmpSplitObject;
-        // splitsObject[replaceMe] = [replaceMe,0,0,0];
-        // this.totalSplits = this.totalSplits + 1;
-        // // This should hopefully not lose all <input> data
-        //var splitRow = document.getElementById("editor-row" + (split + 1));
-        //var container = document.createElement("span");
-        //container.innerHTML = '<span id="editor-row' + replaceMe + '"><input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"></span>';
-        //document.getElementById("splits-editor-table").insertBefore(container, splitRow);
         // // Scroll to bottom automatically
         // var objDiv = document.getElementById("splits-editor");
-        // objDiv.scrollTop = objDiv.scrollHeight;
+            // objDiv.scrollTop = objDiv.scrollHeight;
     };
 
     this.removeSplit = function () {
