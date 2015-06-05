@@ -849,13 +849,36 @@ function GameTimer(d) {
             // objDiv.scrollTop = objDiv.scrollHeight;
     };
 
-    this.removeSplit = function () {
+    this.removeSplit = function (split) {
         if (this.editorEnabled === false) {return false;}
         if (this.totalSplits === 1) {return false;} // Can't have 0 splits
-        delete splitsObject[this.totalSplits];
-        var removedRow = document.getElementById("editor-row" + this.totalSplits);
-        removedRow.parentNode.removeChild(removedRow);
-        this.totalSplits = this.totalSplits - 1;
+        splitToDelete = split || this.totalSplits;
+        if (!split || split == this.totalSplits) {
+            delete splitsObject[splitToDelete];
+            var removedRow = document.getElementById("editor-row" + splitToDelete);
+            removedRow.parentNode.removeChild(removedRow);
+            this.totalSplits = this.totalSplits - 1;
+        } else {
+            console.log("Deleting splits");
+            var removedRow = document.getElementById("editor-row" + splitToDelete);
+            removedRow.parentNode.removeChild(removedRow);
+            this.totalSplits = this.totalSplits - 1;
+            
+            delete splitsObject[split];
+            this.totalSplits--;
+            for (i = split; i <= this.totalSplits; i++) {
+                console.log(splitsObject)
+                splitsObject[split] = splitsObject[i + 1];
+                delete splitsObject[i + 1];
+
+                document.getElementById("editor-row" + (i + 1)).id = "editor-row" + (i - 1)
+                document.getElementById("editor-splitname" + (i + 1)).id = "editor-splitname" + (i - 1)
+                document.getElementById("editor-difference" + (i + 1)).id = "editor-difference" + (i - 1)
+                document.getElementById("editor-bestsegment" + (i + 1)).id = "editor-bestsegment" + (i - 1)
+            }
+            console.log(splitsObject);
+        }
+
     };
 
     this.resizeSplitColumn = function () {
