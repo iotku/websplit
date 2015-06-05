@@ -593,11 +593,11 @@ function GameTimer(d) {
     this.saveNewSplits = function () {
         var splitNames, enteredTime, bestsegTime;
         for (var step = 1; step <= this.totalSplits; step++) {
+            console.log(splitNames);
+            console.log(splitsObject);
             splitNames = document.getElementById("editor-splitname" + step).value;
             enteredTime = document.getElementById("editor-difference" + step).value;
             bestsegTime = document.getElementById("editor-bestsegment" + step).value;
-        console.log(splitNames);
-        console.log(splitsObject);
             splitsObject[step][0] = splitNames;
             splitsObject[step][1] = this.parseTime(enteredTime);
             splitsObject[step][2] = this.parseTime(bestsegTime);
@@ -865,15 +865,27 @@ function GameTimer(d) {
             
             delete splitsObject[split];
             splitsObject[split] = splitsObject[split+1];
+            if (split == this.totalSplits){
+                delete splitsObject[split + 1];
+            }
+            
             for (i = split + 1; i <= this.totalSplits; i++) {
-                console.log(splitsObject)
                 splitsObject[i] = splitsObject[i + 1];
                 delete splitsObject[i + 1];
+            }
 
-                document.getElementById("editor-row" + (i + 1)).id = "editor-row" + (i - 1)
-                document.getElementById("editor-splitname" + (i + 1)).id = "editor-splitname" + (i - 1)
-                document.getElementById("editor-difference" + (i + 1)).id = "editor-difference" + (i - 1)
-                document.getElementById("editor-bestsegment" + (i + 1)).id = "editor-bestsegment" + (i - 1)
+            for (i = split; i <= this.totalSplits; i++) {
+                document.getElementById("editor-row" + (i+1)).id = "editor-row-tmp" + (i);
+                document.getElementById("editor-splitname" + (i+1)).id = "editor-splitname-tmp" + (i);
+                document.getElementById("editor-difference" + (i+1)).id = "editor-difference-tmp" + (i);
+                document.getElementById("editor-bestsegment" + (i+1)).id = "editor-bestsegment-tmp" + (i);
+            }
+            
+            for (i = split; i <= this.totalSplits; i++) {
+                document.getElementById("editor-row-tmp" + i).id = "editor-row" + i;
+                document.getElementById("editor-splitname-tmp" + i).id = "editor-splitname" + i;
+                document.getElementById("editor-difference-tmp" + i).id = "editor-difference" + i;
+                document.getElementById("editor-bestsegment-tmp" + i).id = "editor-bestsegment" + i;
             }
         }
 
