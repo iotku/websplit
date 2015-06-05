@@ -823,24 +823,24 @@ function GameTimer(d) {
         }
 
         for (i = split + 1; i <= this.totalSplits; i++) {
-                document.getElementById("editor-row" + i).id = "editor-row-tmp" + (i + 1);
-                document.getElementById("editor-splitname" + i).id = "editor-splitname-tmp" + (i + 1);
-                document.getElementById("editor-difference" + i).id = "editor-difference-tmp" + (i + 1);
-                document.getElementById("editor-bestsegment" + i).id = "editor-bestsegment-tmp" + (i + 1);
+            document.getElementById("editor-row" + i).id = "editor-row-tmp" + (i + 1);
+            document.getElementById("editor-splitname" + i).id = "editor-splitname-tmp" + (i + 1);
+            document.getElementById("editor-difference" + i).id = "editor-difference-tmp" + (i + 1);
+            document.getElementById("editor-bestsegment" + i).id = "editor-bestsegment-tmp" + (i + 1);
         }
-                var splitRow = document.getElementById("editor-row-tmp" + (replaceMe + 1));
-                var container = document.createElement("span");
-                container.id = "editor-row" + replaceMe;
+        var splitRow = document.getElementById("editor-row-tmp" + (replaceMe + 1));
+        var container = document.createElement("span");
+        container.id = "editor-row" + replaceMe;
         container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00">';
 
         document.getElementById("splits-editor-table").insertBefore(container, splitRow);
         
         this.totalSplits++;
         for (i = split + 2; i <= this.totalSplits; i++) {
-                document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
-                document.getElementById("editor-splitname-tmp" + i).id = ("editor-splitname" + i); 
-                document.getElementById("editor-difference-tmp" + i).id = ("editor-difference" + i); 
-                document.getElementById("editor-bestsegment-tmp" + i).id = ("editor-bestsegment" + i); 
+            document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
+            document.getElementById("editor-splitname-tmp" + i).id = ("editor-splitname" + i); 
+            document.getElementById("editor-difference-tmp" + i).id = ("editor-difference" + i); 
+            document.getElementById("editor-bestsegment-tmp" + i).id = ("editor-bestsegment" + i); 
         }
         
         splitsObject = tmpSplitObject;
