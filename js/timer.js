@@ -901,9 +901,8 @@ function GameTimer(d) {
 
         splitsObject[split-1] = swap1;
         splitsObject[split] = swap2;
-        console.log(splitsObject);
 
-        document.getElementById("editor-row" + split).appendChild(document.getElementById("editor-row" + (split -1)));
+        document.getElementById("editor-row" + split).appendChild(document.getElementById("editor-row" + (split -1))); // Use insertBefore?
         var div1 = document.getElementById("editor-row" + split);
         var div2 = document.getElementById("editor-row" + (split -1));
 
@@ -930,7 +929,38 @@ function GameTimer(d) {
 
     this.moveSplitDown = function (split) {
         if (split == this.totalSplits) { return false;}
-        console.log("Moving split down");   
+        console.log("Moving split down");
+        var swap1, swap2;
+
+        swap1 = splitsObject[split];
+        swap2 = splitsObject[split+1];
+
+        splitsObject[split+1] = swap1;
+        splitsObject[split] = swap2;
+
+        document.getElementById("editor-row" + (split + 1)).appendChild(document.getElementById("editor-row" + (split)));
+        var div1 = document.getElementById("editor-row" + split);
+        var div2 = document.getElementById("editor-row" + (split + 1));
+
+        div1.id = "editor-row" + (split + 1);
+        div2.id = "editor-row" + (split);
+        
+        var splitname1 = document.getElementById("editor-splitname" + (split + 1));
+        var difference1 = document.getElementById("editor-difference" + (split + 1));
+        var bestsegment1 = document.getElementById("editor-bestsegment" + (split + 1));
+        
+        var splitname2 = document.getElementById("editor-splitname" + split);
+        var difference2 = document.getElementById("editor-difference" + split);
+        var bestsegment2 = document.getElementById("editor-bestsegment" + split);
+
+        splitname1.id = "editor-splitname" + split;
+        splitname2.id = "editor-splitname" + (split + 1);
+
+        difference1.id = "editor-difference" + split;
+        difference2.id = "editor-difference" + (split + 1)
+
+        bestsegment1.id = "editor-bestsegment" + split;
+        bestsegment2.id = "editor-bestsegment" + (split + 1)
     }
 
     this.resizeSplitColumn = function () {
