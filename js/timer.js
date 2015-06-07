@@ -584,7 +584,7 @@ function GameTimer(d) {
         for (var step = 1; step <= this.totalSplits; step++) {
             var container = document.createElement('span');
             container.id = "editor-row" + step;
-            container.innerHTML = '<input id="editor-splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="editor-bestsegment' + step + '" type="text" value="' + this.realTime(splitsObject[step][2], true) + '">' + '<input id="editor-difference' + step + '" type="text" value="' + this.realTime(splitsObject[step][1], true) + '"><br/><p class="editor-split-controls"><a onclick="t.addSplit(' +step+ ')">+</a> / <a onclick="t.removeSplit(' + step + ')">-</a> / <a onclick="t.moveSplitUp(' + step + ')">^</a> / <a onclick="t.moveSplitDown(' + step + ')">V</a></p>';
+            container.innerHTML = '<input id="editor-splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="editor-bestsegment' + step + '" type="text" value="' + this.realTime(splitsObject[step][2], true) + '">' + '<input id="editor-difference' + step + '" type="text" value="' + this.realTime(splitsObject[step][1], true) + '"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="t.addSplit(' +step+ ')">+</a> / <a class="btn-removeSplit" onclick="t.removeSplit(' + step + ')">-</a> / <a class="btn-moveSplitUp" onclick="t.moveSplitUp(' + step + ')">^</a> / <a class="btn-moveSplitDown" onclick="t.moveSplitDown(' + step + ')">V</a></p>';
             document.getElementById("splits-editor-table").appendChild(container);
         }
         document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/>&nbsp<input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
@@ -593,8 +593,6 @@ function GameTimer(d) {
     this.saveNewSplits = function () {
         var splitNames, enteredTime, bestsegTime;
         for (var step = 1; step <= this.totalSplits; step++) {
-            console.log(splitNames);
-            console.log(splitsObject);
             splitNames = document.getElementById("editor-splitname" + step).value;
             enteredTime = document.getElementById("editor-difference" + step).value;
             bestsegTime = document.getElementById("editor-bestsegment" + step).value;
@@ -831,10 +829,10 @@ function GameTimer(d) {
         var splitRow = document.getElementById("editor-row-tmp" + (replaceMe + 1));
         var container = document.createElement("span");
         container.id = "editor-row" + replaceMe;
-        container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00">';
+        container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="t.addSplit(' + replaceMe + ')">+</a> / <a class="btn-removeSplit" onclick="t.removeSplit(' + replaceMe + ')">-</a> / <a class="btn-moveSplitUp" onclick="t.moveSplitUp(' + replaceMe + ')">^</a> / <a class="btn-moveSplitDown" onclick="t.moveSplitDown(' + replaceMe + ')">V</a></p>';
 
         document.getElementById("splits-editor-table").insertBefore(container, splitRow);
-        
+        this.editorUpdateSplitButtons(); // make sure split buttons are current, even though it seemed to work fine without this.
         this.totalSplits++;
         for (i = split + 2; i <= this.totalSplits; i++) {
             document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
@@ -844,9 +842,11 @@ function GameTimer(d) {
         }
         
         splitsObject = tmpSplitObject;
-        // // Scroll to bottom automatically
-        // var objDiv = document.getElementById("splits-editor");
-            // objDiv.scrollTop = objDiv.scrollHeight;
+        if (!split) {
+            // Scroll to bottom automatically
+            var objDiv = document.getElementById("splits-editor");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
     };
 
     this.removeSplit = function (split) {
@@ -888,12 +888,12 @@ function GameTimer(d) {
                 document.getElementById("editor-bestsegment-tmp" + i).id = "editor-bestsegment" + i;
             }
         }
+        this.editorUpdateSplitButtons();
 
     };
 
     this.moveSplitUp = function (split) {
         if (split == 1) {return false;}
-        console.log("Moving split up");
         var swap1, swap2;
 
         swap1 = splitsObject[split];
@@ -901,10 +901,11 @@ function GameTimer(d) {
 
         splitsObject[split-1] = swap1;
         splitsObject[split] = swap2;
-
-        document.getElementById("editor-row" + split).appendChild(document.getElementById("editor-row" + (split -1))); // Use insertBefore?
+        // document.getElementById("editor-row" + split).insert(document.getElementById("editor-row" + (split -1))); // Use insertBefore?
         var div1 = document.getElementById("editor-row" + split);
         var div2 = document.getElementById("editor-row" + (split -1));
+        var container = document.getElementById("editor-row" + split);
+        document.getElementById("splits-editor-table").insertBefore(container, div2)
 
         div1.id = "editor-row" + (split - 1);
         div2.id = "editor-row" + (split);
@@ -925,11 +926,12 @@ function GameTimer(d) {
 
         bestsegment1.id = "editor-bestsegment" + split;
         bestsegment2.id = "editor-bestsegment" + (split - 1)
+
+        this.editorUpdateSplitButtons();
     }
 
     this.moveSplitDown = function (split) {
         if (split == this.totalSplits) { return false;}
-        console.log("Moving split down");
         var swap1, swap2;
 
         swap1 = splitsObject[split];
@@ -938,9 +940,10 @@ function GameTimer(d) {
         splitsObject[split+1] = swap1;
         splitsObject[split] = swap2;
 
-        document.getElementById("editor-row" + (split + 1)).appendChild(document.getElementById("editor-row" + (split)));
         var div1 = document.getElementById("editor-row" + split);
         var div2 = document.getElementById("editor-row" + (split + 1));
+        var container = document.getElementById("editor-row" + (split +1));
+        document.getElementById("splits-editor-table").insertBefore(container, div1)
 
         div1.id = "editor-row" + (split + 1);
         div2.id = "editor-row" + (split);
@@ -960,7 +963,16 @@ function GameTimer(d) {
         difference2.id = "editor-difference" + (split + 1)
 
         bestsegment1.id = "editor-bestsegment" + split;
-        bestsegment2.id = "editor-bestsegment" + (split + 1)
+        bestsegment2.id = "editor-bestsegment" + (split + 1);
+
+        this.editorUpdateSplitButtons();
+    }
+
+    this.editorUpdateSplitButtons = function () {
+        var changeButtons = document.getElementsByClassName('editor-split-controls');
+        for (var i = 0; i <= changeButtons.length - 1; i++) {
+            changeButtons[i].innerHTML = '<a class="btn-addSplit" onclick="t.addSplit(' + (i + 1) + ')">+</a> / <a class="btn-removeSplit" onclick="t.removeSplit(' + (i + 1) + ')">-</a> / <a class="btn-moveSplitUp" onclick="t.moveSplitUp(' + (i + 1) + ')">^</a> / <a class="btn-moveSplitDown" onclick="t.moveSplitDown(' + (i + 1) + ')">V</a>'
+        };
     }
 
     this.resizeSplitColumn = function () {
