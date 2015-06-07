@@ -811,29 +811,37 @@ function GameTimer(d) {
         var replaceMe = split + 1 || this.totalSplits + 1;
         var tmpSplitObject = Object.create(null);
         tmpSplitObject.info = splitsObject.info;
+        
         for (i = 1; i <= replaceMe - 1; i++){
             tmpSplitObject[i] = splitsObject[i]
         }
+        
         tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1]
         tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
+        
         for (i = replaceMe; i <= this.totalSplits; i++){
             tmpSplitObject[i + 1] = splitsObject[i]
         }
 
+        // There's probably a much better way to change the IDs, but for now this works
+        // and doesn't seem to be very slow
         for (i = split + 1; i <= this.totalSplits; i++) {
             document.getElementById("editor-row" + i).id = "editor-row-tmp" + (i + 1);
             document.getElementById("editor-splitname" + i).id = "editor-splitname-tmp" + (i + 1);
             document.getElementById("editor-difference" + i).id = "editor-difference-tmp" + (i + 1);
             document.getElementById("editor-bestsegment" + i).id = "editor-bestsegment-tmp" + (i + 1);
         }
+
         var splitRow = document.getElementById("editor-row-tmp" + (replaceMe + 1));
         var container = document.createElement("span");
         container.id = "editor-row" + replaceMe;
         container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="t.addSplit(' + replaceMe + ')">+</a> / <a class="btn-removeSplit" onclick="t.removeSplit(' + replaceMe + ')">-</a> / <a class="btn-moveSplitUp" onclick="t.moveSplitUp(' + replaceMe + ')">^</a> / <a class="btn-moveSplitDown" onclick="t.moveSplitDown(' + replaceMe + ')">V</a></p>';
 
         document.getElementById("splits-editor-table").insertBefore(container, splitRow);
+        
         this.editorUpdateSplitButtons(); // make sure split buttons are current, even though it seemed to work fine without this.
         this.totalSplits++;
+        
         for (i = split + 2; i <= this.totalSplits; i++) {
             document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
             document.getElementById("editor-splitname-tmp" + i).id = ("editor-splitname" + i); 
@@ -842,6 +850,7 @@ function GameTimer(d) {
         }
         
         splitsObject = tmpSplitObject;
+
         if (!split) {
             // Scroll to bottom automatically
             var objDiv = document.getElementById("splits-editor");
@@ -873,6 +882,8 @@ function GameTimer(d) {
                 splitsObject[i] = splitsObject[i + 1];
                 delete splitsObject[i + 1];
             }
+            // There's probably a much better way to change the IDs, but for now this works
+            // and doesn't seem to be very slow
 
             for (i = split; i <= this.totalSplits; i++) {
                 document.getElementById("editor-row" + (i+1)).id = "editor-row-tmp" + (i);
@@ -893,6 +904,9 @@ function GameTimer(d) {
     };
 
     this.moveSplitUp = function (split) {
+        // Functional, but could probbaly be refactored to be more readable
+        // Also uses a different order for swapping than moveSplitdown, which 
+        // could be confusing
         if (split == 1) {return false;}
         var swap1, swap2;
 
@@ -931,6 +945,7 @@ function GameTimer(d) {
     }
 
     this.moveSplitDown = function (split) {
+        // Functional, but could probbaly be refactored to be more readable
         if (split == this.totalSplits) { return false;}
         var swap1, swap2;
 
@@ -969,6 +984,7 @@ function GameTimer(d) {
     }
 
     this.editorUpdateSplitButtons = function () {
+        // TODO: Replace innerHTML with something else, it's pretty slow.
         var changeButtons = document.getElementsByClassName('editor-split-controls');
         for (var i = 0; i <= changeButtons.length - 1; i++) {
             changeButtons[i].innerHTML = '<a class="btn-addSplit" onclick="t.addSplit(' + (i + 1) + ')">+</a> / <a class="btn-removeSplit" onclick="t.removeSplit(' + (i + 1) + ')">-</a> / <a class="btn-moveSplitUp" onclick="t.moveSplitUp(' + (i + 1) + ')">^</a> / <a class="btn-moveSplitDown" onclick="t.moveSplitDown(' + (i + 1) + ')">V</a>'
