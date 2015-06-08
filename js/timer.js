@@ -658,7 +658,7 @@ function GameTimer(d) {
             bestSegment = splitsObject[this.currentSplit][2];
 
         if (pbSegment === 0 && bestSegment !== 0) {
-            // make sure we don't add + onto empty split
+            prevSplit.style.color = "white";
             return false;
         }
 
