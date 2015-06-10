@@ -1093,7 +1093,7 @@ window.onload = function () {
 };
 
 this.openEditor = function () {
-    if (t.currently == 'play' || t.currently == 'pause') {
+    if (t.currently == 'play' || t.currently == 'pause' || t.editorEnabled == true) {
         return false;
     } else {
         t.disableControls = true;
