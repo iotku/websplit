@@ -137,7 +137,7 @@ input:disabled {
 }
 
 #container {
-	width: 215px;
+	width: 215px !important;
 	background-color: #111;
 }
 
