@@ -13,6 +13,7 @@ Here's a list of some other cool timers with splits I've seen around on github y
 
 - [Splitty](https://github.com/ylorant/splitty) by [ylorant](https://github.com/ylorant)
 - [nwsplit](https://github.com/Dregu/nwsplit) by [Dregu](https://github.com/Dregu)
+- [wwwsplit](https://github.com/jpnance/wwwsplit) by [jpnance](https://github.com/jpnance)
 
 About WebSplit
 =====
