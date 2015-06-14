@@ -95,8 +95,8 @@ function editor (editor) {
     this.addSplit = function (split) {
     // Either addsplit or removesplit leaves a mess behind in the DOM when used
     // not a huge issue (I hope), but worth investigating later
-        if (this.editorEnabled === false) {return false;}
-        var replaceMe = split + 1 || this.totalSplits + 1;
+        if (t.editorEnabled === false) {return false;}
+        var replaceMe = split + 1 || t.totalSplits + 1;
         var tmpSplitObject = Object.create(null);
         tmpSplitObject.info = splitsObject.info;
         
@@ -123,12 +123,12 @@ function editor (editor) {
         var splitRow = document.getElementById("editor-row-tmp" + (replaceMe + 1));
         var container = document.createElement("span");
         container.id = "editor-row" + replaceMe;
-        container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="t.addSplit(' + replaceMe + ')">+</a> / <a class="btn-removeSplit" onclick="t.removeSplit(' + replaceMe + ')">-</a> / <a class="btn-moveSplitUp" onclick="t.moveSplitUp(' + replaceMe + ')">^</a> / <a class="btn-moveSplitDown" onclick="t.moveSplitDown(' + replaceMe + ')">V</a></p>';
+        container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="editor.addSplit(' + replaceMe + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + replaceMe + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + replaceMe + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor.moveSplitDown(' + replaceMe + ')">V</a></p>';
 
         document.getElementById("splits-editor-table").insertBefore(container, splitRow);
         
         this.editorUpdateSplitButtons(); // make sure split buttons are current, even though it seemed to work fine without this.
-        this.totalSplits++;
+        t.totalSplits++;
         
         for (i = split + 2; i <= this.totalSplits; i++) {
             document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
@@ -149,8 +149,8 @@ function editor (editor) {
     this.removeSplit = function (split) {
         if (this.editorEnabled === false) {return false;}
         if (this.totalSplits === 1) {return false;} // Can't have 0 splits
-        splitToDelete = split || this.totalSplits;
-        if (!split || split == this.totalSplits) {
+        splitToDelete = split || t.totalSplits;
+        if (!split || split == t.totalSplits) {
             delete splitsObject[splitToDelete];
             var removedRow = document.getElementById("editor-row" + splitToDelete);
             removedRow.parentNode.removeChild(removedRow);
@@ -162,11 +162,11 @@ function editor (editor) {
             
             delete splitsObject[split];
             splitsObject[split] = splitsObject[split+1];
-            if (split == this.totalSplits){
+            if (split == t.totalSplits){
                 delete splitsObject[split + 1];
             }
             
-            for (i = split + 1; i <= this.totalSplits; i++) {
+            for (i = split + 1; i <= t.totalSplits; i++) {
                 splitsObject[i] = splitsObject[i + 1];
                 delete splitsObject[i + 1];
             }
@@ -275,7 +275,7 @@ function editor (editor) {
         // TODO: Replace innerHTML with something else, it's pretty slow.
         var changeButtons = document.getElementsByClassName('editor-split-controls');
         for (var i = 0; i <= changeButtons.length - 1; i++) {
-            changeButtons[i].innerHTML = '<a class="btn-addSplit" onclick="t.addSplit(' + (i + 1) + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + (i + 1) + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + (i + 1) + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor-bestsegment.moveSplitDown(' + (i + 1) + ')">V</a>'
+            changeButtons[i].innerHTML = '<a class="btn-addSplit" onclick="editor.addSplit(' + (i + 1) + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + (i + 1) + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + (i + 1) + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor-bestsegment.moveSplitDown(' + (i + 1) + ')">V</a>'
         };
     }
 
@@ -520,6 +520,11 @@ function GameTimer(d) {
             this.timer.start = this.startTime;
             this.update();
 
+            // Decrement gold split counter if unsplitting a gold split
+            if (splitsObject[this.currentSplit][3] < splitsObject[this.currentSplit][2]) {
+            goldCounter--;
+            }
+
             // Reset current (Still last) split
             splitsObject[this.currentSplit][3] = 0;
             
@@ -529,6 +534,11 @@ function GameTimer(d) {
             return false;
         }
 
+
+        // Decrement gold split counter if unsplitting a gold split
+        if (splitsObject[this.currentSplit - 1][3] < splitsObject[this.currentSplit -1][2]) {
+            goldCounter--;
+        }
 
         // Reset Previous split before switching to it
         splitsObject[this.currentSplit - 1][3] = 0;
@@ -721,10 +731,10 @@ function GameTimer(d) {
         document.getElementById("container").style.visibility = "visible";
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("split-selector").style.visibility = "hidden";
-        this.genSplits();
-        this.disableControls = true;
-        this.editorEnabled = true;
-        this.genEditorSplits();
+        t.genSplits();
+        t.disableControls = true;
+        t.editorEnabled = true;
+        editor.genEditorSplits();
     };
 
     this.wsplitExport = function () {
