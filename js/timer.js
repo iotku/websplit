@@ -6,9 +6,6 @@
 // Shoutouts to him, I probably couldn't have built everything from scratch
 // - iotku
 
-// Very Global options...
-this.useWebsockets = true; // Use Websocket interface?
-
 // I want these available to every function now that I'm seperating things
 var splitsObject = Object.create(null);
 var splitsList = Object.create(null);
@@ -18,7 +15,7 @@ function option (option) {
     // Options that should be user modifyable sometime in the future
     self = this;
 
-    this.useWebsockets = false; // Use Websocket interface?
+    this.useWebsockets = true; // Use Websocket interface?
     this.startDelayAmount = 0;  // How many *seconds* of delay (TODO: Verify :: Is this taken into account everywhere?)
     this.maxSplits = 10;        // Max splits to display at once :: Not yet implemented.
 
