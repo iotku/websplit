@@ -112,6 +112,12 @@ input:disabled {
 	overflow-y: auto;
 }
 
+#splits-editor span {
+	min-width: 215px;
+	max-width: 215px;
+	/*border: white 1px solid;*/
+}
+
 #splits-table {
 	/*table-layout: fixed;*/
 	width: 215px;
@@ -131,7 +137,7 @@ input:disabled {
 }
 
 #container {
-	width: 215px;
+	width: 215px !important;
 	background-color: #111;
 }
 
@@ -171,6 +177,7 @@ input:disabled {
 
 #splits-table span div:nth-child(2n+2) {
 	display: table-cell;
+	padding-right: 2px;
 }
 
 #splits-table span div:nth-child(3n+1) {
@@ -273,7 +280,7 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #attempt-counter {
 	position: absolute;
-	top: 20px;
+	top: 16px;
 	border-bottom: none;
 	width: 210px;
 	text-align: right;
@@ -440,5 +447,13 @@ input[type=text]:nth-child(3n+1),input:disabled:nth-child(3n+1) {
 
 #websock-status {
 	font-size: 12px;
+	text-align: center;
+}
+
+.pad {
+	background-color: #0F0F0F !important;
+}
+
+.editor-split-controls {
 	text-align: center;
 }

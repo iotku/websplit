@@ -9,6 +9,281 @@
 // Very Global options...
 this.useWebsockets = true; // Use Websocket interface?
 
+// I want these available to every function now that I'm seperating things
+var splitsObject = Object.create(null);
+var splitsList = Object.create(null);
+var splitID = 0;
+
+function option (option) {
+    // Options that should be user modifyable sometime in the future
+    self = this;
+
+    this.useWebsockets = false; // Use Websocket interface?
+    this.startDelayAmount = 0;  // How many *seconds* of delay (TODO: Verify :: Is this taken into account everywhere?)
+    this.maxSplits = 10;        // Max splits to display at once :: Not yet implemented.
+
+    // Main timer
+    this.playColor1 = "#00FF68";
+    this.playColor2 = "#00A541";
+
+    this.pauseColor1 = "white"
+    this.pauseColor2 = "gray"
+
+    this.ahaedColor1 = "#00B3FF"
+    this.ahaedColor2 = "#00A1E6"
+
+    this.behindColor1 = "#FF0000"
+    this.behindColor2 = "#E30000"
+
+    // Segment Colors
+    this.goldSplitColor = "gold"
+    this.aheadSplitColor = "lime";
+    this.aheadSplitBehindTotalSegment = "#CC0000" // Eww, find better name?
+
+    this.behindSplitColor = "red"
+    this.behindSplitAheadTotalSegmentColor = "#00CC00" // Eww, find better name?
+}
+
+function editor (editor) {
+    // Split Editor
+    this.genEditorSplits = function () {
+        console.log(splitsObject)
+        t.timerReset();
+        t.editorEnabled = true;
+        var addtime = 0;
+        // Hide regular splits
+        document.getElementById("splits").style.display = "none";
+        
+        document.getElementById("prevsplit").style.color = "white";
+        document.getElementById("prevsplit").textContent = "Edit Mode.";
+        document.getElementById("splits-game-name").innerHTML = '<input id="splits-game-input" value="' + splitsObject.info[0] + '"/>';
+        document.getElementById("splits-goal-name").innerHTML = '<input id="splits-goal-input" value="' + splitsObject.info[1] + '"/>';
+        document.getElementById("attempt-counter").innerHTML = '<input id="attempt-counter-input" value="' + splitsObject.info[2] + '"/>';
+
+        // Show editor
+        document.getElementById("splits-editor").style.display = "block";
+        document.getElementById("splits-editor-table").style.display = "table";
+        document.getElementById("splits-editor-table").innerHTML = ""; // Make sure table is empty
+        document.getElementById("splits-editor-table").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
+        
+        // Generate input boxes for each split
+        for (var step = 1; step <= t.totalSplits; step++) {
+            var container = document.createElement('span');
+            container.id = "editor-row" + step;
+            container.innerHTML = '<input id="editor-splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="editor-bestsegment' + step + '" type="text" value="' + t.realTime(splitsObject[step][2], true) + '">' + '<input id="editor-difference' + step + '" type="text" value="' + t.realTime(splitsObject[step][1], true) + '"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="editor.addSplit(' +step+ ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + step + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + step + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor.moveSplitDown(' + step + ')">V</a></p>';
+            document.getElementById("splits-editor-table").appendChild(container);
+        }
+        document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="editor.addSplit()"/>&nbsp<input type="button" value="Del split" onclick="editor.removeSplit()"/><input type="button" value="Save" onclick="editor.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
+    };
+
+    this.saveNewSplits = function () {
+        var splitNames, enteredTime, bestsegTime;
+        for (var step = 1; step <= this.totalSplits; step++) {
+            splitNames = document.getElementById("editor-splitname" + step).value;
+            enteredTime = document.getElementById("editor-difference" + step).value;
+            bestsegTime = document.getElementById("editor-bestsegment" + step).value;
+            splitsObject[step][0] = splitNames;
+            splitsObject[step][1] = t.parseTime(enteredTime);
+            splitsObject[step][2] = t.parseTime(bestsegTime);
+        }
+        splitsObject.info[0] = document.getElementById("splits-game-input").value;
+        splitsObject.info[1] = document.getElementById("splits-goal-input").value;
+        splitsObject.info[2] = document.getElementById("attempt-counter-input").value;
+        localStorage["PB" + t.splitID] = JSON.stringify(splitsObject);
+        splitsList[splitID] = [splitsObject.info[0], splitsObject.info[1]];
+        localStorage.splitsListTracker = JSON.stringify(splitsList);
+        t.genSplits();
+    };
+
+    this.addSplit = function (split) {
+    // Either addsplit or removesplit leaves a mess behind in the DOM when used
+    // not a huge issue (I hope), but worth investigating later
+        if (t.editorEnabled === false) {return false;}
+        var replaceMe = split + 1 || t.totalSplits + 1;
+        var tmpSplitObject = Object.create(null);
+        tmpSplitObject.info = splitsObject.info;
+        
+        for (i = 1; i <= replaceMe - 1; i++){
+            tmpSplitObject[i] = splitsObject[i]
+        }
+        
+        tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1]
+        tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
+        
+        for (i = replaceMe; i <= this.totalSplits; i++){
+            tmpSplitObject[i + 1] = splitsObject[i]
+        }
+
+        // There's probably a much better way to change the IDs, but for now this works
+        // and doesn't seem to be very slow
+        for (i = split + 1; i <= t.totalSplits; i++) {
+            document.getElementById("editor-row" + i).id = "editor-row-tmp" + (i + 1);
+            document.getElementById("editor-splitname" + i).id = "editor-splitname-tmp" + (i + 1);
+            document.getElementById("editor-difference" + i).id = "editor-difference-tmp" + (i + 1);
+            document.getElementById("editor-bestsegment" + i).id = "editor-bestsegment-tmp" + (i + 1);
+        }
+
+        var splitRow = document.getElementById("editor-row-tmp" + (replaceMe + 1));
+        var container = document.createElement("span");
+        container.id = "editor-row" + replaceMe;
+        container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="editor.addSplit(' + replaceMe + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + replaceMe + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + replaceMe + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor.moveSplitDown(' + replaceMe + ')">V</a></p>';
+
+        document.getElementById("splits-editor-table").insertBefore(container, splitRow);
+        
+        this.editorUpdateSplitButtons(); // make sure split buttons are current, even though it seemed to work fine without this.
+        t.totalSplits++;
+        
+        for (i = split + 2; i <= this.totalSplits; i++) {
+            document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
+            document.getElementById("editor-splitname-tmp" + i).id = ("editor-splitname" + i); 
+            document.getElementById("editor-difference-tmp" + i).id = ("editor-difference" + i); 
+            document.getElementById("editor-bestsegment-tmp" + i).id = ("editor-bestsegment" + i); 
+        }
+        
+        splitsObject = tmpSplitObject;
+
+        if (!split) {
+            // Scroll to bottom automatically
+            var objDiv = document.getElementById("splits-editor");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+    };
+
+    this.removeSplit = function (split) {
+        if (this.editorEnabled === false) {return false;}
+        if (this.totalSplits === 1) {return false;} // Can't have 0 splits
+        splitToDelete = split || t.totalSplits;
+        if (!split || split == t.totalSplits) {
+            delete splitsObject[splitToDelete];
+            var removedRow = document.getElementById("editor-row" + splitToDelete);
+            removedRow.parentNode.removeChild(removedRow);
+            t.totalSplits = t.totalSplits - 1;
+        } else {
+            var removedRow = document.getElementById("editor-row" + splitToDelete);
+            removedRow.parentNode.removeChild(removedRow);
+            t.totalSplits = t.totalSplits - 1;
+            
+            delete splitsObject[split];
+            splitsObject[split] = splitsObject[split+1];
+            if (split == t.totalSplits){
+                delete splitsObject[split + 1];
+            }
+            
+            for (i = split + 1; i <= t.totalSplits; i++) {
+                splitsObject[i] = splitsObject[i + 1];
+                delete splitsObject[i + 1];
+            }
+            // There's probably a much better way to change the IDs, but for now this works
+            // and doesn't seem to be very slow
+
+            for (i = split; i <= t.totalSplits; i++) {
+                document.getElementById("editor-row" + (i+1)).id = "editor-row-tmp" + (i);
+                document.getElementById("editor-splitname" + (i+1)).id = "editor-splitname-tmp" + (i);
+                document.getElementById("editor-difference" + (i+1)).id = "editor-difference-tmp" + (i);
+                document.getElementById("editor-bestsegment" + (i+1)).id = "editor-bestsegment-tmp" + (i);
+            }
+            
+            for (i = split; i <= t.totalSplits; i++) {
+                document.getElementById("editor-row-tmp" + i).id = "editor-row" + i;
+                document.getElementById("editor-splitname-tmp" + i).id = "editor-splitname" + i;
+                document.getElementById("editor-difference-tmp" + i).id = "editor-difference" + i;
+                document.getElementById("editor-bestsegment-tmp" + i).id = "editor-bestsegment" + i;
+            }
+        }
+        this.editorUpdateSplitButtons();
+
+    };
+
+    this.moveSplitUp = function (split) {
+        // Functional, but could probbaly be refactored to be more readable
+        // Also uses a different order for swapping than moveSplitdown, which 
+        // could be confusing
+        if (split == 1) {return false;}
+        var swap1, swap2;
+
+        swap1 = splitsObject[split];
+        swap2 = splitsObject[split-1];
+
+        splitsObject[split-1] = swap1;
+        splitsObject[split] = swap2;
+        // document.getElementById("editor-row" + split).insert(document.getElementById("editor-row" + (split -1))); // Use insertBefore?
+        var div1 = document.getElementById("editor-row" + split);
+        var div2 = document.getElementById("editor-row" + (split -1));
+        var container = document.getElementById("editor-row" + split);
+        document.getElementById("splits-editor-table").insertBefore(container, div2)
+
+        div1.id = "editor-row" + (split - 1);
+        div2.id = "editor-row" + (split);
+        
+        var splitname1 = document.getElementById("editor-splitname" + (split - 1));
+        var difference1 = document.getElementById("editor-difference" + (split - 1));
+        var bestsegment1 = document.getElementById("editor-bestsegment" + (split - 1));
+        
+        var splitname2 = document.getElementById("editor-splitname" + split);
+        var difference2 = document.getElementById("editor-difference" + split);
+        var bestsegment2 = document.getElementById("editor-bestsegment" + split);
+
+        splitname1.id = "editor-splitname" + split;
+        splitname2.id = "editor-splitname" + (split - 1);
+
+        difference1.id = "editor-difference" + split;
+        difference2.id = "editor-difference" + (split - 1)
+
+        bestsegment1.id = "editor-bestsegment" + split;
+        bestsegment2.id = "editor-bestsegment" + (split - 1)
+
+        this.editorUpdateSplitButtons();
+    }
+
+    this.moveSplitDown = function (split) {
+        // Functional, but could probbaly be refactored to be more readable
+        if (split == this.totalSplits) { return false;}
+        var swap1, swap2;
+
+        swap1 = splitsObject[split];
+        swap2 = splitsObject[split+1];
+
+        splitsObject[split+1] = swap1;
+        splitsObject[split] = swap2;
+
+        var div1 = document.getElementById("editor-row" + split);
+        var div2 = document.getElementById("editor-row" + (split + 1));
+        var container = document.getElementById("editor-row" + (split +1));
+        document.getElementById("splits-editor-table").insertBefore(container, div1)
+
+        div1.id = "editor-row" + (split + 1);
+        div2.id = "editor-row" + (split);
+        
+        var splitname1 = document.getElementById("editor-splitname" + (split + 1));
+        var difference1 = document.getElementById("editor-difference" + (split + 1));
+        var bestsegment1 = document.getElementById("editor-bestsegment" + (split + 1));
+        
+        var splitname2 = document.getElementById("editor-splitname" + split);
+        var difference2 = document.getElementById("editor-difference" + split);
+        var bestsegment2 = document.getElementById("editor-bestsegment" + split);
+
+        splitname1.id = "editor-splitname" + split;
+        splitname2.id = "editor-splitname" + (split + 1);
+
+        difference1.id = "editor-difference" + split;
+        difference2.id = "editor-difference" + (split + 1)
+
+        bestsegment1.id = "editor-bestsegment" + split;
+        bestsegment2.id = "editor-bestsegment" + (split + 1);
+
+        this.editorUpdateSplitButtons();
+    }
+
+    this.editorUpdateSplitButtons = function () {
+        // TODO: Replace innerHTML with something else, it's pretty slow.
+        var changeButtons = document.getElementsByClassName('editor-split-controls');
+        for (var i = 0; i <= changeButtons.length - 1; i++) {
+            changeButtons[i].innerHTML = '<a class="btn-addSplit" onclick="editor.addSplit(' + (i + 1) + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + (i + 1) + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + (i + 1) + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor-bestsegment.moveSplitDown(' + (i + 1) + ')">V</a>'
+        };
+    }
+
+}
+
 function debugMsg(text) {
     var currentTime = new Date();
     var container = document.createElement('span');
@@ -25,14 +300,14 @@ function webSocket(f){
     ws = new WebSocket(websocketURL);
     
     ws.onopen = function() {
-    debugMsg("Connected to " + websocketURL);
-    document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
-    }
+        debugMsg("Connected to " + websocketURL);
+        document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
+    };
 
     this.closeSocket = function () {
         // Should autorespawn
         ws.close();
-    }
+    };
 
     ws.onmessage = function(event) {
       switch (event.data) {
@@ -50,28 +325,25 @@ function webSocket(f){
     };
      ws.onclose = function(){
         //try to reconnect in 5 seconds
-        debugMsg("Connection Lost!")
-        document.getElementById("websock-status").textContent = "Not Connected."
-        setTimeout(function(){webSocket();}, 5000);}
+        debugMsg("Connection Lost!");
+        document.getElementById("websock-status").textContent = "Not Connected.";
+        setTimeout(function(){webSocket();}, 5000);};
     var self = this,
     d = d || {}; // I really don't know about this.
 }
 
 function GameTimer(d) {
     /* User configurable settings */
-    this.maxSplits = 10;   // Max splits to display at once :: Not yet implemented.
     
     /* Timer variables (do not change unless you're sure) */
     this.currentSplit = 1; // Initialize at 1st split
     this.goldCounter = 0;  // How Many gold splits?
-    this.splitID = 0;      // Initialize, should be set my split selection function
-    this.startTime = 0;    // Keep track of inital start time for unsplit.
-    var splitsList = Object.create(null);
+    this.splitID = 0;      // Initialize, should be set by split selection function
+    this.startTime = 0;    // Keep track of inital start time for unsplit. (TODO: change to somethign more meaningful, and modify comment to mention that it saves the offset, including after pausing)
 
     if (localStorage.splitsListTracker) {
         splitsList = JSON.parse(localStorage.splitsListTracker);
     }
-    var splitsObject = Object.create(null);
 
     /* [0]Split Name, [1]PBsplit, [2]Best Split, [3]Current Split */
     var defaultSplitsObject = Object.create(null); // Load this if, no other splits
@@ -81,7 +353,7 @@ function GameTimer(d) {
     };
 
     this.start = function (start) {
-        pref = performance.now()
+        pref = performance.now();
         start = start || 0;
         this.timer = {
             start: pref + (start * 1000),
@@ -148,10 +420,10 @@ function GameTimer(d) {
         this.genSplits(); /* reset splits */
     };
 
-    this.split = function (splittime) {
-        var actualtime = this.timer.realtime
+    this.split = function (splitTime) {
+        var actualTime = this.timer.realtime;
         if (this.disableControls === true) {return false;}
-        splittime = splittime || actualtime;
+        splittime = splitTime || actualTime;
         if (this.currently === 'pause') {
             this.pause(); // Unpause on split, if paused
             return false;
@@ -162,7 +434,7 @@ function GameTimer(d) {
         } else if (this.currentSplit === this.totalSplits && this.totalSplits != 1) {
             this.reset();
         } else if (this.timer.start === 0) {
-            return this.start(0); // Startup delay in seconds
+            return this.start(option.startDelayAmount); // Startup delay in seconds
         } else {
             this.timerReset();
             this.genSplits();
@@ -242,7 +514,7 @@ function GameTimer(d) {
     };
 
     this.unsplit = function () {
-        if (this.disableControls === true || this.currentSplit === 1) { return false }
+        if (this.disableControls === true || this.currentSplit === 1) { return false; }
 
         document.getElementById("difference" + this.currentSplit).style.fontWeight = "Normal";
 
@@ -250,6 +522,11 @@ function GameTimer(d) {
             this.setState("play");
             this.timer.start = this.startTime;
             this.update();
+
+            // Decrement gold split counter if unsplitting a gold split
+            if (splitsObject[this.currentSplit][3] < splitsObject[this.currentSplit][2]) {
+            goldCounter--;
+            }
 
             // Reset current (Still last) split
             splitsObject[this.currentSplit][3] = 0;
@@ -260,6 +537,11 @@ function GameTimer(d) {
             return false;
         }
 
+
+        // Decrement gold split counter if unsplitting a gold split
+        if (splitsObject[this.currentSplit - 1][3] < splitsObject[this.currentSplit -1][2]) {
+            goldCounter--;
+        }
 
         // Reset Previous split before switching to it
         splitsObject[this.currentSplit - 1][3] = 0;
@@ -275,7 +557,7 @@ function GameTimer(d) {
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
         }
 
-        if (this.currentSplit >= 5 && this.totalSplits > this.maxSplits && (this.totalSplits - this.currentSplit) > 5) {// Don't start until half way thru visible splits, currently hard-coded to 10 splits
+        if (this.currentSplit >= 5 && this.totalSplits > option.maxSplits && (this.totalSplits - this.currentSplit) > 5) {// Don't start until half way thru visible splits, currently hard-coded to 10 splits
             document.getElementById("row" + (this.currentSplit - 4)).style.display = "table-row";
             document.getElementById("row" + (this.currentSplit + 5)).style.display = "none";
         }
@@ -287,6 +569,11 @@ function GameTimer(d) {
         document.getElementById("difference" + this.currentSplit).textContent = '-';
         document.getElementById("split" + this.currentSplit).style.color = "white";
         document.getElementById("split" + this.currentSplit).textContent = '-';
+
+        if (this.currentSplit == 1) { document.getElementById("prevtext").textContent = "Prev. Segment:"; }
+        document.getElementById("prevsplit").style.color = "white";
+        document.getElementById("prevsplit").textContent = '-';
+        
         this.currentSplit++;
         document.getElementById('row' + (this.currentSplit)).className += " active-split";
         document.getElementById('row' + (this.currentSplit - 1)).className = " ";
@@ -322,8 +609,8 @@ function GameTimer(d) {
         document.getElementById("controls").style.display = "block"; 
         // It's fairly safe to assume if this function is running the editor
         // has either been closed, or never opened.
-        document.getElementById("splits-editor").style.display = "none"
-        document.getElementById("splits-editor-table").style.display = "none"
+        document.getElementById("splits-editor").style.display = "none";
+        document.getElementById("splits-editor-table").style.display = "none";
         document.getElementById("splits-table").style.display = "table"; // Make sure table is empty
         document.getElementById("splits").style.display = "block"; // Make sure table is empty
 
@@ -447,10 +734,10 @@ function GameTimer(d) {
         document.getElementById("container").style.visibility = "visible";
         document.getElementById("split-selector").innerHTML = "";
         document.getElementById("split-selector").style.visibility = "hidden";
-        this.genSplits();
-        this.disableControls = true;
-        this.editorEnabled = true;
-        this.genEditorSplits();
+        t.genSplits();
+        t.disableControls = true;
+        t.editorEnabled = true;
+        editor.genEditorSplits();
     };
 
     this.wsplitExport = function () {
@@ -560,56 +847,6 @@ function GameTimer(d) {
             this.updateElements(); /* Updates the now 0 timer values. */
     };
 
-    // Split Editor
-    this.genEditorSplits = function () {
-        this.timerReset();
-        this.editorEnabled = true;
-        var addtime = 0;
-        // Hide regular splits
-        document.getElementById("splits").style.display = "none";
-        
-        document.getElementById("prevsplit").style.color = "white";
-        document.getElementById("prevsplit").textContent = "Edit Mode.";
-        document.getElementById("splits-game-name").innerHTML = '<input id="splits-game-input" value="' + splitsObject.info[0] + '"/>';
-        document.getElementById("splits-goal-name").innerHTML = '<input id="splits-goal-input" value="' + splitsObject.info[1] + '"/>';
-        document.getElementById("attempt-counter").innerHTML = '<input id="attempt-counter-input" value="' + splitsObject.info[2] + '"/>';
-
-        // Show editor
-        document.getElementById("splits-editor").style.display = "block"
-        document.getElementById("splits-editor-table").style.display = "table"
-        document.getElementById("splits-editor-table").innerHTML = ""; // Make sure table is empty
-        document.getElementById("splits-editor-table").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
-        
-        // Generate input boxes for each split
-        for (var step = 1; step <= this.totalSplits; step++) {
-            var container = document.createElement('span');
-            container.id = "editor-row" + step;
-            container.innerHTML = '<input id="editor-splitname' + step + '" type="text" value="' + splitsObject[step][0] + '" />' + '<input id="editor-bestsegment' + step + '" type="text" value="' + this.realTime(splitsObject[step][2], true) + '">' + '<input id="editor-difference' + step + '" type="text" value="' + this.realTime(splitsObject[step][1], true) + '">';
-            document.getElementById("splits-editor-table").appendChild(container);
-        }
-        document.getElementById("editor-controls").innerHTML = '<input type="button" value="Add split" onclick="t.addSplit()"/>&nbsp<input type="button" value="Del split" onclick="t.removeSplit()"/><input type="button" value="Save" onclick="t.saveNewSplits()"/>&nbsp<input type="button" value="Exit" onclick="t.genSplits()"/>';
-    };
-
-    this.saveNewSplits = function () {
-        var splitNames, enteredTime, bestsegTime;
-        for (var step = 1; step <= this.totalSplits; step++) {
-            splitNames = document.getElementById("editor-splitname" + step).value;
-            enteredTime = document.getElementById("editor-difference" + step).value;
-            bestsegTime = document.getElementById("editor-bestsegment" + step).value;
-
-            splitsObject[step][0] = splitNames;
-            splitsObject[step][1] = this.parseTime(enteredTime);
-            splitsObject[step][2] = this.parseTime(bestsegTime);
-        }
-        splitsObject.info[0] = document.getElementById("splits-game-input").value;
-        splitsObject.info[1] = document.getElementById("splits-goal-input").value;
-        splitsObject.info[2] = document.getElementById("attempt-counter-input").value;
-        localStorage["PB" + this.splitID] = JSON.stringify(splitsObject);
-        splitsList[this.splitID] = [splitsObject.info[0], splitsObject.info[1]];
-        localStorage.splitsListTracker = JSON.stringify(splitsList);
-        t.genSplits();
-    };
-
     // Styling Functions
     this.cssChange = function (selector, property, value) { // http://stackoverflow.com/a/11081100
         for (var i=0; i<document.styleSheets.length;i++) { // Loop through all styles
@@ -638,17 +875,17 @@ function GameTimer(d) {
                 document.getElementById("row1").className += " active-split";
                 document.getElementById("prevsplit").textContent = "...";
             }
-            this.cssChange('#timer .stop1', 'stop-color', '#00FF68');
-            this.cssChange('#timer .stop2', 'stop-color', '#00A541');
-        } else if (currentState === 'pause') { // Same as stopped
-            this.cssChange('#timer .stop1', 'stop-color', 'white');
-            this.cssChange('#timer .stop2', 'stop-color', 'gray');
+            this.cssChange('#timer .stop1', 'stop-color', option.playColor1);
+            this.cssChange('#timer .stop2', 'stop-color', option.playColor2);
+        } else if (currentState === 'pause') {
+            this.cssChange('#timer .stop1', 'stop-color', option.pauseColor1);
+            this.cssChange('#timer .stop2', 'stop-color', option.pauseColor2);
         } else if (currentState === 'ahead') {
-            this.cssChange('#timer .stop1', 'stop-color', '#00B3FF');
-            this.cssChange('#timer .stop2', 'stop-color', '#00A1E6');
+            this.cssChange('#timer .stop1', 'stop-color', option.ahaedColor1);
+            this.cssChange('#timer .stop2', 'stop-color', option.ahaedColor2);
         } else if (currentState === 'behind') {
-            this.cssChange('#timer .stop1', 'stop-color', '#FF0000');
-            this.cssChange('#timer .stop2', 'stop-color', '#E30000');
+            this.cssChange('#timer .stop1', 'stop-color', option.behindColor1);
+            this.cssChange('#timer .stop2', 'stop-color', option.behindColor2);
         }
     };
 
@@ -659,36 +896,35 @@ function GameTimer(d) {
             bestSegment = splitsObject[this.currentSplit][2];
 
         if (pbSegment === 0 && bestSegment !== 0) {
-            // make sure we don't add + onto empty split
             return false;
         }
 
         if (currentSegment < bestSegment || bestSegment === 0) {
-            prevSplit.style.color = "gold";
-            timerText.style.color = "gold";
+            prevSplit.style.color = option.goldSplitColor;
+            timerText.style.color = option.goldSplitColor;
             if (this.getTotalTime() < this.getSegmentTime() && pbSegment !== 0) {
                 timerText.textContent = '+' + timerText.textContent;
             }
             return false; // Exit without checking anything else, gold is gold everywhere!
         } else if (currentSegment <= pbSegment && this.getSegmentTime() <= this.getTotalTime()) {
             // Ahead Split + Ahead Total Time
-            prevSplit.style.color = "lime";
-            timerText.style.color = "lime";
+            prevSplit.style.color = option.aheadSplitColor;
+            timerText.style.color = option.aheadSplitColor;
         } else if (currentSegment <= pbSegment && this.getSegmentTime() >= this.getTotalTime()) {
             // Ahead Split, But not ahead total time
-            prevSplit.style.color = "lime";
-            timerText.style.color = "#CC0000";
+            prevSplit.style.color = option.aheadSplitColor;
+            timerText.style.color = option.aheadSplitBehindTotalSegment;
             timerText.textContent = '+' + timerText.textContent;
         } else if (currentSegment >= pbSegment && this.getSegmentTime() >= this.getTotalTime()) {
             // Behind Split, and behind total time.
-            prevSplit.style.color = "red";
-            timerText.style.color = "red";
+            prevSplit.style.color = option.behindSplitColor;
+            timerText.style.color = option.behindSplitColor;
             timerText.textContent = '+' + timerText.textContent;
             prevSplit.textContent = '+' + prevSplit.textContent;
         } else if (currentSegment >= pbSegment && this.getSegmentTime() <= this.getTotalTime()) {
             // Behind Split, but ahead total time
-            prevSplit.style.color = "red";
-            timerText.style.color = "#00CC00";
+            prevSplit.style.color = option.behindSplitColor;
+            timerText.style.color = option.behindSplitAheadTotalSegmentColor;
             prevSplit.textContent = '+' + prevSplit.textContent;
         } else { // Hopefully, all our bases are covered....
             // Make obvious something went wrong somehow.
@@ -719,7 +955,7 @@ function GameTimer(d) {
         if (isEditor === true) {
             humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
             return humanTime;
-        };
+        }
 
         var humanTime;
         if (h === 0 && m === 0) {
@@ -805,67 +1041,50 @@ function GameTimer(d) {
         return o;
     };
 
-    // Either addsplit or removesplit leaves a mess behind in the DOM when used
-    // not a huge issue (I hope), but worth investigating later
-    this.addSplit = function () {
-        if (this.editorEnabled === false) {return false;}
-        var replaceMe = this.totalSplits + 1;
-        splitsObject[replaceMe] = [replaceMe,0,0,0];
-        this.totalSplits = this.totalSplits + 1;
-        // This should hopefully not lose all <input> data
-        var container = document.createElement("span");
-        container.innerHTML = '<span id="editor-row' + replaceMe + '"><input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"></span>';
-        document.getElementById("splits-editor-table").appendChild(container);
-        // Scroll to bottom automatically
-        var objDiv = document.getElementById("splits-editor");
-        objDiv.scrollTop = objDiv.scrollHeight;
-    };
-
-    this.removeSplit = function () {
-        console.log(this.totalSplits)
-        if (this.editorEnabled === false) {return false;}
-        if (this.totalSplits === 1) {return false;} // Can't have 0 splits
-        delete splitsObject[this.totalSplits];
-        var removedRow = document.getElementById("editor-row" + this.totalSplits);
-        removedRow.parentNode.removeChild(removedRow);
-        this.totalSplits = this.totalSplits - 1;
-    };
-
     this.resizeSplitColumn = function () {
-        // Voodoo Magic 
-        // Sometimes Works... sometimes doesn't?
         split = document.getElementById("split" + this.currentSplit);
         diff = document.getElementById("difference" + this.currentSplit);
 
-        // These lengths are complete guesses and not based on anything useful.
-        // After a while the columns occupy significantly more space than required
-        difflen = diff.textContent.length * 9.8;
-        splitlen = (split.textContent.length * 9.8);
-        split.style.width = splitlen + "px";
-        diff.style.width = difflen + "px";
+        difflen = diff.clientWidth;
+        splitlen = split.clientWidth;
 
-
+        // Calculate room left for splitname
+        // While functional, 
         left = 215 - (difflen + splitlen);
         for (var i = this.totalSplits; i >= 1; i--) {
-            document.getElementById("splitname" + i).style.maxWidth = (left - 25) + "px";
+            document.getElementById("splitname" + i).style.maxWidth = (left - 12) + "px";
+            document.getElementById("splitname" + i).style.minWidth = (left - 12) + "px";
         }
-    }
+    };
+
+    this.padSplits = function () {
+        if (this.totalSplits < option.maxSplits) {
+            lastSplit = document.getElementById("row" + this.totalSplits);
+            for (i = 0; i < (option.maxSplits - this.totalSplits); i++) {
+                var container = document.createElement('span');
+                container.className = "pad";
+                container.innerHTML = '<div>&nbsp;</div>' + '<div></div>' + '<div></div>';
+                document.getElementById("splits-table").insertBefore(container, lastSplit);
+            }
+        }
+    };
 
     this.resizeSplits = function () {
         this.resizeSplitColumn();
 
         // Get the height of rows which seems to differ slightly by browser for some reason
         // And enforce height to be the exact same as the maxSplits amount
-        var rowHeight = (document.getElementById('row1').clientHeight * this.maxSplits) + "px"
+        var rowHeight = (document.getElementById('row1').clientHeight * option.maxSplits) + "px";
         document.getElementById("splits").style.minHeight = rowHeight;
         document.getElementById("splits").style.maxHeight = rowHeight;
+        this.padSplits();
 
-        if (this.totalSplits > this.maxSplits) {
-            for (var i = this.totalSplits - 1; i >= this.maxSplits; i--) {
+        if (this.totalSplits > option.maxSplits) {
+            for (var i = this.totalSplits - 1; i >= option.maxSplits; i--) {
                 document.getElementById("row" + i).style.display = "none";
             }
         }
-    }
+    };
 
     // Set up stuff
     var disableControls = false;
@@ -888,15 +1107,21 @@ function GameTimer(d) {
     }
 }
 
+// Load options to be used for the timer, currently related to styling
+var option;
+option = new option();
 
-var t; /* ? */
+var t;
 t = new GameTimer({
     elements: { realtime: 'timer_realtime' },
     interval: 100, // How fast to update (in ms)
     ms: [2, 1]
 });
 
-if (useWebsockets === true) {
+var editor;
+editor = new editor();
+
+if (option.useWebsockets === true) {
     var websock;
     websock = new webSocket();
 }
@@ -910,11 +1135,13 @@ window.onkeydown = function keyPress(e) {
         t.split(); // l
     } else if (k === 82) {
         t.reset(); // r
+    } else if (k === 69) {
+            openEditor();
     }
 };
 
 window.onload = function () {
-    if (this.useWebsockets === false) {
+    if (option.useWebsockets === false) {
         document.getElementById("websock-status").style.display = "none";
         document.getElementById("websock-controls").style.display = "none";
     }
@@ -923,14 +1150,24 @@ window.onload = function () {
 };
 
 this.openEditor = function () {
-    if (t.currently == 'play' || t.currently == 'pause') {
+    if (t.currently == 'play' || t.currently == 'pause' || t.editorEnabled == true) {
         return false;
     } else {
         t.disableControls = true;
-        t.genEditorSplits();
+        editor.genEditorSplits();
     }
 };
 
+function onUpdateReady() {
+    if (window.confirm("WebSplit has been updated. Would you like to refresh to load the new version?")) { 
+        Location.reload()
+    }
+}
+
+window.applicationCache.addEventListener('updateready', onUpdateReady);
+if(window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+  onUpdateReady();
+}
 
 // Prompt before navigating away from page
 var confirmOnPageExit = function (e) { // http://stackoverflow.com/a/1119324

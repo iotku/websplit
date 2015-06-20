@@ -1,3 +1,6 @@
 update-ghpages.sh
 js-launcher.html
 websockets-server/websocketd.exe
+*~
+*.swp
+*.swo
