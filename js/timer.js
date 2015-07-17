@@ -1062,6 +1062,12 @@ function GameTimer(d) {
                 container.innerHTML = '<div>&nbsp;</div>' + '<div></div>' + '<div></div>';
                 document.getElementById("splits-table").insertBefore(container, lastSplit);
             }
+
+            if (this.totalSplits % 2) {
+                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#0f0f0f"
+            } else {
+                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#171717"
+            }
         }
     };
 
