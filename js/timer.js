@@ -50,7 +50,7 @@ function editor (editor) {
         var addtime = 0;
         // Hide regular splits
         document.getElementById("splits").style.display = "none";
-        
+
         document.getElementById("prevsplit").style.color = "white";
         document.getElementById("prevsplit").textContent = "Edit Mode.";
         document.getElementById("splits-game-name").innerHTML = '<input id="splits-game-input" value="' + splitsObject.info[0] + '"/>';
@@ -62,7 +62,7 @@ function editor (editor) {
         document.getElementById("splits-editor-table").style.display = "table";
         document.getElementById("splits-editor-table").innerHTML = ""; // Make sure table is empty
         document.getElementById("splits-editor-table").innerHTML = '<input disabled value="Names" /><input disabled value="Best" /><input disabled value="Seg" /><br>';
-        
+
         // Generate input boxes for each split
         for (var step = 1; step <= t.totalSplits; step++) {
             var container = document.createElement('span');
@@ -99,14 +99,14 @@ function editor (editor) {
         var replaceMe = split + 1 || t.totalSplits + 1;
         var tmpSplitObject = Object.create(null);
         tmpSplitObject.info = splitsObject.info;
-        
+
         for (i = 1; i <= replaceMe - 1; i++){
             tmpSplitObject[i] = splitsObject[i]
         }
-        
+
         tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1]
         tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
-        
+
         for (i = replaceMe; i <= this.totalSplits; i++){
             tmpSplitObject[i + 1] = splitsObject[i]
         }
@@ -126,17 +126,17 @@ function editor (editor) {
         container.innerHTML = '<input id="editor-splitname' + replaceMe + '" type="text" value="' + replaceMe + '"><input id="editor-bestsegment' + replaceMe + '" type="text" value="00:00.00"><input id="editor-difference' + replaceMe + '" type="text" value="00:00.00"><br/><p class="editor-split-controls"><a class="btn-addSplit" onclick="editor.addSplit(' + replaceMe + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + replaceMe + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + replaceMe + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor.moveSplitDown(' + replaceMe + ')">V</a></p>';
 
         document.getElementById("splits-editor-table").insertBefore(container, splitRow);
-        
+
         this.editorUpdateSplitButtons(); // make sure split buttons are current, even though it seemed to work fine without this.
         t.totalSplits++;
-        
+
         for (i = split + 2; i <= this.totalSplits; i++) {
             document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
             document.getElementById("editor-splitname-tmp" + i).id = ("editor-splitname" + i); 
             document.getElementById("editor-difference-tmp" + i).id = ("editor-difference" + i); 
             document.getElementById("editor-bestsegment-tmp" + i).id = ("editor-bestsegment" + i); 
         }
-        
+
         splitsObject = tmpSplitObject;
 
         if (!split) {
@@ -159,13 +159,13 @@ function editor (editor) {
             var removedRow = document.getElementById("editor-row" + splitToDelete);
             removedRow.parentNode.removeChild(removedRow);
             t.totalSplits = t.totalSplits - 1;
-            
+
             delete splitsObject[split];
             splitsObject[split] = splitsObject[split+1];
             if (split == t.totalSplits){
                 delete splitsObject[split + 1];
             }
-            
+
             for (i = split + 1; i <= t.totalSplits; i++) {
                 splitsObject[i] = splitsObject[i + 1];
                 delete splitsObject[i + 1];
@@ -179,7 +179,7 @@ function editor (editor) {
                 document.getElementById("editor-difference" + (i+1)).id = "editor-difference-tmp" + (i);
                 document.getElementById("editor-bestsegment" + (i+1)).id = "editor-bestsegment-tmp" + (i);
             }
-            
+
             for (i = split; i <= t.totalSplits; i++) {
                 document.getElementById("editor-row-tmp" + i).id = "editor-row" + i;
                 document.getElementById("editor-splitname-tmp" + i).id = "editor-splitname" + i;
@@ -193,7 +193,7 @@ function editor (editor) {
 
     this.moveSplitUp = function (split) {
         // Functional, but could probbaly be refactored to be more readable
-        // Also uses a different order for swapping than moveSplitdown, which 
+        // Also uses a different order for swapping than moveSplitdown, which
         // could be confusing
         if (split == 1) {return false;}
         var swap1, swap2;
@@ -211,11 +211,11 @@ function editor (editor) {
 
         div1.id = "editor-row" + (split - 1);
         div2.id = "editor-row" + (split);
-        
+
         var splitname1 = document.getElementById("editor-splitname" + (split - 1));
         var difference1 = document.getElementById("editor-difference" + (split - 1));
         var bestsegment1 = document.getElementById("editor-bestsegment" + (split - 1));
-        
+
         var splitname2 = document.getElementById("editor-splitname" + split);
         var difference2 = document.getElementById("editor-difference" + split);
         var bestsegment2 = document.getElementById("editor-bestsegment" + split);
@@ -250,11 +250,11 @@ function editor (editor) {
 
         div1.id = "editor-row" + (split + 1);
         div2.id = "editor-row" + (split);
-        
+
         var splitname1 = document.getElementById("editor-splitname" + (split + 1));
         var difference1 = document.getElementById("editor-difference" + (split + 1));
         var bestsegment1 = document.getElementById("editor-bestsegment" + (split + 1));
-        
+
         var splitname2 = document.getElementById("editor-splitname" + split);
         var difference2 = document.getElementById("editor-difference" + split);
         var bestsegment2 = document.getElementById("editor-bestsegment" + split);
@@ -295,7 +295,7 @@ function debugMsg(text) {
 function webSocket(f){
     var websocketURL = 'ws://localhost:8080/';
     ws = new WebSocket(websocketURL);
-    
+
     ws.onopen = function() {
         debugMsg("Connected to " + websocketURL);
         document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
@@ -331,7 +331,7 @@ function webSocket(f){
 
 function GameTimer(d) {
     /* User configurable settings */
-    
+
     /* Timer variables (do not change unless you're sure) */
     this.currentSplit = 1; // Initialize at 1st split
     this.goldCounter = 0;  // How Many gold splits?
@@ -364,7 +364,7 @@ function GameTimer(d) {
 
         this.setState("play");
         this.updateAttemptCounter();
-        
+
         return this.timer.start;
     };
 
@@ -484,8 +484,8 @@ function GameTimer(d) {
             this.currentSplit = this.currentSplit + 1;
             document.getElementById('row' + (this.currentSplit)).className += " active-split";
             document.getElementById('row' + (this.currentSplit - 1)).className = " ";
-            
-            // advance visible splits when truncated 
+
+            // advance visible splits when truncated
             if (this.currentSplit > 5 && this.totalSplits > 10) {// Don't start until half way thru visible splits
                 if ((this.totalSplits - this.currentSplit) >= 5) {
                 document.getElementById("row" + (this.currentSplit + 4)).style.display = "table-row";
@@ -527,7 +527,7 @@ function GameTimer(d) {
 
             // Reset current (Still last) split
             splitsObject[this.currentSplit][3] = 0;
-            
+
             document.getElementById('row' + this.currentSplit).className += " active-split";
             document.getElementById("split" + this.currentSplit).textContent = ' ';
             document.getElementById("difference" + this.currentSplit).textContent = this.realTime(this.getTotalTime());
@@ -570,11 +570,11 @@ function GameTimer(d) {
         if (this.currentSplit == 1) { document.getElementById("prevtext").textContent = "Prev. Segment:"; }
         document.getElementById("prevsplit").style.color = "white";
         document.getElementById("prevsplit").textContent = '-';
-        
+
         this.currentSplit++;
         document.getElementById('row' + (this.currentSplit)).className += " active-split";
         document.getElementById('row' + (this.currentSplit - 1)).className = " ";
-        // advance visible splits when truncated 
+        // advance visible splits when truncated
         if (this.currentSplit > 5 && this.totalSplits > 10) {// Don't start until half way thru visible splits
             if ((this.totalSplits - this.currentSplit) >= 5) {
             document.getElementById("row" + (this.currentSplit + 4)).style.display = "table-row";
@@ -603,7 +603,7 @@ function GameTimer(d) {
         // Disable while generating splits (even though it should be fast.)
         this.disableControls = true;
         // Show controls after hiding them for the split menu
-        document.getElementById("controls").style.display = "block"; 
+        document.getElementById("controls").style.display = "block";
         // It's fairly safe to assume if this function is running the editor
         // has either been closed, or never opened.
         document.getElementById("splits-editor").style.display = "none";
@@ -947,7 +947,7 @@ function GameTimer(d) {
             // but it seems to solve an issue with seemingly random -1 values...
             h += 1;
         }
-        
+
         // I think msd was supposed to avoid this mess somehow (a value to set to show how much to truicate?)
         if (isEditor === true) {
             humanTime = ((h !== 0) ? h + ':' : '') + this.pad(m, 2) + ':' + this.pad(s, 2) + ((msd) ? '.' + this.pad(ms, msd) : '');
@@ -1046,7 +1046,6 @@ function GameTimer(d) {
         splitlen = split.clientWidth;
 
         // Calculate room left for splitname
-        // While functional, 
         left = 215 - (difflen + splitlen);
         for (var i = this.totalSplits; i >= 1; i--) {
             document.getElementById("splitname" + i).style.maxWidth = (left - 12) + "px";
@@ -1062,6 +1061,12 @@ function GameTimer(d) {
                 container.className = "pad";
                 container.innerHTML = '<div>&nbsp;</div>' + '<div></div>' + '<div></div>';
                 document.getElementById("splits-table").insertBefore(container, lastSplit);
+            }
+
+            if (this.totalSplits % 2) {
+                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#0f0f0f"
+            } else {
+                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#171717"
             }
         }
     };
@@ -1142,7 +1147,7 @@ window.onload = function () {
         document.getElementById("websock-status").style.display = "none";
         document.getElementById("websock-controls").style.display = "none";
     }
-    
+
     t.startSplits();
 };
 
@@ -1156,7 +1161,7 @@ this.openEditor = function () {
 };
 
 function onUpdateReady() {
-    if (window.confirm("WebSplit has been updated. Would you like to refresh to load the new version?")) { 
+    if (window.confirm("WebSplit has been updated. Would you like to refresh to load the new version?")) {
         Location.reload()
     }
 }
