@@ -148,7 +148,7 @@ function editor () {
 
     this.removeSplit = function (split) {
         if (this.editorEnabled === false) {return false;}
-        if (this.totalSplits === 1) {return false;} // Can't have 0 splits
+        if (t.totalSplits === 1) {return false;} // Can't have 0 splits
         var removedRow;
         splitToDelete = split || t.totalSplits;
         if (!split || split == t.totalSplits) {
