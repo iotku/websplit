@@ -75,7 +75,8 @@ function editor () {
 
     this.saveNewSplits = function () {
         var splitNames, enteredTime, bestsegTime;
-        for (var step = 1; step <= this.totalSplits; step++) {
+        console.log(t.totalSplits)
+        for (var step = 1; step <= t.totalSplits; step++) {
             splitNames = document.getElementById("editor-splitname" + step).value;
             enteredTime = document.getElementById("editor-difference" + step).value;
             bestsegTime = document.getElementById("editor-bestsegment" + step).value;
@@ -107,7 +108,7 @@ function editor () {
         tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1];
         tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
 
-        for (i = replaceMe; i <= this.totalSplits; i++){
+        for (i = replaceMe; i <= t.totalSplits; i++){
             tmpSplitObject[i + 1] = splitsObject[i];
         }
 
@@ -130,7 +131,7 @@ function editor () {
         this.editorUpdateSplitButtons(); // make sure split buttons are current, even though it seemed to work fine without this.
         t.totalSplits++;
 
-        for (i = split + 2; i <= this.totalSplits; i++) {
+        for (i = split + 2; i <= t.totalSplits; i++) {
             document.getElementById("editor-row-tmp" + i).id = ("editor-row" + i); 
             document.getElementById("editor-splitname-tmp" + i).id = ("editor-splitname" + i); 
             document.getElementById("editor-difference-tmp" + i).id = ("editor-difference" + i); 
@@ -235,7 +236,7 @@ function editor () {
 
     this.moveSplitDown = function (split) {
         // Functional, but could probbaly be refactored to be more readable
-        if (split == this.totalSplits) { return false;}
+        if (split == t.totalSplits) { return false;}
         var swap1, swap2;
 
         swap1 = splitsObject[split];
