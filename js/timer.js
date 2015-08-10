@@ -11,7 +11,7 @@ var splitsObject = Object.create(null);
 var splitsList = Object.create(null);
 var splitID = 0;
 
-function option (option) {
+function option () {
     // Options that should be user modifyable sometime in the future
     self = this;
 
@@ -23,28 +23,28 @@ function option (option) {
     this.playColor1 = "#00FF68";
     this.playColor2 = "#00A541";
 
-    this.pauseColor1 = "white"
-    this.pauseColor2 = "gray"
+    this.pauseColor1 = "white";
+    this.pauseColor2 = "gray";
 
-    this.ahaedColor1 = "#00B3FF"
-    this.ahaedColor2 = "#00A1E6"
+    this.ahaedColor1 = "#00B3FF";
+    this.ahaedColor2 = "#00A1E6";
 
-    this.behindColor1 = "#FF0000"
-    this.behindColor2 = "#E30000"
+    this.behindColor1 = "#FF0000";
+    this.behindColor2 = "#E30000";
 
     // Segment Colors
-    this.goldSplitColor = "gold"
+    this.goldSplitColor = "gold";
     this.aheadSplitColor = "lime";
-    this.aheadSplitBehindTotalSegment = "#CC0000" // Eww, find better name?
+    this.aheadSplitBehindTotalSegment = "#CC0000"; // Eww, find better name?
 
-    this.behindSplitColor = "red"
-    this.behindSplitAheadTotalSegmentColor = "#00CC00" // Eww, find better name?
+    this.behindSplitColor = "red";
+    this.behindSplitAheadTotalSegmentColor = "#00CC00";// Eww, find better name?
 }
 
-function editor (editor) {
+function editor () {
     // Split Editor
     this.genEditorSplits = function () {
-        console.log(splitsObject)
+        console.log(splitsObject);
         t.timerReset();
         t.editorEnabled = true;
         var addtime = 0;
@@ -101,14 +101,14 @@ function editor (editor) {
         tmpSplitObject.info = splitsObject.info;
 
         for (i = 1; i <= replaceMe - 1; i++){
-            tmpSplitObject[i] = splitsObject[i]
+            tmpSplitObject[i] = splitsObject[i];
         }
 
-        tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1]
+        tmpSplitObject[replaceMe -1] = splitsObject[replaceMe -1];
         tmpSplitObject[replaceMe] = [replaceMe,0,0,0];
 
         for (i = replaceMe; i <= this.totalSplits; i++){
-            tmpSplitObject[i + 1] = splitsObject[i]
+            tmpSplitObject[i + 1] = splitsObject[i];
         }
 
         // There's probably a much better way to change the IDs, but for now this works
@@ -149,14 +149,15 @@ function editor (editor) {
     this.removeSplit = function (split) {
         if (this.editorEnabled === false) {return false;}
         if (this.totalSplits === 1) {return false;} // Can't have 0 splits
+        var removedRow;
         splitToDelete = split || t.totalSplits;
         if (!split || split == t.totalSplits) {
             delete splitsObject[splitToDelete];
-            var removedRow = document.getElementById("editor-row" + splitToDelete);
+            removedRow = document.getElementById("editor-row" + splitToDelete);
             removedRow.parentNode.removeChild(removedRow);
             t.totalSplits = t.totalSplits - 1;
         } else {
-            var removedRow = document.getElementById("editor-row" + splitToDelete);
+            removedRow = document.getElementById("editor-row" + splitToDelete);
             removedRow.parentNode.removeChild(removedRow);
             t.totalSplits = t.totalSplits - 1;
 
@@ -207,7 +208,7 @@ function editor (editor) {
         var div1 = document.getElementById("editor-row" + split);
         var div2 = document.getElementById("editor-row" + (split -1));
         var container = document.getElementById("editor-row" + split);
-        document.getElementById("splits-editor-table").insertBefore(container, div2)
+        document.getElementById("splits-editor-table").insertBefore(container, div2);
 
         div1.id = "editor-row" + (split - 1);
         div2.id = "editor-row" + (split);
@@ -224,13 +225,13 @@ function editor (editor) {
         splitname2.id = "editor-splitname" + (split - 1);
 
         difference1.id = "editor-difference" + split;
-        difference2.id = "editor-difference" + (split - 1)
+        difference2.id = "editor-difference" + (split - 1);
 
         bestsegment1.id = "editor-bestsegment" + split;
-        bestsegment2.id = "editor-bestsegment" + (split - 1)
+        bestsegment2.id = "editor-bestsegment" + (split - 1);
 
         this.editorUpdateSplitButtons();
-    }
+    };
 
     this.moveSplitDown = function (split) {
         // Functional, but could probbaly be refactored to be more readable
@@ -246,7 +247,7 @@ function editor (editor) {
         var div1 = document.getElementById("editor-row" + split);
         var div2 = document.getElementById("editor-row" + (split + 1));
         var container = document.getElementById("editor-row" + (split +1));
-        document.getElementById("splits-editor-table").insertBefore(container, div1)
+        document.getElementById("splits-editor-table").insertBefore(container, div1);
 
         div1.id = "editor-row" + (split + 1);
         div2.id = "editor-row" + (split);
@@ -263,21 +264,21 @@ function editor (editor) {
         splitname2.id = "editor-splitname" + (split + 1);
 
         difference1.id = "editor-difference" + split;
-        difference2.id = "editor-difference" + (split + 1)
+        difference2.id = "editor-difference" + (split + 1);
 
         bestsegment1.id = "editor-bestsegment" + split;
         bestsegment2.id = "editor-bestsegment" + (split + 1);
 
         this.editorUpdateSplitButtons();
-    }
+    };
 
     this.editorUpdateSplitButtons = function () {
         // TODO: Replace innerHTML with something else, it's pretty slow.
         var changeButtons = document.getElementsByClassName('editor-split-controls');
         for (var i = 0; i <= changeButtons.length - 1; i++) {
-            changeButtons[i].innerHTML = '<a class="btn-addSplit" onclick="editor.addSplit(' + (i + 1) + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + (i + 1) + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + (i + 1) + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor-bestsegment.moveSplitDown(' + (i + 1) + ')">V</a>'
-        };
-    }
+            changeButtons[i].innerHTML = '<a class="btn-addSplit" onclick="editor.addSplit(' + (i + 1) + ')">+</a> / <a class="btn-removeSplit" onclick="editor.removeSplit(' + (i + 1) + ')">-</a> / <a class="btn-moveSplitUp" onclick="editor.moveSplitUp(' + (i + 1) + ')">^</a> / <a class="btn-moveSplitDown" onclick="editor.moveSplitDown(' + (i + 1) + ')">V</a>';
+        }
+    };
 
 }
 
@@ -1064,9 +1065,9 @@ function GameTimer(d) {
             }
 
             if (this.totalSplits % 2) {
-                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#0f0f0f"
+                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#0f0f0f";
             } else {
-                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#171717"
+                document.getElementById("row" + this.totalSplits).style.backgroundColor = "#171717";
             }
         }
     };
@@ -1152,7 +1153,7 @@ window.onload = function () {
 };
 
 this.openEditor = function () {
-    if (t.currently == 'play' || t.currently == 'pause' || t.editorEnabled == true) {
+    if (t.currently == 'play' || t.currently == 'pause' || t.editorEnabled === true) {
         return false;
     } else {
         t.disableControls = true;
@@ -1162,7 +1163,7 @@ this.openEditor = function () {
 
 function onUpdateReady() {
     if (window.confirm("WebSplit has been updated. Would you like to refresh to load the new version?")) {
-        Location.reload()
+        Location.reload();
     }
 }
 
