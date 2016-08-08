@@ -15,7 +15,6 @@ function option () {
     // Options that should be user modifyable sometime in the future
     self = this;
 
-    this.useWebsockets = false; // Use Websocket interface?
     this.startDelayAmount = 0;  // How many *seconds* of delay (TODO: Verify :: Is this taken into account everywhere?)
     this.maxSplits = 10;        // Max splits to display at once :: Not yet implemented.
 
@@ -281,54 +280,6 @@ function editor () {
         }
     };
 
-}
-
-function debugMsg(text) {
-    var currentTime = new Date();
-    var container = document.createElement('span');
-    container.innerHTML = currentTime.getHours() + ":" + t.pad(currentTime.getMinutes(), 2) + ":" + t.pad(currentTime.getSeconds(), 2) + ": " + text + '<br>';
-    document.getElementById("debug-output").appendChild(container);
-
-    // Scroll to bottom automatically?
-    var objDiv = document.getElementById("debug-output");
-    objDiv.scrollTop = objDiv.scrollHeight;
-}
-
-function webSocket(f){
-    var websocketURL = 'ws://localhost:8080/';
-    ws = new WebSocket(websocketURL);
-
-    ws.onopen = function() {
-        debugMsg("Connected to " + websocketURL);
-        document.getElementById("websock-status").textContent = "Connected to " + websocketURL;
-    };
-
-    this.closeSocket = function () {
-        // Should autorespawn
-        ws.close();
-    };
-
-    ws.onmessage = function(event) {
-      switch (event.data) {
-          case "start": t.split(); break;
-          case "reset": t.reset(); break;
-          case "unsplit": t.unsplit(); break;
-          case "skipsplit": t.skipSplit(); break;
-          default: t.split(t.parseTime(event.data)); break;
-        }
-      debugMsg("Recived: " + event.data);
-    };
-
-    ws.onerror = function (error) {
-      debugMsg('WebSocket Error ' + error);
-    };
-     ws.onclose = function(){
-        //try to reconnect in 5 seconds
-        debugMsg("Connection Lost!");
-        document.getElementById("websock-status").textContent = "Not Connected.";
-        setTimeout(function(){webSocket();}, 5000);};
-    var self = this,
-    d = d || {}; // I really don't know about this.
 }
 
 function GameTimer(d) {
@@ -739,35 +690,6 @@ function GameTimer(d) {
         editor.genEditorSplits();
     };
 
-    this.wsplitExport = function () {
-        var splitInfo = "Title=" + splitsObject.info[0] + " :: " + splitsObject.info[1] + "\r\n" + "Attempts="+ splitsObject.info[2] + "\r\n" + "Offset=0\r\nSize=152,25" + "\r\n";
-
-        var splitSplits = "",
-            splitIcons = "",
-            addtime = 0;
-        for (var step = 1; step <= this.totalSplits; step++) {
-            addtime = splitsObject[step][1] + addtime;
-            splitSplits += splitsObject[step][0] + ",0," + (addtime / 1000) + "," + (splitsObject[step][1] / 1000) + "\r\n";
-            splitIcons += '"",';
-        }
-
-        var wspltFile = splitInfo + splitSplits + "Icons=" + splitIcons.slice(0, - 1);
-
-        var textFile = null,
-        makeTextFile = function (text) {
-            var data = new Blob([text], {type: 'application/octet-stream'});
-
-            if (textFile !== null) {
-              window.URL.revokeObjectURL(textFile);
-            }
-
-            textFile = window.URL.createObjectURL(data);
-            saveAs(data, splitsObject.info[0] + " - " + splitsObject.info[1] + ".wsplit");
-        };
-
-        makeTextFile(wspltFile); // How does any of this crap work?
-    };
-
     this.selectPB = function (pbid) {
         this.splitID = pbid;
         splitsObject = JSON.parse(localStorage["PB" + pbid]);
@@ -1125,11 +1047,6 @@ t = new GameTimer({
 var editor;
 editor = new editor();
 
-if (option.useWebsockets === true) {
-    var websock;
-    websock = new webSocket();
-}
-
 // Hotkeys. onkeydown is more responsive than onkeyup
 window.onkeydown = function keyPress(e) {
     var k = e.which || e.keyCode;
@@ -1145,11 +1062,6 @@ window.onkeydown = function keyPress(e) {
 };
 
 window.onload = function () {
-    if (option.useWebsockets === false) {
-        document.getElementById("websock-status").style.display = "none";
-        document.getElementById("websock-controls").style.display = "none";
-    }
-
     t.startSplits();
 };
 
@@ -1162,7 +1074,7 @@ this.openEditor = function () {
     }
 };
 
-function onUpdateReady() {
+function onUpdateReady() { // Does this even work?
     if (window.confirm("WebSplit has been updated. Would you like to refresh to load the new version?")) {
         Location.reload();
     }

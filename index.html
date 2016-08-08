@@ -39,7 +39,6 @@
 			<!-- <input type="button" value="Load"   onclick="t.loadSplits()"/><br> -->
 			<input type="button" value="Choose Splits" onclick="t.splitSelector();slideout.toggle();"/>
 			<input type="button" value="Editor" onclick="openEditor();slideout.toggle();"/>
-			<input type="button" value="Export as Wsplit" onclick="t.wsplitExport();slideout.toggle();"/>
 		</section>
 
 		<section class="menu-section">
@@ -88,17 +87,12 @@
 		<div class="statusbar">
 			<span><div id="prevtext"></div><div id="prevsplit">Not Loaded.</div></span>
 		</div>
-		<span><div class="statusbar" id="websock-status">Not Connected.</div></span>
 		<div id="controls">
 			<input type="button" value="Start / Split"  onclick="t.split()"/><br>
 			<input type="button" value="Unsplit" onclick="t.unsplit()"/>
 			<input type="button" value="Skip Split" onclick="t.skipSplit()"/>
 			<input type="button" value="Reset"  onclick="t.reset()"/>
 			<input type="button" value="Pause"  onclick="t.pause()"/><br>
-		</div>
-		<div id="websock-controls">
-			<input type="button" value="Close Conn"  onclick="websock.closeSocket()"/><br>
-			<input type="button" value="Debug Window"  onclick="document.getElementById('debug-output').style.display = 'inline-block'" />
 		</div>
 	</div>
 	</div>
