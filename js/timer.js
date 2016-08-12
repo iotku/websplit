@@ -289,7 +289,7 @@ function GameTimer(d) {
     this.currentSplit = 1; // Initialize at 1st split
     this.goldCounter = 0;  // How Many gold splits?
     this.splitID = 0;      // Initialize, should be set by split selection function
-    this.startTime = 0;    // Keep track of inital start time for unsplit. (TODO: change to somethign more meaningful, and modify comment to mention that it saves the offset, including after pausing)
+    this.startTime = 0;    // Keep track of inital start time for unsplit. (TODO: change to something more meaningful, and modify comment to mention that it saves the offset, including after pausing)
 
     if (localStorage.splitsListTracker) {
         splitsList = JSON.parse(localStorage.splitsListTracker);
