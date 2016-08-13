@@ -1074,17 +1074,6 @@ this.openEditor = function () {
     }
 };
 
-function onUpdateReady() { // Does this even work?
-    if (window.confirm("WebSplit has been updated. Would you like to refresh to load the new version?")) {
-        Location.reload();
-    }
-}
-
-window.applicationCache.addEventListener('updateready', onUpdateReady);
-if(window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-  onUpdateReady();
-}
-
 // Prompt before navigating away from page
 var confirmOnPageExit = function (e) { // http://stackoverflow.com/a/1119324
     e = e || window.event;
