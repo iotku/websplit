@@ -10,7 +10,7 @@ Currently being tested mostly with Chrome and Firefox, while trying to keep IE10
 Other Web Based Timers
 ---
 Here's a list of some other cool timers with splits I've seen around on github you might be interested in
-
+- [LiveSplitOne](https://github.com/CryZe/LiveSplitOne) by [CryZe](https://github.com/CryZe)
 - [Splitty](https://github.com/ylorant/splitty) by [ylorant](https://github.com/ylorant)
 - [nwsplit](https://github.com/Dregu/nwsplit) by [Dregu](https://github.com/Dregu)
 - [wwwsplit](https://github.com/jpnance/wwwsplit) by [jpnance](https://github.com/jpnance)
