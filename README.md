@@ -3,7 +3,7 @@ websplit
 
 WIP LiveSplit inspired (style) web browser based timer with splits.
 
-[Live Demo](http://iotku.pw/websplit)
+[Live Demo](https://iotku.pw/websplit)
 
 Currently being tested mostly with Chrome and Firefox, while trying to keep IE10+ compatibility (But not guaranteed). Other modern browsers should work, but are untested.
 
